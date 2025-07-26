@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+// Variables
+:root {
+  --primary: hsl(271, 80%, 38%);
+  --secondary: hsl(268, 88%, 25%);
+  --accent: hsl(293, 100%, 35%);
+  --color-bg-primary: hsl(250, 18%, 7%);
+  --color-bg-secondary: hsl(255, 18%, 10%);
+  --color-text-primary: hsl(243, 76%, 95%);
+  --color-text-secondary: hsl(243, 76%, 95%);
+
+  --border-radius-primary: 12px;
+  --border-radius-secondary: 8px;
+
+  /* Font sizes */
+  --font-stacle: 1;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px; //
+  --font-size-base: 16px; //base
+  --font-size-md: 18px; //subheading
+  --font-size-lg: 20px; //h4
+  --font-size-xl: 24px; //h3
+  --font-size-2xl: 28px; //h2
+  --font-size-3xl: 36px; //h1
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
