@@ -3,7 +3,11 @@
   flex-direction: row;
   min-height: 100vh;
   &__sidebar {
-    width: 300px;
-    background-color: var(--color-bg-secondary);
+    padding: 0.5rem;
+    // background-color: var(--color-bg-secondary);
+  }
+  &__content {
+    padding: 0.5rem;
+    width: 100%;
   }
 }

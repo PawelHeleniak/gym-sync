@@ -3,12 +3,26 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem;
+  background-color: var(--color-bg-secondary);
+  border-radius: 50px;
+  gap: 0.5rem;
   &__link {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
+    // padding: 1rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50px;
+    transition: 0.2s ease-in background, 0.2s ease-in color;
+    &:hover {
+      background-color: var(--color-bg-surface);
+    }
+    &--active {
+      color: var(--accent);
+      background-color: var(--color-bg-surface);
+    }
   }
 }

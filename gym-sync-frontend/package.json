@@ -1,6 +1,12 @@
 {
   "name": "gym-sync-frontend",
   "version": "0.0.0",
+  "private": true,
+  "description": "This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +14,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "^20.0.0",
     "@angular/compiler": "^20.0.0",
