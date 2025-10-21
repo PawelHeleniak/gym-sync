@@ -26,15 +26,23 @@
   --font-size-xl: 24px; //h3
   --font-size-2xl: 28px; //h2
   --font-size-3xl: 36px; //h1
+
+  // Font style
+  --font-family-base: "Lato", sans-serif;
 }
 
+html,
 body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-style: normal;
 }
 
 // Custom
-a {
+a,
+button {
   text-decoration: none;
   color: inherit;
 }
@@ -43,5 +51,18 @@ a {
     border-radius: var(--border-radius-secondary);
     background-color: var(--color-bg-secondary);
     padding: 1rem;
+    width: 100%;
+  }
+  &__row {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
   }
 }

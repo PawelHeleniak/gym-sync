@@ -1,1 +1,57 @@
-<p>training-session works!</p>
+<div class="layout__row">
+  <div class="layout__column">
+    <h2 class="layout__header">Wybierz trening</h2>
+    @if(state === "list"){ @for (item of trainingList; track item.name) {
+    <button class="layout__box btn" (click)="changeState(item.id, 'workout')">
+      {{ item.name }} <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    } @empty {
+    <div class="layout__box">Brak ćwiczeń</div>
+    } }@else if(state === "workout" && selectedTraining){
+    <div class="workout">
+      <h3>{{selectedTraining.name}}</h3>
+      <div class="workout__box layout__box">
+        <div class="workout__name">
+          {{selectedTraining.workout[currentExerciseIndex].name}}
+        </div>
+        <div class="workout__weight">
+          {{selectedTraining.workout[currentExerciseIndex].weight}} kg
+        </div>
+        <div class="workout__reps">
+          @for (rep of selectedTraining.workout[currentExerciseIndex].reps;
+          track $index; let i = $index) {
+          <div
+            class="workout__rep"
+            [class]="{'workout__rep--done': rep.done, 'workout__rep--current': currentRepIndex===i}"
+          >
+            {{rep.count}}
+          </div>
+          }
+        </div>
+        <div
+          class="workout__time"
+          [class]="{'workout__time--stop': timeLeft === 0}"
+        >
+          {{timeLeft}} sek.
+        </div>
+      </div>
+      <button (click)="next()">Następne</button>
+    </div>
+    }@else {}
+  </div>
+  <div class="layout__column">
+    <h2 class="layout__header">Stoper</h2>
+    <div class="layout__box">
+      <p>Tu będzie timer</p>
+    </div>
+    <!-- <div class="layout__box">
+      <p>TEST</p>
+    </div> -->
+  </div>
+</div>
+
+<!-- <div class="btn">
+      <button>Start</button>
+      <button>Stop</button>
+      <button>Koniec</button>
+    </div> -->

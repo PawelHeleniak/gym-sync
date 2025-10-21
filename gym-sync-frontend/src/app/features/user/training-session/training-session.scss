@@ -1,0 +1,39 @@
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border: 2px solid var(--color-bg-secondary);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  i {
+    font-size: var(--font-size-s);
+  }
+
+  &:hover {
+    // background-color: var(--color-bg-surface);
+    border-color: var(--primary);
+  }
+}
+.workout {
+  display: flex;
+  flex-direction: column;
+  &__reps {
+    display: flex;
+  }
+  &__rep {
+    background-color: none;
+    &--current {
+      background-color: red;
+    }
+    &--done {
+      background-color: blue;
+    }
+  }
+  &__time {
+    color: green;
+    &--stop {
+      color: red;
+    }
+  }
+}
