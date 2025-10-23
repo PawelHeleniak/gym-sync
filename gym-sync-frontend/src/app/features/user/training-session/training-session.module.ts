@@ -1,6 +1,6 @@
 interface trainingList {
   name: string;
-  estimatedTime: string;
+  estimatedTime: number;
   id: number;
   workout: Workout[];
 }

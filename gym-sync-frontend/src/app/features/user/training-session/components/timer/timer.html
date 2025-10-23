@@ -1,4 +1,28 @@
 <div class="layout__column">
   <h2 class="layout__header">Stoper</h2>
-  <div class="layout__box">{{ formattedTime }}</div>
+  <div class="layout__box">
+    <div class="timer">
+      <div class="timer__time">
+        <span class="timer__time--start">{{ startTimeFromatted }}</span>
+        /
+        <span class="timer__time--end">{{endTimeFromatted}}</span>
+      </div>
+      <div class="timer__list">
+        <div class="timer__list--header">
+          <div class="timer__workout">Nazwa ćwicznia</div>
+          <div class="timer__sets">Powtórzenia - ciężar</div>
+          <div class="timer__info">Czas</div>
+        </div>
+        <div class="timer__body">
+          @for (item of reversedList(); track $index; let i = $index ) {
+          <div class="timer__item">
+            <div class="timer__workout">{{item.name}}</div>
+            <div class="timer__sets">{{item.count}} - {{item.weight}} kg</div>
+            <div class="timer__info">{{item.time}}</div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

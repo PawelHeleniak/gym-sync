@@ -1,30 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { Timer } from './components/timer/timer';
+
 @Component({
   selector: 'app-training-session',
   imports: [Timer],
   templateUrl: './training-session.html',
-  styleUrl: './training-session.scss',
+  styleUrls: ['./training-session.scss'],
 })
 export class TrainingSession {
   public state: 'list' | 'workout' | 'done' = 'list';
   public currentId: number = 0;
   public currentWorkoutStep: number = 0;
+
+  ngOnInit() {
+    this.handleInit();
+  }
+  handleInit() {
+    this.trainingList.map((e) => {
+      let time: number;
+      const estimatedTime = e.workout.map(
+        (element) => (time = element.break * element.reps.length)
+      );
+      estimatedTime.forEach((num) => {
+        e.estimatedTime += num;
+      });
+    });
+  }
   selectedTraining: trainingList = {
     name: '',
-    estimatedTime: '',
+    estimatedTime: 0,
     id: 0,
     workout: [],
   };
   public trainingList: trainingList[] = [
     {
       name: 'Trening A',
-      estimatedTime: '1:30:00',
+      estimatedTime: 0,
       id: 1,
       workout: [
         {
           name: 'Podciąganie nachwytem',
-          break: 15,
+          break: 120,
           set: 15,
           reps: [
             { count: 1, done: false },
@@ -78,7 +94,7 @@ export class TrainingSession {
     },
     {
       name: 'Trening B',
-      estimatedTime: '1:30:00',
+      estimatedTime: 0,
       id: 2,
       workout: [
         {
@@ -96,7 +112,7 @@ export class TrainingSession {
     },
     {
       name: 'Trening C',
-      estimatedTime: '1:30:00',
+      estimatedTime: 0,
       id: 3,
       workout: [
         {
@@ -135,17 +151,45 @@ export class TrainingSession {
   }
   next() {
     this.currentExercise.reps[this.currentRepIndex].done = true;
-    if (this.currentExercise.reps.length - 1 > this.currentRepIndex)
+    if (this.currentExercise.reps.length - 1 > this.currentRepIndex) {
       this.currentRepIndex++;
-    else {
+      this.handleDoneWorkout();
+    } else {
+      this.handleDoneWorkout();
       this.currentExerciseIndex++;
       this.currentRepIndex = 0;
     }
-    console.log(this.currentWorkoutStep);
-    console.log(this.currentRep);
+
     // Timer
     this.timer(this.selectedTraining.workout[this.currentExerciseIndex].break);
   }
+  handleDoneWorkout() {
+    const newItems: any[] = [];
+
+    const currentExercise =
+      this.selectedTraining.workout[this.currentExerciseIndex];
+    const doneReps = currentExercise.reps.filter((el) => el.done);
+    const allDoneCounts = doneReps.map((el) => el.count);
+    let finalCount = null;
+
+    if (allDoneCounts.length > 0) {
+      finalCount = allDoneCounts.at(-1);
+    }
+    const getTime = document.querySelector('.timer__time--start')?.textContent;
+    if (finalCount)
+      newItems.push({
+        name: currentExercise.name,
+        count: finalCount,
+        weight: currentExercise.weight,
+        time: getTime,
+      });
+
+    this.connectionDoneWorkout.set([
+      ...this.connectionDoneWorkout(),
+      ...newItems,
+    ]);
+  }
+  connectionDoneWorkout = signal<any[]>([]);
   back() {
     if (this.currentRepIndex !== 0) this.currentRepIndex--;
     else {
@@ -154,12 +198,11 @@ export class TrainingSession {
     }
     this.currentExercise.reps[this.currentRepIndex].done = false;
 
-    console.log(this.currentWorkoutStep);
-    console.log(this.currentRep);
-    console.log(this.currentRepIndex, 'currentRepIndex');
-
     // Timer
     this.timer(this.selectedTraining.workout[this.currentExerciseIndex].break);
+  }
+  backToList() {
+    this.state = 'list';
   }
   timeLeft: number = 0;
   timerInterval: any;
@@ -173,11 +216,5 @@ export class TrainingSession {
         clearInterval(this.timerInterval);
       }
     }, 1000);
-  }
-  ngOnInit() {
-    const audio = new Audio('assets/east.mp3');
-    audio.loop = true;
-    audio.volume = 0.5;
-    audio.play().catch((err) => console.warn('Autoplay zablokowany:', err));
   }
 }

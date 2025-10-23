@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, computed, Input, input } from '@angular/core';
+import { formatTime } from '../../../../../shared/utils/time';
 
 @Component({
   selector: 'app-timer',
@@ -9,16 +10,19 @@ import { Component } from '@angular/core';
 export class Timer {
   seconds = 0;
   private intervalId?: number;
-
+  @Input() estimatedTime: number = 0;
+  list = input<any[]>([]);
+  readonly reversedList = computed(() => {
+    return [...this.list()].reverse();
+  });
+  startTimeFromatted: string = '00:00:00';
+  endTimeFromatted: string = '00:00:00';
   ngOnInit() {
     this.intervalId = window.setInterval(() => {
       this.seconds++;
+      this.startTimeFromatted = formatTime(this.seconds);
     }, 1000);
-  }
-  get formattedTime(): string {
-    const minutes = Math.floor(this.seconds / 60);
-    const secs = this.seconds % 60;
-    return `${minutes}:${secs.toString().padStart(2, '0')}`;
+    this.endTimeFromatted = formatTime(this.estimatedTime);
   }
   ngOnDestroy() {
     if (this.intervalId) {

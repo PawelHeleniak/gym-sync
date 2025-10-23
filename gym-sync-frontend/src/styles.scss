@@ -17,8 +17,8 @@
   --warning-hover: hsl(0, 100%, 35%);
   --success: hsl(125, 100%, 35%);
 
-  --border-radius-primary: 12px;
-  --border-radius-secondary: 8px;
+  --border-radius-primary: 8px;
+  --border-radius-secondary: 12px;
 
   /* Font sizes */
   --font-stacle: 1;
@@ -53,7 +53,7 @@ button {
 }
 .layout {
   &__box {
-    border-radius: var(--border-radius-secondary);
+    border-radius: var(--border-radius-primary);
     background-color: var(--color-bg-secondary);
     padding: 1rem;
     width: 100%;

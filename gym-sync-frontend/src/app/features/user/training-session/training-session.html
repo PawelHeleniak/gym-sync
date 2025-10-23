@@ -44,6 +44,10 @@
       <button class="workout__btn" (click)="back()">
         <i class="fa-solid fa-arrow-left"></i> Wstecz
       </button>
+      }@else{
+      <button class="workout__btn" (click)="backToList()">
+        <i class="fa-solid fa-arrow-left"></i> Powrót
+      </button>
       }
       <button class="workout__btn" (click)="next()">
         Następne <i class="fa-solid fa-arrow-right"></i>
@@ -56,7 +60,10 @@
   </div>
   @if(state !== "list"){
   <div class="layout__column">
-    <app-timer></app-timer>
+    <app-timer
+      [estimatedTime]="selectedTraining.estimatedTime"
+      [list]="connectionDoneWorkout()"
+    ></app-timer>
   </div>
   }
 </div>
