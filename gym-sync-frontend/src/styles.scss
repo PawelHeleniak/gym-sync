@@ -13,6 +13,10 @@
   --color-text-primary: hsl(243, 76%, 95%);
   --color-text-secondary: hsl(243, 76%, 95%);
 
+  --warning: hsl(0, 100%, 25%);
+  --warning-hover: hsl(0, 100%, 35%);
+  --success: hsl(125, 100%, 35%);
+
   --border-radius-primary: 12px;
   --border-radius-secondary: 8px;
 
@@ -45,6 +49,7 @@ a,
 button {
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 .layout {
   &__box {
@@ -65,4 +70,7 @@ button {
     gap: 0.5rem;
     width: 100%;
   }
+  // &__header {
+  //   margin-bottom: 2rem;
+  // }
 }

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-
+import { Timer } from './components/timer/timer';
 @Component({
   selector: 'app-training-session',
-  imports: [],
+  imports: [Timer],
   templateUrl: './training-session.html',
   styleUrl: './training-session.scss',
 })
@@ -24,7 +24,7 @@ export class TrainingSession {
       workout: [
         {
           name: 'Podciąganie nachwytem',
-          break: 5,
+          break: 15,
           set: 15,
           reps: [
             { count: 1, done: false },
@@ -146,7 +146,21 @@ export class TrainingSession {
     // Timer
     this.timer(this.selectedTraining.workout[this.currentExerciseIndex].break);
   }
+  back() {
+    if (this.currentRepIndex !== 0) this.currentRepIndex--;
+    else {
+      this.currentExerciseIndex--;
+      this.currentRepIndex = this.currentExercise.reps.length;
+    }
+    this.currentExercise.reps[this.currentRepIndex].done = false;
 
+    console.log(this.currentWorkoutStep);
+    console.log(this.currentRep);
+    console.log(this.currentRepIndex, 'currentRepIndex');
+
+    // Timer
+    this.timer(this.selectedTraining.workout[this.currentExerciseIndex].break);
+  }
   timeLeft: number = 0;
   timerInterval: any;
   timer(time: number) {
@@ -159,5 +173,11 @@ export class TrainingSession {
         clearInterval(this.timerInterval);
       }
     }, 1000);
+  }
+  ngOnInit() {
+    const audio = new Audio('assets/east.mp3');
+    audio.loop = true;
+    audio.volume = 0.5;
+    audio.play().catch((err) => console.warn('Autoplay zablokowany:', err));
   }
 }

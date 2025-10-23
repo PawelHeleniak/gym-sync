@@ -1,21 +1,30 @@
 <div class="layout__row">
   <div class="layout__column">
+    @if(state === "list"){
     <h2 class="layout__header">Wybierz trening</h2>
-    @if(state === "list"){ @for (item of trainingList; track item.name) {
+    @for (item of trainingList; track item.name) {
     <button class="layout__box btn" (click)="changeState(item.id, 'workout')">
       {{ item.name }} <i class="fa-solid fa-arrow-right"></i>
     </button>
     } @empty {
     <div class="layout__box">Brak ćwiczeń</div>
     } }@else if(state === "workout" && selectedTraining){
+    <h2 class="layout__header">{{selectedTraining.name}}</h2>
     <div class="workout">
-      <h3>{{selectedTraining.name}}</h3>
       <div class="workout__box layout__box">
         <div class="workout__name">
           {{selectedTraining.workout[currentExerciseIndex].name}}
         </div>
-        <div class="workout__weight">
-          {{selectedTraining.workout[currentExerciseIndex].weight}} kg
+        <div class="workout__info">
+          <div class="workout__weight">
+            Ciężar: {{selectedTraining.workout[currentExerciseIndex].weight}} kg
+          </div>
+          <div
+            class="workout__time"
+            [class]="{'workout__time--stop': timeLeft === 0}"
+          >
+            Przerwa: <span>{{timeLeft}} sek.</span>
+          </div>
         </div>
         <div class="workout__reps">
           @for (rep of selectedTraining.workout[currentExerciseIndex].reps;
@@ -28,30 +37,26 @@
           </div>
           }
         </div>
-        <div
-          class="workout__time"
-          [class]="{'workout__time--stop': timeLeft === 0}"
-        >
-          {{timeLeft}} sek.
-        </div>
       </div>
-      <button (click)="next()">Następne</button>
     </div>
+    <div class="workout__btns">
+      @if(currentExerciseIndex !== 0 || currentRepIndex !== 0){
+      <button class="workout__btn" (click)="back()">
+        <i class="fa-solid fa-arrow-left"></i> Wstecz
+      </button>
+      }
+      <button class="workout__btn" (click)="next()">
+        Następne <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+    <button class="workout__btn workout__btn--warning">
+      Zakończ trening <i class="fa-solid fa-x"></i>
+    </button>
     }@else {}
   </div>
+  @if(state !== "list"){
   <div class="layout__column">
-    <h2 class="layout__header">Stoper</h2>
-    <div class="layout__box">
-      <p>Tu będzie timer</p>
-    </div>
-    <!-- <div class="layout__box">
-      <p>TEST</p>
-    </div> -->
+    <app-timer></app-timer>
   </div>
+  }
 </div>
-
-<!-- <div class="btn">
-      <button>Start</button>
-      <button>Stop</button>
-      <button>Koniec</button>
-    </div> -->
