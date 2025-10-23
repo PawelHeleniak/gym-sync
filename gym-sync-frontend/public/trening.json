@@ -1,0 +1,378 @@
+[
+  {
+    "name": "Trening A - Poniedziałek",
+    "estimatedTime": 0,
+    "id": 1,
+    "workout": [
+      {
+        "name": "Skakanka",
+        "breakTime": 300,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Rozciąganie",
+        "breakTime": 300,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Stanie na rękach",
+        "breakTime": 300,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "PRZERWA - Trening właściwy",
+        "breakTime": 60,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Piramidka nachwyt",
+        "breakTime": 120,
+        "set": 1,
+        "reps": [
+          { "count": 1, "done": false },
+          { "count": 2, "done": false },
+          { "count": 3, "done": false },
+          { "count": 4, "done": false },
+          { "count": 5, "done": false },
+          { "count": 6, "done": false },
+          { "count": 7, "done": false },
+          { "count": 8, "done": false },
+          { "count": 9, "done": false },
+          { "count": 8, "done": false },
+          { "count": 7, "done": false },
+          { "count": 6, "done": false },
+          { "count": 5, "done": false },
+          { "count": 4, "done": false },
+          { "count": 3, "done": false },
+          { "count": 2, "done": false },
+          { "count": 1, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "PRZERWA - Kolejne ćwiczenie",
+        "breakTime": 30,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Podchwyt",
+        "breakTime": 180,
+        "set": 3,
+        "reps": [
+          { "count": 9, "done": false },
+          { "count": 8, "done": false },
+          { "count": 6, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "PRZERWA - Kolejne ćwiczenie",
+        "breakTime": 30,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Rozpiętki na ziemi",
+        "breakTime": 180,
+        "set": 3,
+        "reps": [
+          { "count": 10, "done": false },
+          { "count": 10, "done": false },
+          { "count": 10, "done": false }
+        ],
+        "weight": 12.5
+      },
+      {
+        "name": "PRZERWA - Kolejne ćwiczenie",
+        "breakTime": 30,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Pompki paraletki nogi w górze",
+        "breakTime": 180,
+        "set": 4,
+        "reps": [
+          { "count": 12, "done": false },
+          { "count": 12, "done": false },
+          { "count": 12, "done": false },
+          { "count": 10, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "PRZERWA - Kolejne ćwiczenie",
+        "breakTime": 30,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Wyciskanie triceps na ziemi",
+        "breakTime": 180,
+        "set": 3,
+        "reps": [
+          { "count": 10, "done": false },
+          { "count": 8, "done": false },
+          { "count": 10, "done": false }
+        ],
+        "weight": 10
+      },
+      {
+        "name": "PRZERWA - Kolejne ćwiczenie",
+        "breakTime": 30,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Bułgary",
+        "breakTime": 180,
+        "set": 3,
+        "reps": [
+          { "count": 8, "done": false },
+          { "count": 7, "done": false },
+          { "count": 7, "done": false }
+        ],
+        "weight": 20
+      },
+      {
+        "name": "PRZERWA - Kolejne ćwiczenie",
+        "breakTime": 30,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Zakroki",
+        "breakTime": 180,
+        "set": 3,
+        "reps": [
+          { "count": 10, "done": false },
+          { "count": 8, "done": false },
+          { "count": 6, "done": false }
+        ],
+        "weight": 20
+      },
+      {
+        "name": "PRZERWA - brzuch",
+        "breakTime": 300,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Prostowanie nóg na drążku",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 8, "done": false },
+          { "count": 7, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Rozjazdy kółko",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 12, "done": false },
+          { "count": 12, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Unoszenie nóg na ziemi",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 15, "done": false },
+          { "count": 15, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Wycieraczki",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 8, "done": false },
+          { "count": 8, "done": false }
+        ],
+        "weight": 0
+      }
+    ]
+  },
+  {
+    "name": "Trening B - Środa/Piątek",
+    "estimatedTime": 0,
+    "id": 2,
+    "workout": [
+      {
+        "name": "Skakanka",
+        "breakTime": 0,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Rozciąganie",
+        "breakTime": 0,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Stanie na rękach",
+        "breakTime": 0,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "PRZERWA - brzuch",
+        "breakTime": 300,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Prostowanie nóg na drążku",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 8, "done": false },
+          { "count": 7, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Rozjazdy kółko",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 12, "done": false },
+          { "count": 12, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Unoszenie nóg na ziemi",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 15, "done": false },
+          { "count": 15, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Wycieraczki",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 8, "done": false },
+          { "count": 8, "done": false }
+        ],
+        "weight": 0
+      }
+    ]
+  },
+  {
+    "name": "Trening B - Sobota",
+    "estimatedTime": 0,
+    "id": 3,
+    "workout": [
+      {
+        "name": "Skakanka",
+        "breakTime": 0,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Rozciąganie",
+        "breakTime": 0,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Stanie na rękach",
+        "breakTime": 0,
+        "set": 1,
+        "reps": [{ "count": 5, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "PRZERWA - brzuch",
+        "breakTime": 300,
+        "break": true,
+        "set": 1,
+        "reps": [{ "count": 1, "done": false }],
+        "weight": 0
+      },
+      {
+        "name": "Prostowanie nóg na drążku",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 8, "done": false },
+          { "count": 7, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Rozjazdy kółko",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 12, "done": false },
+          { "count": 12, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Unoszenie nóg na ziemi",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 15, "done": false },
+          { "count": 15, "done": false }
+        ],
+        "weight": 0
+      },
+      {
+        "name": "Wycieraczki",
+        "breakTime": 30,
+        "set": 2,
+        "reps": [
+          { "count": 8, "done": false },
+          { "count": 8, "done": false }
+        ],
+        "weight": 0
+      }
+    ]
+  }
+]

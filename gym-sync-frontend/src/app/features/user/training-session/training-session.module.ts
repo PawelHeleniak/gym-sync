@@ -6,7 +6,8 @@ interface trainingList {
 }
 interface Workout {
   name: string;
-  break: number;
+  breakTime: number;
+  break?: boolean;
   set: number;
   reps: WorkoutReps[];
   weight: number;

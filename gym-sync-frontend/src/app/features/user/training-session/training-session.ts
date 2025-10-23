@@ -1,5 +1,6 @@
 import { Component, Input, signal } from '@angular/core';
 import { Timer } from './components/timer/timer';
+import { TrainingService } from './training-session.service';
 
 @Component({
   selector: 'app-training-session',
@@ -8,18 +9,28 @@ import { Timer } from './components/timer/timer';
   styleUrls: ['./training-session.scss'],
 })
 export class TrainingSession {
+  constructor(private trainingService: TrainingService) {}
   public state: 'list' | 'workout' | 'done' = 'list';
   public currentId: number = 0;
   public currentWorkoutStep: number = 0;
 
   ngOnInit() {
     this.handleInit();
+    this.loadTrainings();
+  }
+  async loadTrainings() {
+    try {
+      this.trainingList = await this.trainingService.getTrainings();
+      this.handleInit();
+    } catch (error) {
+      console.error(error);
+    }
   }
   handleInit() {
     this.trainingList.map((e) => {
       let time: number;
       const estimatedTime = e.workout.map(
-        (element) => (time = element.break * element.reps.length)
+        (element) => (time = element.breakTime * element.reps.length)
       );
       estimatedTime.forEach((num) => {
         e.estimatedTime += num;
@@ -32,103 +43,7 @@ export class TrainingSession {
     id: 0,
     workout: [],
   };
-  public trainingList: trainingList[] = [
-    {
-      name: 'Trening A',
-      estimatedTime: 0,
-      id: 1,
-      workout: [
-        {
-          name: 'Podciąganie nachwytem',
-          break: 120,
-          set: 15,
-          reps: [
-            { count: 1, done: false },
-            { count: 2, done: false },
-            { count: 3, done: false },
-            { count: 4, done: false },
-            { count: 5, done: false },
-            { count: 6, done: false },
-            { count: 7, done: false },
-            { count: 8, done: false },
-            { count: 7, done: false },
-            { count: 6, done: false },
-            { count: 5, done: false },
-            { count: 4, done: false },
-            { count: 3, done: false },
-            { count: 2, done: false },
-            { count: 1, done: false },
-          ],
-          weight: 0,
-        },
-        {
-          name: 'Przerwa',
-          break: 360,
-          set: 1,
-          reps: [{ count: 1, done: false }],
-          weight: 0,
-        },
-        {
-          name: 'Podciąganie podchwytem',
-          break: 120,
-          set: 3,
-          reps: [
-            { count: 9, done: false },
-            { count: 8, done: false },
-            { count: 6, done: false },
-          ],
-          weight: 0,
-        },
-        {
-          name: 'Rozpiętki na ziemi',
-          break: 120,
-          set: 3,
-          reps: [
-            { count: 9, done: false },
-            { count: 8, done: false },
-            { count: 6, done: false },
-          ],
-          weight: 12.5,
-        },
-      ],
-    },
-    {
-      name: 'Trening B',
-      estimatedTime: 0,
-      id: 2,
-      workout: [
-        {
-          name: 'Podciąganie podchwytem',
-          break: 120,
-          set: 3,
-          reps: [
-            { count: 9, done: false },
-            { count: 8, done: false },
-            { count: 6, done: false },
-          ],
-          weight: 0,
-        },
-      ],
-    },
-    {
-      name: 'Trening C',
-      estimatedTime: 0,
-      id: 3,
-      workout: [
-        {
-          name: 'Rozpiętki na ziemi',
-          break: 120,
-          set: 3,
-          reps: [
-            { count: 9, done: false },
-            { count: 8, done: false },
-            { count: 6, done: false },
-          ],
-          weight: 12.5,
-        },
-      ],
-    },
-  ];
+  public trainingList: trainingList[] = [];
 
   currentExerciseIndex = 0;
   currentRepIndex = 0;
@@ -147,7 +62,9 @@ export class TrainingSession {
     this.selectedTraining = this.trainingList.find((t) => t.id === id)!;
 
     // Timer
-    this.timer(this.selectedTraining.workout[this.currentExerciseIndex].break);
+    this.timer(
+      this.selectedTraining.workout[this.currentExerciseIndex].breakTime
+    );
   }
   next() {
     this.currentExercise.reps[this.currentRepIndex].done = true;
@@ -161,7 +78,9 @@ export class TrainingSession {
     }
 
     // Timer
-    this.timer(this.selectedTraining.workout[this.currentExerciseIndex].break);
+    this.timer(
+      this.selectedTraining.workout[this.currentExerciseIndex].breakTime
+    );
   }
   handleDoneWorkout() {
     const newItems: any[] = [];
@@ -182,6 +101,7 @@ export class TrainingSession {
         count: finalCount,
         weight: currentExercise.weight,
         time: getTime,
+        break: currentExercise.break ? currentExercise.break : false,
       });
 
     this.connectionDoneWorkout.set([
@@ -199,7 +119,9 @@ export class TrainingSession {
     this.currentExercise.reps[this.currentRepIndex].done = false;
 
     // Timer
-    this.timer(this.selectedTraining.workout[this.currentExerciseIndex].break);
+    this.timer(
+      this.selectedTraining.workout[this.currentExerciseIndex].breakTime
+    );
   }
   backToList() {
     this.state = 'list';

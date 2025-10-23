@@ -19,6 +19,13 @@
     padding: 0.5rem;
     border-radius: var(--border-radius-secondary);
     background-color: var(--color-bg-surface);
+    &--break {
+      background-color: var(--primary);
+    }
+    &--inProgress {
+      background-color: var(--color-bg-primary);
+      justify-content: center;
+    }
   }
   &__body {
     display: flex;
