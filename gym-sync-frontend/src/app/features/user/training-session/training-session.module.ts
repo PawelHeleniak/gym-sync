@@ -9,8 +9,8 @@ interface Workout {
   breakTime: number;
   break?: boolean;
   set: number;
-  reps: WorkoutReps[];
   weight: number;
+  reps: WorkoutReps[];
 }
 interface WorkoutReps {
   count: number;
