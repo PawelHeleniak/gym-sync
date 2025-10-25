@@ -18,6 +18,6 @@ const listSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   workout: [workoutSchema],
 });
-M;
+
 const Workout = mongoose.model("Workout", listSchema);
 export default Workout;

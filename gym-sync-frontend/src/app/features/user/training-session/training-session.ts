@@ -1,6 +1,6 @@
 import { Component, Input, signal } from '@angular/core';
 import { Timer } from './components/timer/timer';
-import { TrainingService } from './training-session.service';
+import { TrainingService } from './services/training-session.service';
 
 @Component({
   selector: 'app-training-session',
@@ -10,13 +10,25 @@ import { TrainingService } from './training-session.service';
 })
 export class TrainingSession {
   constructor(private trainingService: TrainingService) {}
+
   public state: 'list' | 'workout' | 'done' = 'list';
   public currentId: number = 0;
   public currentWorkoutStep: number = 0;
-
   ngOnInit() {
     this.handleInit();
     this.loadTrainings();
+
+    this.getAllTraining();
+  }
+  getAllTraining() {
+    this.trainingService.getAllTrainings().subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
   }
   async loadTrainings() {
     try {
