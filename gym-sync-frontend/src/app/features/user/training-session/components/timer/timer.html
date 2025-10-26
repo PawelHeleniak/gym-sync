@@ -16,9 +16,14 @@
         <div class="timer__body">
           <div class="timer__item timer__item--inProgress">W trakcie</div>
           @for (item of reversedList(); track $index; let i = $index ) {
-          <div class="timer__item" [class]="{'timer__item--break': item.break}">
+          <div
+            class="timer__item"
+            [class]="{'timer__item--break': item.isBreak}"
+          >
             <div class="timer__workout">{{item.name}}</div>
-            <div class="timer__sets">{{item.count}} - {{item.weight}} kg</div>
+            <div class="timer__sets">
+              {{item.repsCount}} - {{item.weight}} kg
+            </div>
             <div class="timer__info">{{item.time}}</div>
           </div>
           }

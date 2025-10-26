@@ -10,145 +10,151 @@ import { TrainingService } from './services/training-session.service';
 })
 export class TrainingSession {
   constructor(private trainingService: TrainingService) {}
+  public state: 'list' | 'workout' | 'done' = 'list';
+  public trainingList: trainingList[] = [];
+  public estimatedTime: number = 0;
+  public selectedTraining: trainingList = {
+    name: '',
+    estimatedTime: 0,
+    exercises: [],
+  };
 
-  // public state: 'list' | 'workout' | 'done' = 'list';
+  changeStateWorkout(training: trainingList) {
+    if (training._id) {
+      this.trainingService.getTraining(training._id).subscribe({
+        next: (response: trainingList) => {
+          if (response) this.selectedTraining = response;
+          this.state = 'workout';
+
+          this.timer(
+            this.selectedTraining.exercises[this.currentExerciseIndex].breakTime
+          );
+          this.handleInit();
+        },
+        error: (err: any) => {
+          console.error(err);
+        },
+      });
+    }
+  }
   // public currentId: number = 0;
   // public currentWorkoutStep: number = 0;
-  // ngOnInit() {
-  //   this.handleInit();
-  //   this.loadTrainings();
-
-  //   this.getAllTraining();
-  // }
-  // getAllTraining() {
-  //   this.trainingService.getAllTrainings().subscribe({
-  //     next: (response) => {
-  //       console.log(response);
-  //     },
-  //     error: (err: any) => {
-  //       console.error(err);
-  //     },
-  //   });
-  // }
-  // async loadTrainings() {
-  //   try {
-  //     this.trainingList = await this.trainingService.getTrainings();
-  //     this.handleInit();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+  ngOnInit() {
+    this.getAllTraining();
+  }
+  getAllTraining() {
+    this.trainingService.getAllTrainings().subscribe({
+      next: (response: trainingList[]) => {
+        if (response) this.trainingList = response;
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
+    });
+  }
+  handleInit() {
+    let time: number;
+    const estimatedTime = this.selectedTraining.exercises.map(
+      (element) => (time = element.breakTime * element.sets.length)
+    );
+    estimatedTime.forEach((num) => {
+      this.selectedTraining.estimatedTime += num;
+    });
+  }
   // handleInit() {
   //   this.trainingList.map((e) => {
   //     let time: number;
-  //     const estimatedTime = e.workout.map(
-  //       (element) => (time = element.breakTime * element.reps.length)
+  //     const estimatedTime = e.exercises.map(
+  //       (element) => (time = element.breakTime * element.sets.length)
   //     );
   //     estimatedTime.forEach((num) => {
   //       e.estimatedTime += num;
   //     });
   //   });
   // }
-  // selectedTraining: trainingList = {
-  //   name: '',
-  //   estimatedTime: 0,
-  //   id: 0,
-  //   workout: [],
-  // };
-  // public trainingList: trainingList[] = [];
 
-  // currentExerciseIndex = 0;
-  // currentRepIndex = 0;
+  currentExerciseIndex: number = 0;
+  currentRepIndex: number = 0;
 
-  // get currentExercise() {
-  //   return this.selectedTraining.workout[this.currentExerciseIndex];
-  // }
+  get currentExercise() {
+    return this.selectedTraining.exercises[this.currentExerciseIndex];
+  }
 
-  // get currentRep() {
-  //   return this.currentExercise.reps[this.currentRepIndex];
-  // }
+  get currentRep() {
+    return this.currentExercise.sets[this.currentRepIndex];
+  }
 
-  // changeState(id: number, state: 'list' | 'workout' | 'done') {
-  //   this.currentId = id;
-  //   this.state = state;
-  //   this.selectedTraining = this.trainingList.find((t) => t.id === id)!;
+  next() {
+    this.currentExercise.sets[this.currentRepIndex].done = true;
+    if (this.currentExercise.sets.length - 1 > this.currentRepIndex) {
+      this.currentRepIndex++;
+      this.handleDoneWorkout();
+    } else {
+      this.handleDoneWorkout();
+      this.currentExerciseIndex++;
+      this.currentRepIndex = 0;
+    }
 
-  //   // Timer
-  //   this.timer(
-  //     this.selectedTraining.workout[this.currentExerciseIndex].breakTime
-  //   );
-  // }
-  // next() {
-  //   this.currentExercise.reps[this.currentRepIndex].done = true;
-  //   if (this.currentExercise.reps.length - 1 > this.currentRepIndex) {
-  //     this.currentRepIndex++;
-  //     this.handleDoneWorkout();
-  //   } else {
-  //     this.handleDoneWorkout();
-  //     this.currentExerciseIndex++;
-  //     this.currentRepIndex = 0;
-  //   }
+    // Timer
+    this.timer(
+      this.selectedTraining.exercises[this.currentExerciseIndex].breakTime
+    );
+  }
+  handleDoneWorkout() {
+    const newItems: any[] = [];
 
-  //   // Timer
-  //   this.timer(
-  //     this.selectedTraining.workout[this.currentExerciseIndex].breakTime
-  //   );
-  // }
-  // handleDoneWorkout() {
-  //   const newItems: any[] = [];
+    const currentExercise =
+      this.selectedTraining.exercises[this.currentExerciseIndex];
+    const doneSets = currentExercise.sets.filter((el) => el.done);
+    const allDoneCounts = doneSets.map((el) => el.repsCount);
+    let finalCount = null;
 
-  //   const currentExercise =
-  //     this.selectedTraining.workout[this.currentExerciseIndex];
-  //   const doneReps = currentExercise.reps.filter((el) => el.done);
-  //   const allDoneCounts = doneReps.map((el) => el.count);
-  //   let finalCount = null;
+    if (allDoneCounts.length > 0) {
+      finalCount = allDoneCounts.at(-1);
+    }
+    const getTime = document.querySelector('.timer__time--start')?.textContent;
+    if (finalCount)
+      newItems.push({
+        name: currentExercise.name,
+        repsCount: finalCount,
+        // weight: currentExercise.weight,
+        time: getTime,
+        isBreak: currentExercise.isBreak ? currentExercise.isBreak : false,
+      });
 
-  //   if (allDoneCounts.length > 0) {
-  //     finalCount = allDoneCounts.at(-1);
-  //   }
-  //   const getTime = document.querySelector('.timer__time--start')?.textContent;
-  //   if (finalCount)
-  //     newItems.push({
-  //       name: currentExercise.name,
-  //       count: finalCount,
-  //       weight: currentExercise.weight,
-  //       time: getTime,
-  //       break: currentExercise.break ? currentExercise.break : false,
-  //     });
+    this.connectionDoneWorkout.set([
+      ...this.connectionDoneWorkout(),
+      ...newItems,
+    ]);
+  }
+  connectionDoneWorkout = signal<any[]>([]);
+  back() {
+    if (this.currentRepIndex !== 0) this.currentRepIndex--;
+    else {
+      this.currentExerciseIndex--;
+      this.currentRepIndex = this.currentExercise.sets.length;
+    }
+    this.currentExercise.sets[this.currentRepIndex].done = false;
 
-  //   this.connectionDoneWorkout.set([
-  //     ...this.connectionDoneWorkout(),
-  //     ...newItems,
-  //   ]);
-  // }
-  // connectionDoneWorkout = signal<any[]>([]);
-  // back() {
-  //   if (this.currentRepIndex !== 0) this.currentRepIndex--;
-  //   else {
-  //     this.currentExerciseIndex--;
-  //     this.currentRepIndex = this.currentExercise.reps.length;
-  //   }
-  //   this.currentExercise.reps[this.currentRepIndex].done = false;
-
-  //   // Timer
-  //   this.timer(
-  //     this.selectedTraining.workout[this.currentExerciseIndex].breakTime
-  //   );
-  // }
-  // backToList() {
-  //   this.state = 'list';
-  // }
-  // timeLeft: number = 0;
-  // timerInterval: any;
-  // timer(time: number) {
-  //   this.timeLeft = time;
-  //   clearInterval(this.timerInterval);
-  //   this.timerInterval = setInterval(() => {
-  //     if (this.timeLeft > 0) {
-  //       this.timeLeft--;
-  //     } else {
-  //       clearInterval(this.timerInterval);
-  //     }
-  //   }, 1000);
-  // }
+    // Timer
+    this.timer(
+      this.selectedTraining.exercises[this.currentExerciseIndex].breakTime
+    );
+  }
+  backToList() {
+    this.state = 'list';
+  }
+  timeLeft: number = 0;
+  timerInterval: any;
+  timer(time: number) {
+    this.timeLeft = time;
+    clearInterval(this.timerInterval);
+    this.timerInterval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+      } else {
+        clearInterval(this.timerInterval);
+      }
+    }, 1000);
+  }
 }

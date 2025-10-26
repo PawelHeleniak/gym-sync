@@ -10,6 +10,9 @@ export class TrainingService {
   getAllTrainings(): Observable<trainingList[]> {
     return this.http.get<trainingList[]>(`${this.baseUrl}/workout`);
   }
+  getTraining(id: string): Observable<trainingList> {
+    return this.http.get<trainingList>(`${this.baseUrl}/workout/${id}`);
+  }
   addTraining(training: trainingList): Observable<trainingList> {
     return this.http.post<trainingList>(
       `${this.baseUrl}/workout/add`,
