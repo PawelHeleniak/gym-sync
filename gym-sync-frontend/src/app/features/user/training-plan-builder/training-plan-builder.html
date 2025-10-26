@@ -1,1 +1,74 @@
-<p>training-plan-builder works!</p>
+<h2 class="layout__header">Dodaj nowy trening</h2>
+<div class="layout__box">
+  <form [formGroup]="planForm" class="form">
+    <div class="form__input">
+      <label for="PlanName">Nazwa treningu</label>
+      <input type="text" formControlName="name" required="true" id="PlanName" />
+    </div>
+    <div formArrayName="exercises" class="form__workout">
+      @for (exercise of exercisesArray.controls; track exercise; let i = $index)
+      {
+      <div [formGroupName]="i" class="form__box">
+        <div class="form__input">
+          <label for="name-{{i}}">Nazwa ćwiczenia</label>
+          <input
+            type="text"
+            formControlName="name"
+            required="true"
+            id="name-{{i}}"
+          />
+        </div>
+        <div class="form__input">
+          <label for="breakTime-{{i}}">Przerwa</label>
+          <input
+            type="number"
+            formControlName="breakTime"
+            required="true"
+            id="breakTime-{{i}}"
+          />
+        </div>
+        <div class="form__input form__input--checkbox">
+          <label for="isRest-{{i}}">Czy przerwa</label>
+          <input type="checkbox" formControlName="isRest" id="isRest-{{i}}" />
+        </div>
+        <div formArrayName="sets">
+          @for (set of getSets(i).controls; track set; let j = $index) {
+          <div [formGroupName]="j" class="form__box">
+            <div class="form___input">
+              <label for="repsCount-{{i}}-{{j}}">Powtórzenia</label>
+              <input
+                type="number"
+                formControlName="repsCount"
+                required="true"
+                id="repsCount-{{i}}-{{j}}"
+              />
+            </div>
+            <div class="form___input form___input--checkbox">
+              <label for="weight-{{i}}-{{j}}">Ciężar</label>
+              <input
+                type="text"
+                formControlName="weight"
+                id="weight-{{i}}-{{j}}"
+              />
+            </div>
+          </div>
+          }
+          <button type="button" (click)="addExerciseSet(i, 0, 0)" class="btn">
+            Dodaj serie
+          </button>
+        </div>
+      </div>
+      }
+      <button
+        type="button"
+        (click)="addExercise('Nowe ćwiczenie', 0, false)"
+        class="btn"
+      >
+        Dodaj ćwiczenie
+      </button>
+    </div>
+    <button type="button" (click)="addPlanForm()" class="btn">
+      Dodaj plan
+    </button>
+  </form>
+</div>

@@ -1,0 +1,21 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  &__input {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    &--checkbox {
+      flex-direction: row-reverse;
+      gap: 1rem;
+    }
+  }
+  &__box {
+    background-color: var(--color-bg-surface);
+  }
+  &__workout {
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+}

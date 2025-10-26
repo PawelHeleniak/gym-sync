@@ -1,18 +1,16 @@
 interface trainingList {
   name: string;
   estimatedTime: number;
-  id: number;
-  workout: Workout[];
+  workout: Exercise[];
 }
-interface Workout {
+interface Exercise {
   name: string;
   breakTime: number;
   break?: boolean;
-  set: number;
-  weight: number;
-  reps: WorkoutReps[];
+  reps: ExerciseSet[];
 }
-interface WorkoutReps {
+interface ExerciseSet {
   count: number;
+  weight?: number;
   done: boolean;
 }
