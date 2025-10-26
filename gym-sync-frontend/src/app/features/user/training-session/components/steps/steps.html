@@ -1,0 +1,44 @@
+<h2 class="layout__header">{{selectedTraining.name}}</h2>
+<div class="workout">
+  <div class="workout__box layout__box">
+    <div class="workout__name">
+      {{selectedTraining.exercises[currentExerciseIndex].name}}
+    </div>
+    <div class="workout__info">
+      <div
+        class="workout__time"
+        [class]="{'workout__time--stop': timeLeft === 0}"
+      >
+        Przerwa: <span>{{timeLeft}} sek.</span>
+      </div>
+    </div>
+    <div class="workout__reps">
+      @for (set of selectedTraining.exercises[currentExerciseIndex].sets; track
+      set; let i = $index) {
+      <div
+        class="workout__rep"
+        [class]="{'workout__rep--done': set.done, 'workout__rep--current': currentRepIndex===i}"
+      >
+        {{set.repsCount}}
+      </div>
+      }
+    </div>
+  </div>
+</div>
+<div class="workout__btns">
+  @if(currentExerciseIndex !== 0 || currentRepIndex !== 0){
+  <button class="workout__btn" (click)="back()">
+    <i class="fa-solid fa-arrow-left"></i> Wstecz
+  </button>
+  }@else{
+  <button class="workout__btn" (click)="backToList()">
+    <i class="fa-solid fa-arrow-left"></i> Powrót
+  </button>
+  }
+  <button class="workout__btn" (click)="next()">
+    Następne <i class="fa-solid fa-arrow-right"></i>
+  </button>
+</div>
+<button class="workout__btn workout__btn--warning" (click)="backToList()">
+  Zakończ trening <i class="fa-solid fa-x"></i>
+</button>

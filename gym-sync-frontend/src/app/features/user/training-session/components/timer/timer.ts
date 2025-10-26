@@ -1,4 +1,4 @@
-import { Component, computed, Input, input } from '@angular/core';
+import { Component, computed, Input, input, OnInit } from '@angular/core';
 import { formatTime } from '../../../../../shared/utils/time';
 
 @Component({
@@ -7,16 +7,17 @@ import { formatTime } from '../../../../../shared/utils/time';
   templateUrl: './timer.html',
   styleUrl: './timer.scss',
 })
-export class Timer {
-  seconds = 0;
-  private intervalId?: number;
+export class Timer implements OnInit {
   @Input() estimatedTime: number = 0;
-  list = input<any[]>([]);
-  readonly reversedList = computed(() => {
-    return [...this.list()].reverse();
-  });
+  list = input<TimeItem[]>([]);
+
+  seconds: number = 0;
   startTimeFromatted: string = '00:00:00';
   endTimeFromatted: string = '00:00:00';
+  private intervalId?: number;
+
+  readonly reversedList = computed(() => [...this.list()].reverse());
+
   ngOnInit() {
     this.intervalId = window.setInterval(() => {
       this.seconds++;
@@ -24,9 +25,8 @@ export class Timer {
     }, 1000);
     this.endTimeFromatted = formatTime(this.estimatedTime);
   }
+
   ngOnDestroy() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
+    if (this.intervalId) clearInterval(this.intervalId);
   }
 }
