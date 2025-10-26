@@ -10,6 +10,12 @@ export class TrainingService {
   getAllTrainings(): Observable<trainingList[]> {
     return this.http.get<trainingList[]>(`${this.baseUrl}/workout`);
   }
+  addTraining(training: trainingList): Observable<trainingList> {
+    return this.http.post<trainingList>(
+      `${this.baseUrl}/workout/add`,
+      training
+    );
+  }
   // Poprzednia wersja pobieranie z pliku json
   async getTrainings(): Promise<trainingList[]> {
     const response = await fetch('/trening.json');

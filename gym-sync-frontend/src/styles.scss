@@ -51,6 +51,16 @@ button {
   color: inherit;
   cursor: pointer;
 }
+button.btn {
+  background-color: var(--color-bg-primary);
+  padding: 10px 12px;
+  border-radius: var(--border-radius-primary);
+  border: none;
+  margin-top: 1rem;
+  &:hover {
+    background-color: var(--color-bg-surface);
+  }
+}
 .layout {
   &__box {
     border-radius: var(--border-radius-primary);
