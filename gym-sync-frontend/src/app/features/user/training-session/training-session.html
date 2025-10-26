@@ -1,10 +1,10 @@
-<!-- <div class="layout__row">
+<div class="layout__row">
   <div class="layout__column">
     @if(state === "list"){
     <h2 class="layout__header">Wybierz trening</h2>
-    @for (item of trainingList; track item.name) {
-    <button class="layout__box btn" (click)="changeState(item.id, 'workout')">
-      {{ item.name }} <i class="fa-solid fa-arrow-right"></i>
+    @for (training of trainingList; track training.name) {
+    <button class="layout__box btn" (click)="changeStateWorkout(training)">
+      {{ training.name }} <i class="fa-solid fa-arrow-right"></i>
     </button>
     } @empty {
     <div class="layout__box">Brak ćwiczeń</div>
@@ -13,12 +13,13 @@
     <div class="workout">
       <div class="workout__box layout__box">
         <div class="workout__name">
-          {{selectedTraining.workout[currentExerciseIndex].name}}
+          {{selectedTraining.exercises[currentExerciseIndex].name}}
         </div>
         <div class="workout__info">
-          <div class="workout__weight">
-            Ciężar: {{selectedTraining.workout[currentExerciseIndex].weight}} kg
-          </div>
+          <!-- <div class="workout__weight">
+            Ciężar: {{selectedTraining.exercises[currentExerciseIndex].weight}}
+            kg
+          </div> -->
           <div
             class="workout__time"
             [class]="{'workout__time--stop': timeLeft === 0}"
@@ -27,13 +28,13 @@
           </div>
         </div>
         <div class="workout__reps">
-          @for (rep of selectedTraining.workout[currentExerciseIndex].reps;
-          track $index; let i = $index) {
+          @for (set of selectedTraining.exercises[currentExerciseIndex].sets;
+          track set; let i = $index) {
           <div
             class="workout__rep"
-            [class]="{'workout__rep--done': rep.done, 'workout__rep--current': currentRepIndex===i}"
+            [class]="{'workout__rep--done': set.done, 'workout__rep--current': currentRepIndex===i}"
           >
-            {{rep.count}}
+            {{set.repsCount}}
           </div>
           }
         </div>
@@ -53,7 +54,7 @@
         Następne <i class="fa-solid fa-arrow-right"></i>
       </button>
     </div>
-    <button class="workout__btn workout__btn--warning">
+    <button class="workout__btn workout__btn--warning" (click)="backToList()">
       Zakończ trening <i class="fa-solid fa-x"></i>
     </button>
     }@else {}
@@ -66,4 +67,4 @@
     ></app-timer>
   </div>
   }
-</div> -->
+</div>
