@@ -11,6 +11,12 @@
       >
         Przerwa: <span>{{timeLeft}} sek.</span>
       </div>
+      <div class="workout__weight">
+        Ciężar: <span>{{currentRep.weight}} kg.</span>
+      </div>
+      <div class="workout__weight">
+        Powtórzenia: <span>{{currentRep.repsCount}}</span>
+      </div>
     </div>
     <div class="workout__reps">
       @for (set of selectedTraining.exercises[currentExerciseIndex].sets; track
@@ -19,7 +25,7 @@
         class="workout__rep"
         [class]="{'workout__rep--done': set.done, 'workout__rep--current': currentRepIndex===i}"
       >
-        {{set.repsCount}}
+        {{i + 1}}
       </div>
       }
     </div>

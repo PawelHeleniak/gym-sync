@@ -1,74 +1,151 @@
 <h2 class="layout__header">Dodaj nowy trening</h2>
-<div class="layout__box">
-  <form [formGroup]="planForm" class="form">
-    <div class="form__input">
-      <label for="PlanName">Nazwa treningu</label>
-      <input type="text" formControlName="name" required="true" id="PlanName" />
-    </div>
-    <div formArrayName="exercises" class="form__workout">
-      @for (exercise of exercisesArray.controls; track exercise; let i = $index)
-      {
-      <div [formGroupName]="i" class="form__box">
-        <div class="form__input">
-          <label for="name-{{i}}">Nazwa ćwiczenia</label>
-          <input
-            type="text"
-            formControlName="name"
-            required="true"
-            id="name-{{i}}"
-          />
-        </div>
-        <div class="form__input">
-          <label for="breakTime-{{i}}">Przerwa</label>
-          <input
-            type="number"
-            formControlName="breakTime"
-            required="true"
-            id="breakTime-{{i}}"
-          />
-        </div>
-        <div class="form__input form__input--checkbox">
-          <label for="isRest-{{i}}">Czy przerwa</label>
-          <input type="checkbox" formControlName="isRest" id="isRest-{{i}}" />
-        </div>
-        <div formArrayName="sets">
-          @for (set of getSets(i).controls; track set; let j = $index) {
-          <div [formGroupName]="j" class="form__box">
-            <div class="form___input">
-              <label for="repsCount-{{i}}-{{j}}">Powtórzenia</label>
-              <input
-                type="number"
-                formControlName="repsCount"
-                required="true"
-                id="repsCount-{{i}}-{{j}}"
-              />
-            </div>
-            <div class="form___input form___input--checkbox">
-              <label for="weight-{{i}}-{{j}}">Ciężar</label>
-              <input
-                type="text"
-                formControlName="weight"
-                id="weight-{{i}}-{{j}}"
-              />
-            </div>
+<form [formGroup]="planForm" class="form">
+  <div
+    class="input-field form__header"
+    [class.filled]="planForm.get('name')?.value"
+  >
+    <label for="PlanName" class="input-field__label">Nazwa treningu</label>
+    <input
+      type="text"
+      formControlName="name"
+      required
+      id="PlanName"
+      class="input-field__input"
+    />
+    @if(planForm.get('name')?.invalid && planForm.get('name')?.touched){
+    <div class="input-field__error">Nazwa treningu jest wymagana</div>
+    }
+  </div>
+  <div class="workout" formArrayName="exercises">
+    @for (exercise of exercisesArray.controls; track exercise; let i = $index) {
+    <div class="workout__wrapper form__group form__group--column">
+      <ng-container [formGroupName]="i">
+        <div class="form__group form__group--row">
+          <div class="input-field" [class.filled]="exercise.get('name')?.value">
+            <label for="name-{{i}}" class="input-field__label"
+              >Nazwa ćwiczenia</label
+            >
+            <input
+              type="text"
+              formControlName="name"
+              required="true"
+              id="name-{{i}}"
+              class="input-field__input"
+            />
+            @if(exercise.get('name')?.invalid && exercise.get('name')?.touched){
+            <div class="input-field__error">Nazwa ćwiczenia jest wymagana</div>
+            }
           </div>
-          }
-          <button type="button" (click)="addExerciseSet(i, 0, 0)" class="btn">
-            Dodaj serie
-          </button>
+          <div
+            class="input-field"
+            [class.filled]="exercise.get('breakTime')?.value && exercise.get('breakTime')?.value !== ''"
+          >
+            <label for="breakTime-{{i}}" class="input-field__label"
+              >Przerwa między seriami (sek.)</label
+            >
+            <input
+              type="number"
+              formControlName="breakTime"
+              required="true"
+              id="breakTime-{{i}}"
+              class="input-field__input"
+            />
+            @if(exercise.get('breakTime')?.invalid &&
+            exercise.get('breakTime')?.touched){
+            <div class="input-field__error">Czas przerwy jest wymagany</div>
+            }
+          </div>
         </div>
-      </div>
-      }
+        <div class="input-field input-field--checkbox">
+          <label for="isRest-{{i}}" class="input-field__label"
+            >Czy przerwa</label
+          >
+          <input
+            type="checkbox"
+            formControlName="isRest"
+            id="isRest-{{i}}"
+            class="input-field__input"
+          />
+        </div>
+        @if(!exercise.get('isRest')?.value){
+        <div formArrayName="sets" class="sets">
+          @for (set of getSets(i).controls; track set; let j = $index) {
+          <ng-container [formGroupName]="j">
+            <div class="sets__box">
+              <h3>Seria {{j + 1}}</h3>
+              <div
+                class="input-field"
+                [class.filled]="set.get('repsCount')?.value && set.get('repsCount')?.value !== ''"
+              >
+                <label for="repsCount-{{i}}-{{j}}" class="input-field__label"
+                  >Powtórzenia</label
+                >
+                <input
+                  type="number"
+                  formControlName="repsCount"
+                  required="true"
+                  id="repsCount-{{i}}-{{j}}"
+                  class="input-field__input"
+                />
+                @if(set.get('repsCount')?.invalid &&
+                set.get('repsCount')?.touched){
+                <div class="input-field__error">Czas przerwy jest wymagany</div>
+                }
+              </div>
+              <div
+                class="input-field"
+                [class.filled]="set.get('weight')?.value && set.get('weight')?.value !== ''"
+              >
+                <label for="weight-{{i}}-{{j}}" class="input-field__label"
+                  >Ciężar</label
+                >
+                <input
+                  type="text"
+                  formControlName="weight"
+                  id="weight-{{i}}-{{j}}"
+                  class="input-field__input"
+                />
+                @if(set.get('weight')?.invalid && set.get('weight')?.touched){
+                <div class="input-field__error">Czas przerwy jest wymagany</div>
+                }
+              </div>
+            </div>
+          </ng-container>
+          }
+          <div class="button --sets">
+            <button
+              type="button"
+              (click)="addExerciseSet(i, 1, 1)"
+              class="button__control"
+            >
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        }
+      </ng-container>
+    </div>
+    }
+    <div class="button">
       <button
         type="button"
-        (click)="addExercise('Nowe ćwiczenie', 0, false)"
-        class="btn"
+        (click)="addExercise('Nowe ćwiczenie', 1, false)"
+        class="button__control"
+      >
+        Usuń ćwiczenie
+      </button>
+      <button
+        type="button"
+        (click)="addExercise('Nowe ćwiczenie', 1, false)"
+        class="button__control"
       >
         Dodaj ćwiczenie
       </button>
     </div>
-    <button type="button" (click)="addPlanForm()" class="btn">
-      Dodaj plan
-    </button>
-  </form>
+  </div>
+</form>
+<div class="button">
+  <button type="button" (click)="addPlanForm()" class="button__control">
+    Dodaj plan
+  </button>
 </div>
