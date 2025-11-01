@@ -19,16 +19,16 @@ export class TrainingPlanBuilder {
   ngOnInit(): void {
     this.planForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      estimatedTime: new FormControl(0, Validators.required),
+      estimatedTime: new FormControl(1, Validators.required),
       exercises: new FormArray([
         new FormGroup({
-          name: new FormControl('Nazwa ćwiczenia', Validators.required),
-          breakTime: new FormControl(0),
+          name: new FormControl('', Validators.required),
+          breakTime: new FormControl(1, Validators.required),
           isRest: new FormControl(false),
           sets: new FormArray([
             new FormGroup({
-              repsCount: new FormControl(0, Validators.required),
-              weight: new FormControl(0),
+              repsCount: new FormControl(1, Validators.required),
+              weight: new FormControl(1),
               done: new FormControl(false, Validators.required),
             }),
           ]),

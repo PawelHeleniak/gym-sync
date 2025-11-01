@@ -13,28 +13,30 @@
   --color-text-primary: hsl(243, 76%, 95%);
   --color-text-secondary: hsl(243, 76%, 95%);
 
-  --warning: hsl(0, 100%, 25%);
-  --warning-hover: hsl(0, 100%, 35%);
+  --warning: hsl(0, 100%, 40%);
   --success: hsl(125, 100%, 35%);
 
-  --border-radius-primary: 8px;
-  --border-radius-secondary: 12px;
+  --border-radius-primary: 0.8rem;
+  --border-radius-secondary: 1.2rem;
 
-  /* Font sizes */
-  --font-stacle: 1;
-  --font-size-xs: 12px;
-  --font-size-s: 14px;
-  --font-size-base: 16px; //base
-  --font-size-m: 18px; //subheading
-  --font-size-l: 20px; //h4
-  --font-size-xl: 24px; //h3
-  --font-size-2xl: 28px; //h2
-  --font-size-3xl: 36px; //h1
+  // Font size
+  --font-scale: 1.25;
+
+  --font-size-xs: 1.2rem;
+  --font-size-s: 1.4rem;
+  --font-size-base: 1.6rem; //base
+  --font-size-m: 1.8rem; //subheading
+  --font-size-l: 2rem; //h4
+  --font-size-xl: 2.4rem; //h3
+  --font-size-2xl: 2.8rem; //h2
+  --font-size-3xl: 3.6rem; //h1
 
   // Font style
   --font-family-base: "Lato", sans-serif;
 }
-
+html {
+  font-size: 62.5%;
+}
 html,
 body {
   background-color: var(--color-bg-primary);
@@ -44,23 +46,41 @@ body {
   font-style: normal;
 }
 
+h1 {
+  font-size: var(--font-size-3xl);
+}
+h2 {
+  font-size: var(--font-size-2xl);
+}
+h3 {
+  font-size: var(--font-size-xl);
+}
+h4 {
+  font-size: var(--font-size-l);
+}
+
 // Custom
 a,
 button {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+  font-size: var(--font-size-base);
 }
-button.btn {
-  background-color: var(--color-bg-primary);
-  padding: 10px 12px;
-  border-radius: var(--border-radius-primary);
-  border: none;
-  margin-top: 1rem;
-  &:hover {
-    background-color: var(--color-bg-surface);
+.button {
+  display: flex;
+  gap: 1rem;
+  &__control {
+    background-color: var(--color-bg-primary);
+    padding: 1rem 1.2rem;
+    border-radius: var(--border-radius-primary);
+    border: none;
+    &:hover {
+      background-color: var(--color-bg-surface);
+    }
   }
 }
+
 .layout {
   &__box {
     border-radius: var(--border-radius-primary);
@@ -80,7 +100,8 @@ button.btn {
     gap: 0.5rem;
     width: 100%;
   }
-  // &__header {
-  //   margin-bottom: 2rem;
-  // }
+}
+
+.mt-1 {
+  margin-top: 1rem;
 }
