@@ -21,18 +21,18 @@ export class TrainingPlanBuilder {
       name: new FormControl('', Validators.required),
       estimatedTime: new FormControl(1, Validators.required),
       exercises: new FormArray([
-        new FormGroup({
-          name: new FormControl('', Validators.required),
-          breakTime: new FormControl(1, Validators.required),
-          isRest: new FormControl(false),
-          sets: new FormArray([
-            new FormGroup({
-              repsCount: new FormControl(1, Validators.required),
-              weight: new FormControl(1),
-              done: new FormControl(false, Validators.required),
-            }),
-          ]),
-        }),
+        // new FormGroup({
+        //   name: new FormControl('', Validators.required),
+        //   breakTime: new FormControl(1, Validators.required),
+        //   isRest: new FormControl(false),
+        //   sets: new FormArray([
+        //     new FormGroup({
+        //       repsCount: new FormControl(1, Validators.required),
+        //       weight: new FormControl(1),
+        //       done: new FormControl(false, Validators.required),
+        //     }),
+        //   ]),
+        // }),
       ]),
     });
   }
@@ -45,12 +45,20 @@ export class TrainingPlanBuilder {
   addExercise(name: string, breakTime: number, isRest: boolean) {
     const workoutGroup = new FormGroup({
       name: new FormControl(name, Validators.required),
-      breakTime: new FormControl(breakTime),
+      breakTime: new FormControl(breakTime, Validators.required),
       isRest: new FormControl(isRest),
       sets: new FormArray([]),
     });
 
     this.exercisesArray.push(workoutGroup);
+
+    if (!isRest) {
+      const newIndex = this.exercisesArray.length - 1;
+      this.addExerciseSet(newIndex, 1, 0);
+    }
+  }
+  removeExercise(i: number) {
+    this.exercisesArray.removeAt(i);
   }
   getSets(i: number): FormArray {
     return this.exercisesArray.at(i).get('sets') as FormArray;
@@ -67,6 +75,10 @@ export class TrainingPlanBuilder {
     });
 
     repsArray.push(repGroup);
+  }
+  removeExerciseSet(exerciseIndex: number, setIndex: number) {
+    const sets = this.getSets(exerciseIndex);
+    sets.removeAt(setIndex);
   }
   addPlanForm(): void {
     this.trainingService.addTraining(this.planForm.value).subscribe({

@@ -38,7 +38,7 @@
           </div>
           <div
             class="input-field"
-            [class.filled]="exercise.get('breakTime')?.value && exercise.get('breakTime')?.value !== ''"
+            [class.filled]="exercise.get('breakTime')?.value || exercise.get('breakTime')?.value === 0"
           >
             <label for="breakTime-{{i}}" class="input-field__label"
               >Przerwa między seriami (sek.)</label
@@ -53,10 +53,12 @@
             @if(exercise.get('breakTime')?.invalid &&
             exercise.get('breakTime')?.touched){
             <div class="input-field__error">Czas przerwy jest wymagany</div>
+            }@else if(exercise.get('breakTime')?.value === 0){
+            <div class="input-field__error">Przerwa nie może wynosić 0</div>
             }
           </div>
         </div>
-        <div class="input-field input-field--checkbox">
+        <div class="input-field input-field--checkbox d-none">
           <label for="isRest-{{i}}" class="input-field__label"
             >Czy przerwa</label
           >
@@ -75,7 +77,7 @@
               <h3>Seria {{j + 1}}</h3>
               <div
                 class="input-field"
-                [class.filled]="set.get('repsCount')?.value && set.get('repsCount')?.value !== ''"
+                [class.filled]="set.get('repsCount')?.value || set.get('repsCount')?.value === 0"
               >
                 <label for="repsCount-{{i}}-{{j}}" class="input-field__label"
                   >Powtórzenia</label
@@ -89,12 +91,16 @@
                 />
                 @if(set.get('repsCount')?.invalid &&
                 set.get('repsCount')?.touched){
-                <div class="input-field__error">Czas przerwy jest wymagany</div>
+                <div class="input-field__error">Powtórzenia są wymagane</div>
+                }@else if(set.get('repsCount')?.value === 0){
+                <div class="input-field__error">
+                  Powtórzenia nie mogą wynosić 0
+                </div>
                 }
               </div>
               <div
                 class="input-field"
-                [class.filled]="set.get('weight')?.value && set.get('weight')?.value !== ''"
+                [class.filled]="set.get('weight')?.value || set.get('weight')?.value === 0"
               >
                 <label for="weight-{{i}}-{{j}}" class="input-field__label"
                   >Ciężar</label
@@ -105,9 +111,15 @@
                   id="weight-{{i}}-{{j}}"
                   class="input-field__input"
                 />
-                @if(set.get('weight')?.invalid && set.get('weight')?.touched){
-                <div class="input-field__error">Czas przerwy jest wymagany</div>
-                }
+              </div>
+              <div class="button --removeSet">
+                <button
+                  type="button"
+                  (click)="removeExerciseSet(i, j)"
+                  class="button__control"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
               </div>
             </div>
           </ng-container>
@@ -115,7 +127,7 @@
           <div class="button --sets">
             <button
               type="button"
-              (click)="addExerciseSet(i, 1, 1)"
+              (click)="addExerciseSet(i, 1, 0)"
               class="button__control"
             >
               <i class="fa-solid fa-plus"></i>
@@ -124,27 +136,32 @@
         </div>
         }
       </ng-container>
+      <div class="button --removeExercise">
+        <button class="button__control" (click)="removeExercise(i)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
     </div>
     }
     <div class="button">
       <button
         type="button"
-        (click)="addExercise('Nowe ćwiczenie', 1, false)"
-        class="button__control"
-      >
-        Usuń ćwiczenie
-      </button>
-      <button
-        type="button"
-        (click)="addExercise('Nowe ćwiczenie', 1, false)"
+        (click)="addExercise('Nowe ćwiczenie', 120, false)"
         class="button__control"
       >
         Dodaj ćwiczenie
       </button>
+      <button
+        type="button"
+        (click)="addExercise('Przerwa', 60, true)"
+        class="button__control"
+      >
+        Dodaj Przerwę
+      </button>
     </div>
   </div>
 </form>
-<div class="button">
+<div class="button mt-1">
   <button type="button" (click)="addPlanForm()" class="button__control">
     Dodaj plan
   </button>
