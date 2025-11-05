@@ -59,17 +59,17 @@
           </div>
         </div>
         <div class="input-field input-field--checkbox d-none">
-          <label for="isRest-{{i}}" class="input-field__label"
+          <label for="isBreak-{{i}}" class="input-field__label"
             >Czy przerwa</label
           >
           <input
             type="checkbox"
-            formControlName="isRest"
-            id="isRest-{{i}}"
+            formControlName="isBreak"
+            id="isBreak-{{i}}"
             class="input-field__input"
           />
         </div>
-        @if(!exercise.get('isRest')?.value){
+        @if(!exercise.get('isBreak')?.value){
         <div formArrayName="sets" class="sets">
           @for (set of getSets(i).controls; track set; let j = $index) {
           <ng-container [formGroupName]="j">
@@ -127,7 +127,7 @@
           <div class="button --sets">
             <button
               type="button"
-              (click)="addExerciseSet(i, 1, 0)"
+              (click)="addExerciseSetButton(i)"
               class="button__control"
             >
               <i class="fa-solid fa-plus"></i>

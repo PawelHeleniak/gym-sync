@@ -1,5 +1,5 @@
 <div class="layout__row">
-  @if(state === "list"){
+  @if(state === "trainingList"){
   <div class="layout__column">
     <h2 class="layout__header">Wybierz trening</h2>
     @for (training of trainingList; track training.name) {
@@ -8,9 +8,18 @@
     </button>
     } @empty {
     <div class="layout__box">Brak ćwiczeń</div>
+
     }
   </div>
-  }@else if(state === "workout" && selectedTraining){
+  }@else if(state === "trainingDetails" && selectedTraining){
+  <div class="layout__column">
+    <app-training-details
+      [selectedTraining]="selectedTraining"
+      (goBack)="backToList()"
+      (goWorkout)="goToWorkout()"
+    ></app-training-details>
+  </div>
+  }@else if(state === "trainingActive" && selectedTraining){
   <div class="layout__column">
     <app-steps
       [selectedTraining]="selectedTraining"
