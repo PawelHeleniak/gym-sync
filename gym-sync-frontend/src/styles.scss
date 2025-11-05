@@ -45,7 +45,9 @@ body {
   font-weight: 400;
   font-style: normal;
 }
-
+body {
+  font-size: var(--font-size-base);
+}
 h1 {
   font-size: var(--font-size-3xl);
 }

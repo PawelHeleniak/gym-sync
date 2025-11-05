@@ -9,11 +9,11 @@ const exerciseSetSchema = new mongoose.Schema({
 const exerciseSchema = new mongoose.Schema({
   name: { type: String, required: true },
   breakTime: { type: Number, required: true },
-  isRest: { type: Boolean, default: false },
+  isBreak: { type: Boolean, default: false },
   sets: {
     type: [exerciseSetSchema],
     validate: [
-      (arr) => arr.length > 0 || !this.isRest,
+      (arr) => arr.length > 0 || !this.isBreak,
       "Ćwiczenie musi mieć przynajmniej jeden set",
     ],
   },
@@ -25,7 +25,7 @@ const trainingPlanSchema = new mongoose.Schema({
   exercises: {
     type: [exerciseSchema],
     validate: [
-      (arr) => arr.length > 0 || !this.isRest,
+      (arr) => arr.length > 0 || !this.isBreak,
       "plan musi mieć przynajmniej jeden exercise",
     ],
   },

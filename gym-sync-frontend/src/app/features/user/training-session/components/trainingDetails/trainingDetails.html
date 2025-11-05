@@ -1,0 +1,26 @@
+<div class="layout">
+  <h1>{{selectedTraining.name}}</h1>
+  <h2>{{time}} h</h2>
+  <div class="layout__column">
+    @for (exercise of selectedTraining.exercises; track exercise; let i =
+    $index) {
+    <div class="layout__box exercise">
+      {{exercise.name}} {{exercise.breakTime}} @if(!exercise.isBreak){ @for (set
+      of exercise.sets; track set; let j = $index) {
+      <div class="set">
+        <div class="set__name">Seria {{j + 1}}</div>
+        <div class="set__desc">
+          <span>{{set.weight}} kg</span>
+          /
+          <span>{{set.repsCount}}</span>
+        </div>
+      </div>
+      } }
+    </div>
+    }
+  </div>
+  <div class="button">
+    <button (click)="backToList()" class="button__control">Powrót</button>
+    <button (click)="goToWorkout()" class="button__control">Start</button>
+  </div>
+</div>

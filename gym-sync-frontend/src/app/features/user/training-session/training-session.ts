@@ -2,15 +2,23 @@ import { Component, Input, OnInit, signal } from '@angular/core';
 import { Timer } from './components/timer/timer';
 import { Steps } from './components/steps/steps';
 import { TrainingService } from './services/training-session.service';
+import { TrainingDetails } from './components/trainingDetails/trainingDetails';
+
+type TrainingState =
+  | 'trainingList'
+  | 'trainingDetails'
+  | 'trainingActive'
+  | 'trainingSummary';
 
 @Component({
   selector: 'app-training-session',
-  imports: [Timer, Steps],
+  imports: [Timer, Steps, TrainingDetails],
   templateUrl: './training-session.html',
   styleUrls: ['./training-session.scss'],
 })
 export class TrainingSession implements OnInit {
-  state: 'list' | 'workout' | 'done' = 'list';
+  state: TrainingState = 'trainingList';
+
   trainingList: trainingList[] = [];
   currentExerciseIndex: number = 0;
   currentRepIndex: number = 0;
@@ -41,7 +49,7 @@ export class TrainingSession implements OnInit {
       next: (response: trainingList) => {
         if (response) {
           this.selectedTraining = response;
-          this.state = 'workout';
+          this.state = 'trainingDetails';
           this.calculateTime();
         }
       },
@@ -71,7 +79,11 @@ export class TrainingSession implements OnInit {
     this.doneExercises.set(data);
   }
 
+  goToWorkout() {
+    this.state = 'trainingActive';
+  }
+
   backToList() {
-    this.state = 'list';
+    this.state = 'trainingList';
   }
 }
