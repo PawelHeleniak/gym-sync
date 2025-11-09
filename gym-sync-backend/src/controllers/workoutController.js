@@ -43,3 +43,21 @@ export const deleteWorkout = async (req, res) => {
     res.status(500).json({ error: "Nie udało się usunąć treningu" });
   }
 };
+export const updateWorkout = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedWorkout = await Workout.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedWorkout) {
+      return res.status(404).json({ error: "Trening nie znaleziony" });
+    }
+
+    res.status(200).json({ message: "Trening zaktualizowany", workout });
+  } catch (err) {
+    console.error("Błąd aktualizowania treningu:", err.message);
+    res.status(500).json({ error: "Nie udało się zaktualizować treningu" });
+  }
+};

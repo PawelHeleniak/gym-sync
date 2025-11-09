@@ -10,6 +10,7 @@ const exerciseSchema = new mongoose.Schema({
   name: { type: String, required: true },
   breakTime: { type: Number, required: true },
   isBreak: { type: Boolean, default: false },
+  comment: { type: String },
   sets: {
     type: [exerciseSetSchema],
     validate: [
