@@ -30,15 +30,26 @@
   &__name {
     text-align: center;
     margin-bottom: 0.5rem;
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
   }
   &__info {
     display: flex;
     justify-content: space-between;
+    font-size: var(--font-size-m);
+    span {
+      font-weight: 600;
+    }
   }
   &__time {
+    text-align: center;
+    font-size: var(--font-size-xl);
     span {
       color: var(--success);
+    }
+    &--last {
+      span {
+        color: hsl(42.06deg 100% 40%);
+      }
     }
     &--stop {
       span {
@@ -70,27 +81,26 @@
     }
   }
   // Button
-  &__btns {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-  }
-  &__btn {
-    background-color: var(--color-bg-secondary);
-    color: var(--color-text-primary);
-    border-radius: 50px;
-    border: none;
-    padding: 0.8rem;
-    transition: 0.2s ease-in background;
-    width: 100%;
-    &:hover {
-      background-color: var(--color-bg-surface);
-    }
-    &--warning {
-      background-color: var(--warning);
-      &:hover {
-        background-color: var(--warning-hover);
-      }
-    }
-  }
+  // &__btns {
+  //   display: flex;
+  //   flex-direction: row;
+  //   gap: 0.5rem;
+  // }
+  // &__btn {
+  //   background-color: var(--color-bg-secondary);
+  //   color: var(--color-text-primary);
+  //   border: none;
+  //   padding: 0.8rem;
+  //   transition: 0.2s ease-in background;
+  //   width: 100%;
+  //   &:hover {
+  //     background-color: var(--color-bg-surface);
+  //   }
+  //   &--warning {
+  //     background-color: var(--warning);
+  //     &:hover {
+  //       background-color: var(--warning-hover);
+  //     }
+  //   }
+  // }
 }

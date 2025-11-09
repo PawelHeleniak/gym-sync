@@ -7,6 +7,7 @@ interface Exercise {
   name: string;
   breakTime: number;
   isBreak?: boolean;
+  comment: string;
   sets: ExerciseSet[];
 }
 interface trainingList {
@@ -15,7 +16,6 @@ interface trainingList {
   estimatedTime: number;
   exercises: Exercise[];
 }
-
 interface TimeItem {
   name: string;
   repsCount: number;
