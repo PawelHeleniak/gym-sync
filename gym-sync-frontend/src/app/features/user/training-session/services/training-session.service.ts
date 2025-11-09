@@ -19,6 +19,11 @@ export class TrainingService {
       training
     );
   }
+  removeTraining(id: string): Observable<trainingList> {
+    return this.http.delete<trainingList>(
+      `${this.baseUrl}/workout/delete/${id}`
+    );
+  }
   // Poprzednia wersja pobieranie z pliku json
   async getTrainings(): Promise<trainingList[]> {
     const response = await fetch('/trening.json');

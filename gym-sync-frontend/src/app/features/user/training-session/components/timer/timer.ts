@@ -25,7 +25,12 @@ export class Timer implements OnInit {
     }, 1000);
     this.endTimeFromatted = formatTime(this.estimatedTime);
   }
-
+  stop() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = undefined;
+    }
+  }
   ngOnDestroy() {
     if (this.intervalId) clearInterval(this.intervalId);
   }

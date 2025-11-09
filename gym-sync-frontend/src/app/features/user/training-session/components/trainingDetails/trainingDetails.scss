@@ -1,4 +1,30 @@
 .set {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  &__box {
+    padding: 1rem;
+    background-color: var(--color-bg-surface);
+    border-radius: var(--border-radius-primary);
+  }
+  &__name {
+    font-size: var(--font-size-l);
+  }
+}
+.exercise {
+  &__name {
+    span {
+      font-weight: 600;
+    }
+  }
+}
+.trainingDetails {
+  padding: 1rem;
   background-color: var(--color-bg-surface);
+  display: flex;
+  width: 100%;
   border-radius: var(--border-radius-primary);
+  height: max-content;
+  max-height: 65vh;
+  overflow-y: auto;
 }

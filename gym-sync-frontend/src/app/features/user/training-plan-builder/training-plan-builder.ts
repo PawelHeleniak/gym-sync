@@ -48,6 +48,7 @@ export class TrainingPlanBuilder {
       breakTime: new FormControl(breakTime, Validators.required),
       isBreak: new FormControl(isBreak),
       sets: new FormArray([]),
+      comment: new FormControl('', Validators.required),
     });
 
     this.exercisesArray.push(workoutGroup);

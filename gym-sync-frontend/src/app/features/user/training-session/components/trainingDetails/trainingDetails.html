@@ -1,26 +1,39 @@
 <div class="layout">
-  <h1>{{selectedTraining.name}}</h1>
-  <h2>{{time}} h</h2>
-  <div class="layout__column">
+  @if(!stepsView){
+  <div class="layout__header">
+    <h2>{{selectedTraining.name}}</h2>
+    <h3>{{time}} h</h3>
+  </div>
+  }
+  <div class="layout__column mt-1 trainingDetails">
     @for (exercise of selectedTraining.exercises; track exercise; let i =
     $index) {
-    <div class="layout__box exercise">
-      {{exercise.name}} {{exercise.breakTime}} @if(!exercise.isBreak){ @for (set
-      of exercise.sets; track set; let j = $index) {
-      <div class="set">
-        <div class="set__name">Seria {{j + 1}}</div>
-        <div class="set__desc">
-          <span>{{set.weight}} kg</span>
-          /
-          <span>{{set.repsCount}}</span>
-        </div>
+    <div class="layout__box exercise" [class.filled]>
+      <div class="exercise__name">
+        <div>Ćwiczenie: <span>{{exercise.name}}</span></div>
+        <div>Przerwy: <span>{{exercise.breakTime}} s.</span></div>
       </div>
-      } }
+      @if(!exercise.isBreak){
+      <div class="set">
+        @for (set of exercise.sets; track set; let j = $index) {
+        <div class="set__box">
+          <div class="set__name">Seria {{j + 1}}</div>
+          <div class="set__desc">
+            <span>{{set.weight}} kg</span>
+            /
+            <span>{{set.repsCount}}</span>
+          </div>
+        </div>
+        }
+      </div>
+      }
     </div>
     }
   </div>
-  <div class="button">
+  @if(!stepsView){
+  <div class="button mt-1">
     <button (click)="backToList()" class="button__control">Powrót</button>
     <button (click)="goToWorkout()" class="button__control">Start</button>
   </div>
+  }
 </div>

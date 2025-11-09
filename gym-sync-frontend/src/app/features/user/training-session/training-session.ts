@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { Timer } from './components/timer/timer';
 import { Steps } from './components/steps/steps';
 import { TrainingService } from './services/training-session.service';
@@ -29,6 +29,7 @@ export class TrainingSession implements OnInit {
   };
 
   doneExercises = signal<TimeItem[]>([]);
+  @ViewChild('timer') timerComponent!: Timer;
 
   constructor(private trainingService: TrainingService) {}
 
@@ -66,7 +67,19 @@ export class TrainingSession implements OnInit {
       this.selectedTraining.estimatedTime += num;
     });
   }
-
+  removeTraining(id: string) {
+    this.trainingService.removeTraining(id).subscribe({
+      next: (response: trainingList) => {
+        if (response) {
+          this.getAllTraining();
+        }
+      },
+      error: (err: any) => console.error(err),
+    });
+  }
+  editTraining(id: string) {
+    console.log(id);
+  }
   get currentExercise() {
     return this.selectedTraining.exercises[this.currentExerciseIndex];
   }
@@ -85,5 +98,8 @@ export class TrainingSession implements OnInit {
 
   backToList() {
     this.state = 'trainingList';
+  }
+  stopTimer() {
+    this.timerComponent.stop();
   }
 }

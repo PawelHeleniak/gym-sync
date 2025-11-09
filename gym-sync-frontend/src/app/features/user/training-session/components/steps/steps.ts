@@ -6,10 +6,11 @@ import {
   Output,
   signal,
 } from '@angular/core';
+import { TrainingDetails } from '../trainingDetails/trainingDetails';
 
 @Component({
   selector: 'app-steps',
-  imports: [],
+  imports: [TrainingDetails],
   templateUrl: './steps.html',
   styleUrl: './steps.scss',
 })
@@ -21,12 +22,15 @@ export class Steps implements OnInit {
   };
   @Output() doneWorkout = new EventEmitter<any[]>();
   @Output() goBack = new EventEmitter<void>();
+  @Output() stop = new EventEmitter<void>();
   connectionDoneWorkout = signal<any[]>([]);
 
   currentExerciseIndex: number = 0;
   currentRepIndex: number = 0;
 
   timeLeft: number = 0;
+  endTraining: boolean = false;
+  endTrainingTime: string = '';
   private timerInterval?: ReturnType<typeof setInterval>;
 
   ngOnInit() {
@@ -66,6 +70,14 @@ export class Steps implements OnInit {
 
     this.timer(this.currentExercise.breakTime || 0);
   }
+  hanldeEndTraining() {
+    this.endTraining = true;
+    this.stop.emit();
+    const getTime = document.querySelector('.timer__time--start')?.textContent;
+    this.endTrainingTime = getTime ? getTime : '';
+
+    this.handleDoneWorkout();
+  }
   back() {
     if (this.currentRepIndex !== 0) this.currentRepIndex--;
     else {
@@ -94,14 +106,14 @@ export class Steps implements OnInit {
       finalCount = allDoneCounts.at(-1);
     }
     const getTime = document.querySelector('.timer__time--start')?.textContent;
-    if (finalCount)
-      newItems.push({
-        name: currentExercise.name,
-        repsCount: finalCount,
-        // weight: currentExercise.weight,
-        time: getTime,
-        isBreak: currentExercise.isBreak ? currentExercise.isBreak : false,
-      });
+    if (finalCount) console.log(currentExercise);
+    newItems.push({
+      name: currentExercise.name,
+      repsCount: finalCount,
+      weight: currentExercise.sets[this.currentRepIndex].weight,
+      time: getTime,
+      isBreak: currentExercise.isBreak ? currentExercise.isBreak : false,
+    });
 
     this.connectionDoneWorkout.set([
       ...this.connectionDoneWorkout(),

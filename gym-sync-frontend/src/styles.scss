@@ -14,10 +14,13 @@
   --color-text-secondary: hsl(243, 76%, 95%);
 
   --warning: hsl(0, 100%, 40%);
-  --success: hsl(125, 100%, 35%);
-
+  --warning-hover: hsl(0, 100%, 50%);
+  --success: hsl(125, 100%, 30%);
+  --success-hover: hsl(125, 100%, 40%);
   --border-radius-primary: 0.8rem;
   --border-radius-secondary: 1.2rem;
+
+  --max-width: 1920px;
 
   // Font size
   --font-scale: 1.25;
@@ -67,18 +70,32 @@ button {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-m);
 }
 .button {
   display: flex;
   gap: 1rem;
   &__control {
-    background-color: var(--color-bg-primary);
+    background-color: var(--color-bg-secondary);
     padding: 1rem 1.2rem;
     border-radius: var(--border-radius-primary);
     border: none;
+    transition: 0.2s ease-in background;
+    width: 100%;
     &:hover {
       background-color: var(--color-bg-surface);
+    }
+    &--warning {
+      background-color: var(--warning);
+      &:hover {
+        background-color: var(--warning-hover);
+      }
+    }
+    &--success {
+      background-color: var(--success);
+      &:hover {
+        background-color: var(--success-hover);
+      }
     }
   }
 }
@@ -87,20 +104,23 @@ button {
   &__box {
     border-radius: var(--border-radius-primary);
     background-color: var(--color-bg-secondary);
-    padding: 1rem;
+    padding: 2rem;
     width: 100%;
   }
   &__row {
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 1rem;
     width: 100%;
   }
   &__column {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     width: 100%;
+  }
+  &__header {
+    margin-bottom: 0.5rem;
   }
 }
 

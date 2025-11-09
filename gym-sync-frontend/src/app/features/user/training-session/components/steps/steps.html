@@ -1,16 +1,18 @@
 <h2 class="layout__header">{{selectedTraining.name}}</h2>
 <div class="workout">
   <div class="workout__box layout__box">
+    @if(!endTraining){
     <div class="workout__name">
       {{selectedTraining.exercises[currentExerciseIndex].name}}
     </div>
+    <div
+      class="workout__time"
+      [class]="{'workout__time--stop': timeLeft === 0, 'workout__time--last': timeLeft <= 15}"
+    >
+      Koniec przerwy za: <span>{{timeLeft}} sek.</span>
+    </div>
+    @if(!selectedTraining.exercises[currentExerciseIndex].isBreak){
     <div class="workout__info">
-      <div
-        class="workout__time"
-        [class]="{'workout__time--stop': timeLeft === 0}"
-      >
-        Przerwa: <span>{{timeLeft}} sek.</span>
-      </div>
       <div class="workout__weight">
         Ciężar: <span>{{currentRep.weight}} kg.</span>
       </div>
@@ -29,22 +31,49 @@
       </div>
       }
     </div>
+    } }@else {
+    <div class="workout__name">Trening zakończony</div>
+    <div class="workout__time">{{endTrainingTime}}</div>
+    }
   </div>
 </div>
-<div class="workout__btns">
-  @if(currentExerciseIndex !== 0 || currentRepIndex !== 0){
-  <button class="workout__btn" (click)="back()">
+<div class="workout__btns button mt-1">
+  @if (!endTraining) {
+  <button
+    class="workout__btn workout__btn--warning button__control button__control--warning"
+    (click)="backToList()"
+  >
+    Zakończ trening <i class="fa-solid fa-x"></i>
+  </button>
+
+  @if (currentExerciseIndex !== 0 || currentRepIndex !== 0) {
+  <button class="workout__btn button__control" (click)="back()">
     <i class="fa-solid fa-arrow-left"></i> Wstecz
   </button>
-  }@else{
-  <button class="workout__btn" (click)="backToList()">
+  } @else {
+  <button class="workout__btn button__control" (click)="backToList()">
     <i class="fa-solid fa-arrow-left"></i> Powrót
   </button>
-  }
-  <button class="workout__btn" (click)="next()">
+  } @if ( currentExerciseIndex !== selectedTraining.exercises.length - 1 ||
+  currentRepIndex !==
+  selectedTraining.exercises[currentExerciseIndex].sets.length - 1 ) {
+  <button class="workout__btn button__control" (click)="next()">
     Następne <i class="fa-solid fa-arrow-right"></i>
   </button>
+  } @else {
+  <button
+    class="workout__btn button__control button__control--success"
+    (click)="hanldeEndTraining()"
+  >
+    Zakończ trening <i class="fa-solid fa-check"></i>
+  </button>
+  } } @else {
+  <button class="workout__btn button__control" (click)="backToList()">
+    <i class="fa-solid fa-arrow-left"></i> Powrót do listy ćwiczeń
+  </button>
+  }
 </div>
-<button class="workout__btn workout__btn--warning" (click)="backToList()">
-  Zakończ trening <i class="fa-solid fa-x"></i>
-</button>
+<app-training-details
+  [selectedTraining]="selectedTraining"
+  [stepsView]="true"
+></app-training-details>
