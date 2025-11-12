@@ -1,84 +1,59 @@
-# GymSync – Aplikacja do planowania i realizacji treningów siłowych
+# GymSyncFrontend
 
-Projekt rozpoczęty jako prywatna aplikacja do treningów w domu, a następnie rozwijana jako praca inżynierska:
-**„Projektowanie i implementacja aplikacji webowej do planowania i realizacji treningów siłowych”**
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.
 
----
+## Development server
 
-## Opis projektu
-
-GymSync pozwala na:
-
-- Tworzenie i zarządzanie planami treningowymi
-- Rejestrowanie sesji treningowych
-- Generowanie raportów treningowych (Do zrobienia)
-
-Frontend napisany w **Angular 20**, backend w **Express.js** z bazą danych **MongoDB**.
-
-W przyszłości planowane są funkcje:
-
-- Tworzenie użytkowników, logowanie i rejestracja
-- Autoryzacja i role użytkowników
-
----
-
-## Struktura projektu
-
-### Frontend (`gym-sync-frontend`)
-
-- **features/** – moduły funkcjonalne:
-  - `training-session` – realizacja treningu
-  - `training-plan-builder` – tworzenie planów treningowych
-  - `training-report` – raporty i historia treningów
-- **shared/** – komponenty, serwisy i modele wykorzystywane w wielu miejscach
-- **layout/** – główne layouty aplikacji (UserLayout, Navbar itp.)
-
-### Backend (`gym-sync-backend`)
-
-- **Express.js** jako serwer API
-- **MongoDB** jako baza danych
-
----
-
-## Instalacja i uruchomienie
-
-1. Zainstaluj zależności frontendu:
+To start a local development server, run:
 
 ```bash
-cd gym-sync-frontend
-npm install
+ng serve
 ```
 
-2. Uruchom frontend:
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+## Code scaffolding
+
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
 ```bash
-npm start
+ng generate component component-name
 ```
 
-3. Zainstaluj zależności backendu i uruchom serwer:
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
 ```bash
-cd gym-sync-backend
-npm install
-npm run dev
+ng generate --help
 ```
 
-> Backend domyślnie nasłuchuje na porcie ustawionym w `.env`.
+## Building
 
----
+To build the project run:
 
-## Technologie
+```bash
+ng build
+```
 
-- Angular 20
-- Angular Material (Do zrobienia)
-- Express.js
-- MongoDB
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
----
+## Running unit tests
 
-## Plany rozwoju
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-- Dodanie rejestracji i logowania użytkowników
-- Autoryzacja i role
-- Eksport/import planów treningowych
-- Możliwość dzielenia planów między użytkownikami
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
