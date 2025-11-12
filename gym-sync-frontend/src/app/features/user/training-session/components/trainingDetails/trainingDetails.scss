@@ -25,6 +25,8 @@
   width: 100%;
   border-radius: var(--border-radius-primary);
   height: max-content;
-  max-height: 65vh;
-  overflow-y: auto;
+  &--steps {
+    max-height: 55vh;
+    overflow-y: auto;
+  }
 }

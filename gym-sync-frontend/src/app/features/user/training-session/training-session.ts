@@ -1,8 +1,10 @@
 import { Component, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { Timer } from './components/timer/timer';
 import { Steps } from './components/steps/steps';
-import { TrainingService } from './services/training-session.service';
+import { TrainingService } from '../../../shared/services/training-session.service';
 import { TrainingDetails } from './components/trainingDetails/trainingDetails';
+import { TrainingList } from '../../../shared/models/training.model';
+import { TimeItem } from './models/training-session.model';
 
 type TrainingState =
   | 'trainingList'
@@ -19,10 +21,10 @@ type TrainingState =
 export class TrainingSession implements OnInit {
   state: TrainingState = 'trainingList';
 
-  trainingList: trainingList[] = [];
+  trainingList: TrainingList[] = [];
   currentExerciseIndex: number = 0;
   currentRepIndex: number = 0;
-  selectedTraining: trainingList = {
+  selectedTraining: TrainingList = {
     name: '',
     estimatedTime: 0,
     exercises: [],
@@ -38,16 +40,16 @@ export class TrainingSession implements OnInit {
   }
   getAllTraining() {
     this.trainingService.getAllTrainings().subscribe({
-      next: (response: trainingList[]) => {
+      next: (response: TrainingList[]) => {
         if (response) this.trainingList = response;
       },
       error: (err: any) => console.error(err),
     });
   }
-  changeStateWorkout(training: trainingList) {
+  changeStateWorkout(training: TrainingList) {
     if (!training._id) return;
     this.trainingService.getTraining(training._id).subscribe({
-      next: (response: trainingList) => {
+      next: (response: TrainingList) => {
         if (response) {
           this.selectedTraining = response;
           this.state = 'trainingDetails';
@@ -69,7 +71,7 @@ export class TrainingSession implements OnInit {
   }
   removeTraining(id: string) {
     this.trainingService.removeTraining(id).subscribe({
-      next: (response: trainingList) => {
+      next: (response: TrainingList) => {
         if (response) {
           this.getAllTraining();
         }
@@ -98,6 +100,7 @@ export class TrainingSession implements OnInit {
 
   backToList() {
     this.state = 'trainingList';
+    this.doneExercises.set([]);
   }
   stopTimer() {
     this.timerComponent.stop();

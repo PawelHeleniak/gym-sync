@@ -1,25 +1,18 @@
-interface ExerciseSet {
+export interface ExerciseSet {
   repsCount: number;
   weight?: number;
   done: boolean;
 }
-interface Exercise {
+export interface Exercise {
   name: string;
   breakTime: number;
   isBreak?: boolean;
   comment: string;
   sets: ExerciseSet[];
 }
-interface trainingList {
+export interface TrainingList {
   _id?: string;
   name: string;
   estimatedTime: number;
   exercises: Exercise[];
-}
-interface TimeItem {
-  name: string;
-  repsCount: number;
-  weight?: number;
-  time: string;
-  isBreak?: boolean;
 }

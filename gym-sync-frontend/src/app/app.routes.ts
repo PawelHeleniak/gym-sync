@@ -11,10 +11,11 @@ export const routes: Routes = [
     path: '',
     component: UserLayout,
     children: [
-      { path: 'panel', component: HomePanel },
+      // { path: 'panel', component: HomePanel },
+      { path: '', redirectTo: 'kreator-planu', pathMatch: 'full' },
+      { path: 'kreator-planu', component: TrainingPlanBuilder },
       { path: 'trening', component: TrainingSession },
       { path: 'raport', component: TrainingReport },
-      { path: 'kreator-planu', component: TrainingPlanBuilder },
     ],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
