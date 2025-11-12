@@ -31,7 +31,19 @@
       </div>
       }
     </div>
-    } }@else {
+    }
+    <div class="input-field input-field--textarea" [class.filled]="comment">
+      <label for="comment" class="input-field__label">Komentarz</label>
+      <textarea
+        id="comment"
+        class="input-field__input"
+        style="resize: none"
+        [(ngModel)]="comment"
+        rows="4"
+        cols="50"
+      ></textarea>
+    </div>
+    }@else {
     <div class="workout__name">Trening zakończony</div>
     <div class="workout__time">{{endTrainingTime}}</div>
     }

@@ -7,15 +7,18 @@ import {
   signal,
 } from '@angular/core';
 import { TrainingDetails } from '../trainingDetails/trainingDetails';
+import { FormsModule } from '@angular/forms';
+import { TrainingService } from '../../../../../shared/services/training-session.service';
+import { TrainingList } from '../../../../../shared/models/training.model';
 
 @Component({
   selector: 'app-steps',
-  imports: [TrainingDetails],
+  imports: [TrainingDetails, FormsModule],
   templateUrl: './steps.html',
   styleUrl: './steps.scss',
 })
 export class Steps implements OnInit {
-  @Input() selectedTraining: trainingList = {
+  @Input() selectedTraining: TrainingList = {
     name: '',
     estimatedTime: 0,
     exercises: [],
@@ -32,7 +35,8 @@ export class Steps implements OnInit {
   endTraining: boolean = false;
   endTrainingTime: string = '';
   private timerInterval?: ReturnType<typeof setInterval>;
-
+  comment: string = '';
+  constructor(private trainingService: TrainingService) {}
   ngOnInit() {
     const firstExercise = this.selectedTraining.exercises[0];
     if (firstExercise) this.timer(firstExercise.breakTime || 0);
@@ -77,6 +81,22 @@ export class Steps implements OnInit {
     this.endTrainingTime = getTime ? getTime : '';
 
     this.handleDoneWorkout();
+    this.updateTraining();
+  }
+  updateTraining() {
+    this.selectedTraining.exercises.forEach((ex) => {
+      ex.sets.forEach((set) => {
+        set.done = false;
+      });
+    });
+    this.trainingService.updateTraining(this.selectedTraining).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
   back() {
     if (this.currentRepIndex !== 0) this.currentRepIndex--;

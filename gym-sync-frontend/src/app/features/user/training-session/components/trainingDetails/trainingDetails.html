@@ -5,7 +5,10 @@
     <h3>{{time}} h</h3>
   </div>
   }
-  <div class="layout__column mt-1 trainingDetails">
+  <div
+    class="layout__column mt-1 trainingDetails"
+    [class.trainingDetails--steps]="stepsView"
+  >
     @for (exercise of selectedTraining.exercises; track exercise; let i =
     $index) {
     <div class="layout__box exercise" [class.filled]>

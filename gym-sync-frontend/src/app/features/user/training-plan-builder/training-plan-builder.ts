@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TrainingService } from '../training-session/services/training-session.service';
+import { TrainingService } from '../../../shared/services/training-session.service';
 @Component({
   selector: 'app-training-plan-builder',
   imports: [ReactiveFormsModule],

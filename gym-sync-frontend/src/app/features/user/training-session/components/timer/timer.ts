@@ -1,5 +1,6 @@
 import { Component, computed, Input, input, OnInit } from '@angular/core';
 import { formatTime } from '../../../../../shared/utils/time';
+import { TimeItem } from '../../models/training-session.model';
 
 @Component({
   selector: 'app-timer',

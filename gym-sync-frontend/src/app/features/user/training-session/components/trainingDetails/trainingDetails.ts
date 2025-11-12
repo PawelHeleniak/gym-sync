@@ -13,7 +13,7 @@ export class TrainingDetails {
     this.time = formatTime(this.selectedTraining.estimatedTime);
   }
   @Input() stepsView: boolean = false;
-  @Input() selectedTraining: trainingList = {
+  @Input() selectedTraining: TrainingList = {
     name: '',
     estimatedTime: 0,
     exercises: [],
