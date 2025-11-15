@@ -1,10 +1,18 @@
-import { Component, Input, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { Timer } from './components/timer/timer';
 import { Steps } from './components/steps/steps';
 import { TrainingService } from '../../../shared/services/training-session.service';
 import { TrainingDetails } from './components/trainingDetails/trainingDetails';
 import { TrainingList } from '../../../shared/models/training.model';
 import { TimeItem } from './models/training-session.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 type TrainingState =
   | 'trainingList'
@@ -29,6 +37,9 @@ export class TrainingSession implements OnInit {
     estimatedTime: 0,
     exercises: [],
   };
+
+  private _snackBar = inject(MatSnackBar);
+  durationInSeconds: number = 3000;
 
   doneExercises = signal<TimeItem[]>([]);
   @ViewChild('timer') timerComponent!: Timer;
@@ -74,9 +85,16 @@ export class TrainingSession implements OnInit {
       next: (response: TrainingList) => {
         if (response) {
           this.getAllTraining();
+          this.openSnackBar('Usunięcie powiodło się', 'success');
         }
       },
-      error: (err: any) => console.error(err),
+      error: (err: any) => {
+        this.openSnackBar(
+          'Usunięcie nie powiodło się, spróbuj ponownie.',
+          'warning'
+        );
+        console.error(err);
+      },
     });
   }
   editTraining(id: string) {
@@ -104,5 +122,20 @@ export class TrainingSession implements OnInit {
   }
   stopTimer() {
     this.timerComponent.stop();
+  }
+  openSnackBar(message: string, mode: string) {
+    console.log(message);
+    console.log(mode);
+    if (mode === 'success') {
+      this._snackBar.open(message, '', {
+        duration: this.durationInSeconds,
+        panelClass: ['snackbar', 'snackbar--success'],
+      });
+    } else if (mode === 'warning') {
+      this._snackBar.open(message, '', {
+        duration: this.durationInSeconds,
+        panelClass: ['snackbar', 'snackbar--warning'],
+      });
+    }
   }
 }
