@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -7,6 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { TrainingService } from '../../../shared/services/training-session.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-training-plan-builder',
   imports: [ReactiveFormsModule],
@@ -15,7 +18,13 @@ import { TrainingService } from '../../../shared/services/training-session.servi
 })
 export class TrainingPlanBuilder {
   planForm!: FormGroup;
-  constructor(private trainingService: TrainingService) {}
+  private _snackBar = inject(MatSnackBar);
+  durationInSeconds: number = 3000;
+  user: any;
+  constructor(
+    private trainingService: TrainingService,
+    private router: Router
+  ) {}
   ngOnInit(): void {
     this.planForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -98,11 +107,20 @@ export class TrainingPlanBuilder {
   addPlanForm(): void {
     this.trainingService.addTraining(this.planForm.value).subscribe({
       next: (response) => {
+        this.openSnackBar('Pomyślnie dodano trening');
+        this.router.navigate(['/trening']);
         console.log(response);
       },
       error: (err: any) => {
         console.error(err);
       },
+    });
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      duration: this.durationInSeconds,
+      panelClass: ['snackbar', 'snackbar--success'],
     });
   }
 }

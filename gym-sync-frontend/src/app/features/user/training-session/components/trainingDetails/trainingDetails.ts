@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { formatTime } from '../../../../../shared/utils/time';
+import { TrainingList } from '../../../../../shared/models/training.model';
 
 @Component({
   selector: 'app-training-details',
