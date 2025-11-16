@@ -20,9 +20,14 @@ export class TrainingService {
       training
     );
   }
-  updateTraining(training: TrainingList): Observable<TrainingList> {
+  updateTraining(
+    training: TrainingList,
+    additionalId?: string
+  ): Observable<TrainingList> {
     return this.http.put<TrainingList>(
-      `${this.baseUrl}/workout/update/${training._id}`,
+      `${this.baseUrl}/workout/update/${
+        additionalId ? additionalId : training._id
+      }`,
       training
     );
   }

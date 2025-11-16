@@ -55,7 +55,9 @@ export const updateWorkout = async (req, res) => {
       return res.status(404).json({ error: "Trening nie znaleziony" });
     }
 
-    res.status(200).json({ message: "Trening zaktualizowany", workout });
+    res
+      .status(200)
+      .json({ message: "Trening zaktualizowany", workout: updatedWorkout });
   } catch (err) {
     console.error("Błąd aktualizowania treningu:", err.message);
     res.status(500).json({ error: "Nie udało się zaktualizować treningu" });
