@@ -10,10 +10,11 @@ import { TrainingDetails } from '../trainingDetails/trainingDetails';
 import { FormsModule } from '@angular/forms';
 import { TrainingService } from '../../../../../shared/services/training-session.service';
 import { TrainingList } from '../../../../../shared/models/training.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-steps',
-  imports: [TrainingDetails, FormsModule],
+  imports: [TrainingDetails, FormsModule, CommonModule],
   templateUrl: './steps.html',
   styleUrl: './steps.scss',
 })
@@ -89,6 +90,7 @@ export class Steps implements OnInit {
         set.done = false;
       });
     });
+    this.selectedTraining.estimatedTime = 0;
     this.trainingService.updateTraining(this.selectedTraining).subscribe({
       next: (response) => {
         console.log(response);

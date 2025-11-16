@@ -13,16 +13,17 @@ import { TrainingDetails } from './components/trainingDetails/trainingDetails';
 import { TrainingList } from '../../../shared/models/training.model';
 import { TimeItem } from './models/training-session.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { TrainingPlanBuilder } from '../training-plan-builder/training-plan-builder';
 type TrainingState =
   | 'trainingList'
   | 'trainingDetails'
   | 'trainingActive'
-  | 'trainingSummary';
+  | 'trainingSummary'
+  | 'trainingEdit';
 
 @Component({
   selector: 'app-training-session',
-  imports: [Timer, Steps, TrainingDetails],
+  imports: [Timer, Steps, TrainingDetails, TrainingPlanBuilder],
   templateUrl: './training-session.html',
   styleUrls: ['./training-session.scss'],
 })
@@ -57,13 +58,13 @@ export class TrainingSession implements OnInit {
       error: (err: any) => console.error(err),
     });
   }
-  changeStateWorkout(training: TrainingList) {
+  changeStateWorkout(training: TrainingList, state: TrainingState) {
     if (!training._id) return;
     this.trainingService.getTraining(training._id).subscribe({
       next: (response: TrainingList) => {
         if (response) {
           this.selectedTraining = response;
-          this.state = 'trainingDetails';
+          this.state = state;
           this.calculateTime();
         }
       },
@@ -97,8 +98,8 @@ export class TrainingSession implements OnInit {
       },
     });
   }
-  editTraining(id: string) {
-    console.log(id);
+  editTraining(training: TrainingList) {
+    this.changeStateWorkout(training, 'trainingEdit');
   }
   get currentExercise() {
     return this.selectedTraining.exercises[this.currentExerciseIndex];

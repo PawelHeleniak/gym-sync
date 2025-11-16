@@ -1,4 +1,6 @@
-<h2 class="layout__header">Dodaj nowy trening</h2>
+<h2 class="layout__header">
+  {{!existingPlan? "Dodaj nowy trening": "Edytuj plan"}}
+</h2>
 <form [formGroup]="planForm" class="form">
   <div
     class="input-field form__header"
@@ -162,7 +164,13 @@
   </div>
 </form>
 <div class="button mt-1">
+  @if(!existingPlan){
   <button type="button" (click)="addPlanForm()" class="button__control">
     Dodaj plan
   </button>
+  }@else{
+  <button type="button" (click)="updateTraining()" class="button__control">
+    Edytuj plan
+  </button>
+  }
 </div>

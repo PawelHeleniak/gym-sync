@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -9,6 +9,7 @@ import {
 import { TrainingService } from '../../../shared/services/training-session.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { TrainingList } from '../../../shared/models/training.model';
 
 @Component({
   selector: 'app-training-plan-builder',
@@ -21,6 +22,8 @@ export class TrainingPlanBuilder {
   private _snackBar = inject(MatSnackBar);
   durationInSeconds: number = 3000;
   user: any;
+  @Input() existingPlan: TrainingList | undefined;
+
   constructor(
     private trainingService: TrainingService,
     private router: Router
@@ -44,6 +47,47 @@ export class TrainingPlanBuilder {
         // }),
       ]),
     });
+    if (this.existingPlan) {
+      this.loadingExistingPlan(this.existingPlan);
+    }
+  }
+  loadingExistingPlan(plan: TrainingList) {
+    this.planForm.get('name')?.setValue(plan.name);
+    console.log(plan);
+    plan.exercises.forEach((exercise, idx) => {
+      this.addExercise(
+        exercise.name,
+        exercise.breakTime,
+        exercise.isBreak ?? false
+      );
+
+      const sets = this.getSets(idx);
+      sets.clear();
+
+      if (!Array.isArray(exercise.sets)) return;
+
+      exercise.sets.forEach((set) => {
+        this.addExerciseSet(idx, set.repsCount ?? 0, set.weight ?? 0);
+      });
+    });
+  }
+  updateTraining() {
+    console.log(this.planForm);
+    this.trainingService
+      .updateTraining(this.planForm.value, this.existingPlan?._id)
+      .subscribe({
+        next: (response) => {
+          this.openSnackBar('Pomyślnie zaktualizowano trening.', 'success');
+          console.log(response);
+        },
+        error: (err) => {
+          this.openSnackBar(
+            'Nie udało zaktualizować się treningu, spróbuj ponownie.',
+            'warning'
+          );
+          console.error(err);
+        },
+      });
   }
   get exercisesArray(): FormArray {
     return this.planForm.get('exercises') as FormArray;
@@ -107,20 +151,33 @@ export class TrainingPlanBuilder {
   addPlanForm(): void {
     this.trainingService.addTraining(this.planForm.value).subscribe({
       next: (response) => {
-        this.openSnackBar('Pomyślnie dodano trening');
+        this.openSnackBar('Pomyślnie dodano trening.', 'success');
         this.router.navigate(['/trening']);
         console.log(response);
       },
       error: (err: any) => {
+        this.openSnackBar(
+          'Nie udało się dodać trening, spróbuj ponownie.',
+          'warning'
+        );
         console.error(err);
       },
     });
   }
 
-  openSnackBar(message: string) {
-    this._snackBar.open(message, '', {
-      duration: this.durationInSeconds,
-      panelClass: ['snackbar', 'snackbar--success'],
-    });
+  openSnackBar(message: string, mode: string) {
+    console.log(message);
+    console.log(mode);
+    if (mode === 'success') {
+      this._snackBar.open(message, '', {
+        duration: this.durationInSeconds,
+        panelClass: ['snackbar', 'snackbar--success'],
+      });
+    } else if (mode === 'warning') {
+      this._snackBar.open(message, '', {
+        duration: this.durationInSeconds,
+        panelClass: ['snackbar', 'snackbar--warning'],
+      });
+    }
   }
 }
