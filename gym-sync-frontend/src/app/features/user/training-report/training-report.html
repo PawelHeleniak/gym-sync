@@ -1,1 +1,17 @@
-<p>training-report works!</p>
+<h2 class="layout__header">Historia</h2>
+<div class="layout__box">
+  <div class="layout__row">
+    @for (training of trainings; track $index) {
+    <div class="button">
+      <button
+        type="button"
+        (click)="getHistoryTraining(training._id ?? '')"
+        class="button__control"
+      >
+        <div>{{training.name}}</div>
+        <div>Łączna liczba wpisów: {{training.historyCount ?? 0}}</div>
+      </button>
+    </div>
+    }
+  </div>
+</div>
