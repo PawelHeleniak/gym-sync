@@ -9,6 +9,7 @@ import {
 import { TrainingDetails } from '../trainingDetails/trainingDetails';
 import { FormsModule } from '@angular/forms';
 import { TrainingService } from '../../../../../shared/services/training-session.service';
+import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
 import { TrainingList } from '../../../../../shared/models/training.model';
 import { CommonModule } from '@angular/common';
 
@@ -37,7 +38,10 @@ export class Steps implements OnInit {
   endTrainingTime: string = '';
   private timerInterval?: ReturnType<typeof setInterval>;
   comment: string = '';
-  constructor(private trainingService: TrainingService) {}
+  constructor(
+    private trainingService: TrainingService,
+    private trainingHistoryService: TrainingHistoryService
+  ) {}
   ngOnInit() {
     const firstExercise = this.selectedTraining.exercises[0];
     if (firstExercise) this.timer(firstExercise.breakTime || 0);
@@ -92,6 +96,26 @@ export class Steps implements OnInit {
     });
     this.selectedTraining.estimatedTime = 0;
     this.trainingService.updateTraining(this.selectedTraining).subscribe({
+      next: (response) => {
+        this.saveHistory(response.workout);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+  toSeconds(time: string): number {
+    const [h, m, s] = time.split(':').map(Number);
+    return h * 3600 + m * 60 + s;
+  }
+  saveHistory(plan: TrainingList) {
+    const finished = {
+      planId: plan._id,
+      totalTime: this.toSeconds(this.endTrainingTime),
+      exercises: plan.exercises,
+    };
+    console.log(finished);
+    this.trainingHistoryService.addHisotyTraining(finished).subscribe({
       next: (response) => {
         console.log(response);
       },

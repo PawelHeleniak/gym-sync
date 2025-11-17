@@ -15,4 +15,5 @@ export interface TrainingList {
   name: string;
   estimatedTime: number;
   exercises: Exercise[];
+  historyCount?: Number;
 }

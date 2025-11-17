@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environment/environment';
 import { Observable } from 'rxjs';
 import { TrainingList } from '../models/training.model';
-
+interface UpdateTrainingResponse {
+  message: string;
+  workout: TrainingList;
+}
 @Injectable({ providedIn: 'root' })
 export class TrainingService {
   constructor(private http: HttpClient) {}
@@ -23,8 +26,8 @@ export class TrainingService {
   updateTraining(
     training: TrainingList,
     additionalId?: string
-  ): Observable<TrainingList> {
-    return this.http.put<TrainingList>(
+  ): Observable<UpdateTrainingResponse> {
+    return this.http.put<UpdateTrainingResponse>(
       `${this.baseUrl}/workout/update/${
         additionalId ? additionalId : training._id
       }`,
@@ -35,13 +38,5 @@ export class TrainingService {
     return this.http.delete<TrainingList>(
       `${this.baseUrl}/workout/delete/${id}`
     );
-  }
-  // Poprzednia wersja pobieranie z pliku json
-  async getTrainings(): Promise<TrainingList[]> {
-    const response = await fetch('/trening.json');
-
-    if (!response.ok)
-      throw new Error('Nie udało się wczytać pliku trening.json');
-    return response.json();
   }
 }
