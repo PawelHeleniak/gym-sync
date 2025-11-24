@@ -18,39 +18,39 @@ import { TrainingList } from '../../../shared/models/training.model';
   styleUrl: './training-plan-builder.scss',
 })
 export class TrainingPlanBuilder {
+  @Input() existingPlan: TrainingList | undefined;
+
   planForm!: FormGroup;
   private _snackBar = inject(MatSnackBar);
   durationInSeconds: number = 3000;
-  user: any;
-  @Input() existingPlan: TrainingList | undefined;
 
   constructor(
     private trainingService: TrainingService,
     private router: Router
   ) {}
+
   ngOnInit(): void {
     this.planForm = new FormGroup({
       name: new FormControl('', Validators.required),
       estimatedTime: new FormControl(1, Validators.required),
-      exercises: new FormArray([
-        // new FormGroup({
-        //   name: new FormControl('', Validators.required),
-        //   breakTime: new FormControl(1, Validators.required),
-        //   isBreak: new FormControl(false),
-        //   sets: new FormArray([
-        //     new FormGroup({
-        //       repsCount: new FormControl(1, Validators.required),
-        //       weight: new FormControl(1),
-        //       done: new FormControl(false, Validators.required),
-        //     }),
-        //   ]),
-        // }),
-      ]),
+      exercises: new FormArray([]),
     });
     if (this.existingPlan) {
       this.loadingExistingPlan(this.existingPlan);
     }
   }
+
+  get exercisesArray(): FormArray {
+    return this.planForm.get('exercises') as FormArray;
+  }
+
+  getExercise(i: number): FormGroup {
+    return this.exercisesArray.at(i) as FormGroup;
+  }
+  getSets(exerciseIndex: number): FormArray {
+    return this.getExercise(exerciseIndex).get('sets') as FormArray;
+  }
+
   loadingExistingPlan(plan: TrainingList) {
     this.planForm.get('name')?.setValue(plan.name);
     console.log(plan);
@@ -71,30 +71,7 @@ export class TrainingPlanBuilder {
       });
     });
   }
-  updateTraining() {
-    console.log(this.planForm);
-    this.trainingService
-      .updateTraining(this.planForm.value, this.existingPlan?._id)
-      .subscribe({
-        next: (response) => {
-          this.openSnackBar('Pomyślnie zaktualizowano trening.', 'success');
-          console.log(response);
-        },
-        error: (err) => {
-          this.openSnackBar(
-            'Nie udało zaktualizować się treningu, spróbuj ponownie.',
-            'warning'
-          );
-          console.error(err);
-        },
-      });
-  }
-  get exercisesArray(): FormArray {
-    return this.planForm.get('exercises') as FormArray;
-  }
-  get setsArray(): FormArray {
-    return this.planForm.get('sets') as FormArray;
-  }
+
   addExercise(name: string, breakTime: number, isBreak: boolean) {
     const workoutGroup = new FormGroup({
       name: new FormControl(name, Validators.required),
@@ -116,9 +93,6 @@ export class TrainingPlanBuilder {
   }
   removeExercise(i: number) {
     this.exercisesArray.removeAt(i);
-  }
-  getSets(i: number): FormArray {
-    return this.exercisesArray.at(i).get('sets') as FormArray;
   }
   addExerciseSetButton(j: number) {
     console.log(`%c ${j}`, 'color: blue');
@@ -148,6 +122,7 @@ export class TrainingPlanBuilder {
     const sets = this.getSets(exerciseIndex);
     sets.removeAt(setIndex);
   }
+
   addPlanForm(): void {
     this.trainingService.addTraining(this.planForm.value).subscribe({
       next: (response) => {
@@ -163,6 +138,24 @@ export class TrainingPlanBuilder {
         console.error(err);
       },
     });
+  }
+  updateTraining() {
+    console.log(this.planForm);
+    this.trainingService
+      .updateTraining(this.planForm.value, this.existingPlan?._id)
+      .subscribe({
+        next: (response) => {
+          this.openSnackBar('Pomyślnie zaktualizowano trening.', 'success');
+          console.log(response);
+        },
+        error: (err) => {
+          this.openSnackBar(
+            'Nie udało zaktualizować się treningu, spróbuj ponownie.',
+            'warning'
+          );
+          console.error(err);
+        },
+      });
   }
 
   openSnackBar(message: string, mode: string) {

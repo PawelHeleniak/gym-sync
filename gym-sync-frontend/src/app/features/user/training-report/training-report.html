@@ -29,7 +29,7 @@
       <div class="history__box">
         <span class="history__name">Czas treningu: </span>
         <span class="history__value"
-          >{{fotmat(historyTraining.totalTime)}} h</span
+          >{{format(historyTraining.totalTime)}} h</span
         >
       </div>
       <div class="history__box">
@@ -41,7 +41,6 @@
             [ngClass]="{'exercise__box--break': exercise.isBreak}"
           >
             <!-- @if(!exercise.isBreak){ -->
-
             <span>{{exercise.name}}</span>
             <span>{{exercise.comment}}</span>
             <span>Przerwa między seriami: {{exercise.breakTime}} s</span>
