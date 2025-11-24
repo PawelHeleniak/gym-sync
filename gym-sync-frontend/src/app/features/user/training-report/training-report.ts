@@ -13,26 +13,29 @@ import { formatTime } from '../../../shared/utils/time';
   styleUrl: './training-report.scss',
 })
 export class TrainingReport {
+  trainings: TrainingList[] = [];
+  allHistoryTraining: WorkoutHisotry[] = [];
+  activeId: string = '';
+
   constructor(
     private trainingHistoryService: TrainingHistoryService,
     private trainingService: TrainingService
   ) {}
-  trainings: TrainingList[] = [];
-  allHistoryTraining: WorkoutHisotry[] = [];
-  activeId: string = '';
+
   ngOnInit() {
     this.getTraining();
   }
+
   getTraining() {
     this.trainingService.getAllTrainings().subscribe({
-      next: (response: any) => {
+      next: (response: TrainingList[]) => {
         this.trainings = response;
         this.trainings.forEach((training) => {
           this.getHistoryTrainingCount(training._id ?? '');
         });
         console.log(response);
       },
-      error: (error: any) => {
+      error: (error) => {
         console.log(error);
       },
     });
@@ -48,7 +51,7 @@ export class TrainingReport {
           if (count) count.historyCount = response.length;
         }
       },
-      error: (error: any) => {
+      error: (error) => {
         console.log(error);
       },
     });
@@ -66,7 +69,7 @@ export class TrainingReport {
       },
     });
   }
-  fotmat(time: number) {
+  format(time: number) {
     return formatTime(time);
   }
 }
