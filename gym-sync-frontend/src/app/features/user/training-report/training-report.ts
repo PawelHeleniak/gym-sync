@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { TrainingHistoryService } from '../../../shared/services/training-history.service';
 import { TrainingService } from '../../../shared/services/training-session.service';
 import { TrainingList } from '../../../shared/models/training.model';
+import { WorkoutHisotry } from '../../../shared/models/trainingHistory.model';
+import { formatTime } from '../../../shared/utils/time';
 
 @Component({
   selector: 'app-training-report',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './training-report.html',
   styleUrl: './training-report.scss',
 })
@@ -15,7 +18,8 @@ export class TrainingReport {
     private trainingService: TrainingService
   ) {}
   trainings: TrainingList[] = [];
-
+  allHistoryTraining: WorkoutHisotry[] = [];
+  activeId: string = '';
   ngOnInit() {
     this.getTraining();
   }
@@ -51,13 +55,18 @@ export class TrainingReport {
   }
   // ***
   getHistoryTraining(id: string) {
+    this.activeId = id;
     this.trainingHistoryService.getHistoryTrainings(id).subscribe({
       next: (response: any) => {
+        this.allHistoryTraining = response;
         console.log(response);
       },
       error: (error: any) => {
         console.log(error);
       },
     });
+  }
+  fotmat(time: number) {
+    return formatTime(time);
   }
 }
