@@ -39,6 +39,44 @@
   // Font style
   --font-family-base: "Lato", sans-serif;
 }
+
+$mobile: 480px;
+$tablet: 768px;
+$laptop: 1024px;
+$desktop: 1280px;
+$xlDesktop: 1536px;
+
+// miksiny
+@mixin mobile {
+  @media (min-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (min-width: $laptop) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin xlDesktop {
+  @media (min-width: $xlDesktop) {
+    @content;
+  }
+}
+
 html {
   font-size: 62.5%;
 }
@@ -76,6 +114,10 @@ button {
 }
 .button {
   display: flex;
+  flex-direction: column;
+  @include tablet {
+    flex-direction: row;
+  }
   gap: 1rem;
   &__control {
     background-color: var(--color-bg-secondary);
@@ -138,7 +180,10 @@ button {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: max-content;
+  width: 100%;
+  @include tablet {
+    width: max-content;
+  }
   &:hover,
   &:focus,
   &:active {

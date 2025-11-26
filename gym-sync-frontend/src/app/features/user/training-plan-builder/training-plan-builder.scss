@@ -1,13 +1,18 @@
+@import "../../../../styles.scss";
+
 .workout {
   display: flex;
   flex-direction: column;
   gap: 2rem;
   &__wrapper {
+    padding: 5.6rem 1rem 1rem 1rem;
     position: relative;
     background-color: var(--color-bg-secondary);
-    padding: 1rem;
     border-radius: var(--border-radius-primary);
     gap: 1rem;
+    @include tablet {
+      padding: 1rem;
+    }
   }
 }
 .button {
@@ -38,6 +43,10 @@
 .--sets {
   align-items: center;
   width: max-content;
+  margin: 0 auto;
+  @include tablet {
+    margin: initial;
+  }
   button {
     aspect-ratio: 1;
   }
@@ -81,8 +90,11 @@
   &__group {
     display: flex;
     &--row {
-      flex-direction: row;
+      flex-direction: column;
       gap: 1rem;
+      @include tablet {
+        flex-direction: row;
+      }
     }
     &--column {
       flex-direction: column;
