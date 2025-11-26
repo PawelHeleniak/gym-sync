@@ -1,33 +1,35 @@
-<div class="layout__row">
+<div class="layout__row --top">
   @if(state === "trainingList"){
   <div class="layout__column">
     <h2 class="layout__header">Wybierz trening</h2>
-    @for (training of trainingList; track training.name) {
-    <div class="layout__row">
-      <button
-        class="layout__box btn"
-        (click)="changeStateWorkout(training, 'trainingDetails')"
-      >
-        {{ training.name }} <i class="fa-solid fa-arrow-right"></i>
-      </button>
-      <button
-        class="button__control"
-        style="width: max-content"
-        (click)="editTraining(training)"
-      >
-        <i class="fa-solid fa-pen-to-square"></i>
-      </button>
-      <button
-        class="button__control button__control--warning"
-        style="width: max-content"
-        (click)="removeTraining(training._id? training._id: '')"
-      >
-        <i class="fa-solid fa-x"></i>
-      </button>
+    <div class="list">
+      @for (training of trainingList; track training.name) {
+      <div class="layout__row list__item">
+        <button
+          class="layout__box btn"
+          (click)="changeStateWorkout(training, 'trainingDetails')"
+        >
+          {{ training.name }} <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button
+          class="button__control"
+          style="width: max-content"
+          (click)="editTraining(training)"
+        >
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button
+          class="button__control button__control--warning"
+          style="width: max-content"
+          (click)="removeTraining(training._id? training._id: '')"
+        >
+          <i class="fa-solid fa-x"></i>
+        </button>
+      </div>
+      } @empty {
+      <div class="layout__box">Brak ćwiczeń</div>
+      }
     </div>
-    } @empty {
-    <div class="layout__box">Brak ćwiczeń</div>
-    }
   </div>
   }@else if(state === "trainingDetails" && selectedTraining){
   <div class="layout__column">
