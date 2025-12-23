@@ -54,6 +54,7 @@ export class TrainingSession implements OnInit {
     this.trainingService.getAllTrainings().subscribe({
       next: (response: TrainingList[]) => {
         if (response) this.trainingList = response;
+        console.log(response);
       },
       error: (err: any) => console.error(err),
     });
