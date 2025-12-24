@@ -33,6 +33,7 @@ export class TrainingPlanBuilder {
     this.planForm = new FormGroup({
       name: new FormControl('', Validators.required),
       estimatedTime: new FormControl(1, Validators.required),
+      day: new FormControl(0, Validators.required),
       exercises: new FormArray([]),
     });
     if (this.existingPlan) {
@@ -53,6 +54,9 @@ export class TrainingPlanBuilder {
 
   loadingExistingPlan(plan: TrainingList) {
     this.planForm.get('name')?.setValue(plan.name);
+    plan.day
+      ? this.planForm.get('day')?.setValue(plan.day)
+      : this.planForm.get('day')?.setValue(0);
     console.log(plan);
     plan.exercises.forEach((exercise, idx) => {
       this.addExercise(

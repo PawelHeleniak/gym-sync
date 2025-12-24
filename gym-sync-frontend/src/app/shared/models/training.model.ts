@@ -13,7 +13,9 @@ export interface Exercise {
 export interface TrainingList {
   _id?: string;
   name: string;
+  day?: number;
+  badge?: boolean;
   estimatedTime: number;
   exercises: Exercise[];
-  historyCount?: Number;
+  historyCount?: number;
 }
