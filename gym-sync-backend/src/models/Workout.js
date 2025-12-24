@@ -23,7 +23,9 @@ const exerciseSchema = new mongoose.Schema({
 const workoutPlanSchema = new mongoose.Schema({
   plan: { type: mongoose.Schema.Types.ObjectId, ref: "Workout" },
   name: { type: String, required: true, unique: true },
-  estimatedTime: { type: Number, required: true },
+  estimatedTime: { type: Number },
+  day: { type: Number },
+  badge: { type: Boolean },
   exercises: {
     type: [exerciseSchema],
     validate: [
