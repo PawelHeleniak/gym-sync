@@ -2,7 +2,10 @@ import Workout from "../models/Workout.js";
 
 export const addWorkout = async (req, res) => {
   try {
-    const newWorkout = new Workout(req.body);
+    const newBody = req.body;
+
+    newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
+    const newWorkout = new Workout(newBody);
     const savedWorkout = await newWorkout.save();
     res.status(201).json(savedWorkout);
   } catch (err) {
@@ -46,7 +49,11 @@ export const deleteWorkout = async (req, res) => {
 export const updateWorkout = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedWorkout = await Workout.findByIdAndUpdate(id, req.body, {
+    const newBody = req.body;
+
+    newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
+
+    const updatedWorkout = await Workout.findByIdAndUpdate(id, newBody, {
       new: true,
       runValidators: true,
     });
@@ -62,4 +69,12 @@ export const updateWorkout = async (req, res) => {
     console.error("Błąd aktualizowania treningu:", err.message);
     res.status(500).json({ error: "Nie udało się zaktualizować treningu" });
   }
+};
+
+const calculateEstimatedTime = (exercises = []) => {
+  return exercises.reduce((sum, e) => {
+    const setsCount = Array.isArray(e.sets) ? e.sets.length : 0;
+    const breakTime = Number(e.breakTime) || 0;
+    return sum + breakTime * setsCount;
+  }, 0);
 };
