@@ -12,6 +12,7 @@ export class TrainingDetails {
   time: string = '';
   ngOnInit() {
     this.time = formatTime(this.selectedTraining.estimatedTime);
+    console.log(this.selectedTraining);
   }
   @Input() stepsView: boolean = false;
   @Input() selectedTraining: TrainingList = {

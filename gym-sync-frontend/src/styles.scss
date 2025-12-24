@@ -289,3 +289,12 @@ button {
     }
   }
 }
+// Nowe UI/UX
+.box {
+  background: rgba(74, 9, 121, 0.2);
+  border-radius: 1.6rem;
+  backdrop-filter: blur(0.8rem);
+  -webkit-backdrop-filter: blur(0.8rem);
+  border: 1px solid rgba(100, 26, 217, 0.2);
+  position: relative;
+}

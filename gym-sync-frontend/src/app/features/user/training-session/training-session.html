@@ -1,39 +1,62 @@
 <div class="layout__row --top">
   @if(state === "trainingList"){
   <div class="layout__column">
-    <h2 class="layout__header">Wybierz trening</h2>
-    <div class="list">
-      @for (training of trainingList; track training.name) {
-      <div class="layout__row list__item">
-        <div class="list__info">
-          <h3>{{ training.name }}</h3>
-          <div>
-            <span>10:20 min.</span>
-            <!-- <span></span> -->
-          </div>
-        </div>
-        <div class="list__buttons">
-          <button
-            class="button__control button__control--warning"
-            (click)="removeTraining(training._id? training._id: '')"
-          >
-            <i class="fa-solid fa-x"></i>
-          </button>
-          <button class="button__control" (click)="editTraining(training)">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
-          <button
-            class="button__control button__control--start"
-            (click)="changeStateWorkout(training, 'trainingDetails')"
-          >
-            Start <i class="fa-solid fa-arrow-right"></i>
-          </button>
-        </div>
-      </div>
-      } @empty {
-      <div class="layout__box">Brak ćwiczeń</div>
-      }
+    <div class="layout__header">
+      <h2 class="layout__header--name">Wybierz trening</h2>
+      <button (click)="toggleView()" class="layout__header--btn">
+        <!-- @if(viewMode === 'all'){ -->
+        <i class="fa-solid fa-grip"></i>
+        <!-- }@else { -->
+        <!-- <i class="fa-solid fa-layer-group"></i> -->
+        <!-- } -->
+      </button>
     </div>
+    @for (trainingList of trainingListTest | keyvalue; track trainingList; ) {
+    <div class="grid-wrapper">
+      <h4 class="list__header">{{ getHeaderForDay(trainingList.key) }}</h4>
+      <div class="list">
+        @for (training of trainingList.value; track training; let i = $index) {
+        <div class="layout__row list__item">
+          <div class="list__info">
+            <h3>{{ training.name }}</h3>
+            <span>{{ formatEstimatedTime(training.estimatedTime) }}</span>
+          </div>
+          <div class="list__buttons">
+            <button
+              class="button__control button__control--warning"
+              (click)="removeTraining(training._id? training._id: '')"
+            >
+              <i class="fa-solid fa-x"></i>
+            </button>
+            <button class="button__control" (click)="editTraining(training)">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button
+              class="button__control button__control--start"
+              (click)="changeStateWorkout(training, 'trainingDetails')"
+            >
+              Start <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <button
+            class="list__badge"
+            [class.list__badge--active]="training.badge === true"
+            (click)="toggleBadge(training, training._id? training._id: '')"
+          >
+            <i
+              class="fa-star"
+              [class.fa-solid]="training.badge === true"
+              [class.fa-regular]="training.badge === false || training.badge === undefined"
+            ></i>
+          </button>
+        </div>
+        } @empty {
+        <div class="layout__box">Brak ćwiczeń</div>
+        }
+      </div>
+    </div>
+    }
   </div>
   }@else if(state === "trainingDetails" && selectedTraining){
   <div class="layout__column">

@@ -2,21 +2,54 @@
   {{!existingPlan? "Dodaj nowy trening": "Edytuj plan"}}
 </h2>
 <form [formGroup]="planForm" class="form">
-  <div
-    class="input-field form__header"
-    [class.filled]="planForm.get('name')?.value"
-  >
-    <label for="PlanName" class="input-field__label">Nazwa treningu</label>
-    <input
-      type="text"
-      formControlName="name"
-      required
-      id="PlanName"
-      class="input-field__input"
-    />
-    @if(planForm.get('name')?.invalid && planForm.get('name')?.touched){
-    <div class="input-field__error">Nazwa treningu jest wymagana</div>
-    }
+  <div class="form__header">
+    <div
+      class="input-field form__header"
+      [class.filled]="planForm.get('name')?.value"
+    >
+      <label for="PlanName" class="input-field__label">Nazwa treningu</label>
+      <input
+        type="text"
+        formControlName="name"
+        required
+        id="PlanName"
+        class="input-field__input"
+      />
+      @if(planForm.get('name')?.invalid && planForm.get('name')?.touched){
+      <div class="input-field__error">Nazwa treningu jest wymagana</div>
+      }
+    </div>
+    <div
+      class="input-field form__header"
+      [class.filled]="planForm.get('day')?.value"
+    >
+      <label for="PlanDay" class="input-field__label">Dzień treningowy</label>
+      <select
+        formControlName="day"
+        required
+        id="PlanDay"
+        class="input-field__input"
+      >
+        <option value="0">Nie przypisano</option>
+        <option value="1">Poniedziałek</option>
+        <option value="2">Wtorek</option>
+        <option value="3">Środa</option>
+        <option value="4">Czwartek</option>
+        <option value="5">Piątek</option>
+        <option value="6">Sobota</option>
+        <option value="7">Niedziela</option>
+      </select>
+      @if(planForm.get('name')?.invalid && planForm.get('name')?.touched){
+      <div class="input-field__error">Nazwa treningu jest wymagana</div>
+      }
+    </div>
+    <div
+      class="input-field form__header"
+      [class.filled]="planForm.get('name')?.value"
+    >
+      <span>Szacowany czas:</span>
+      <span>{{ planForm.get('estimatedTime')?.value }}</span>
+    </div>
   </div>
   <div class="workout" formArrayName="exercises">
     @for (exercise of exercisesArray.controls; track exercise; let i = $index) {
