@@ -12,6 +12,11 @@
   }
 }
 .exercise {
+  // background: rgba(74, 9, 121, 0.2);
+  // border-radius: 16px;
+  // backdrop-filter: blur(0.8rem);
+  // -webkit-backdrop-filter: blur(0.8rem);
+  // border: 1px solid rgba(100, 26, 217, 0.2);
   &__name {
     span {
       font-weight: 600;
@@ -25,6 +30,11 @@
   width: 100%;
   border-radius: var(--border-radius-primary);
   height: max-content;
+  background: rgba(74, 9, 121, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(0.8rem);
+  -webkit-backdrop-filter: blur(0.8rem);
+  border: 1px solid rgba(100, 26, 217, 0.2);
   &--steps {
     max-height: 55vh;
     overflow-y: auto;
