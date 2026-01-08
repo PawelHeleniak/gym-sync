@@ -14,14 +14,18 @@ import { TrainingList } from '../../../shared/models/training.model';
 import { TimeItem } from './models/training-session.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TrainingPlanBuilder } from '../training-plan-builder/training-plan-builder';
+import { formatTime } from '../../../shared/utils/time';
+import { KeyValuePipe } from '@angular/common';
+
 type TrainingState =
   | 'trainingList'
   | 'trainingDetails'
   | 'trainingActive'
   | 'trainingSummary'
   | 'trainingEdit';
-import { formatTime } from '../../../shared/utils/time';
-import { KeyValuePipe } from '@angular/common';
+
+type TrainingsByDay = Record<number, TrainingList[]>;
+
 @Component({
   selector: 'app-training-session',
   imports: [Timer, Steps, TrainingDetails, TrainingPlanBuilder, KeyValuePipe],
@@ -33,19 +37,19 @@ export class TrainingSession implements OnInit {
 
   trainingList: TrainingList[] = [];
   trainingListTest: TrainingsByDay = {};
-  currentExerciseIndex: number = 0;
-  currentRepIndex: number = 0;
+
   selectedTraining: TrainingList = {
     name: '',
     estimatedTime: 0,
     exercises: [],
   };
 
-  private _snackBar = inject(MatSnackBar);
-  durationInSeconds: number = 3000;
+  currentExerciseIndex = 0;
+  currentRepIndex = 0;
 
   viewMode: 'all' | 'days' = 'all';
-  listHeader: { [key: number]: string } = {
+
+  listHeader: Record<number, string> = {
     0: 'Brak przypisanego dnia',
     1: 'Poniedziałek',
     2: 'Wtorek',
@@ -57,59 +61,63 @@ export class TrainingSession implements OnInit {
   };
 
   doneExercises = signal<TimeItem[]>([]);
+  durationInSeconds = 3000;
+
   @ViewChild('timer') timerComponent!: Timer;
+
+  private snackBar = inject(MatSnackBar);
 
   constructor(private trainingService: TrainingService) {}
 
   ngOnInit() {
     this.getAllTraining();
   }
+
   getAllTraining() {
     this.trainingService.getAllTrainings().subscribe({
-      next: (response: TrainingList[]) => {
-        if (response) this.trainingList = response;
-        this.trainingList = this.trainingList
+      next: (response) => {
+        if (!response) return;
+
+        this.trainingList = response
           .slice()
           .sort((a, b) => Number(!!b.badge) - Number(!!a.badge));
 
         this.trainingListTest = this.groupByDay(this.trainingList);
-        console.log(this.trainingListTest);
       },
-      error: (err: any) => console.error(err),
+      error: console.error,
     });
   }
+
   changeStateWorkout(training: TrainingList, state: TrainingState) {
     if (!training._id) return;
+
     this.trainingService.getTraining(training._id).subscribe({
-      next: (response: TrainingList) => {
-        if (response) {
-          this.selectedTraining = response;
-          this.state = state;
-          this.calculateTime();
-        }
+      next: (response) => {
+        if (!response) return;
+
+        this.selectedTraining = response;
+        this.state = state;
+        this.calculateTime();
       },
-      error: (err: any) => console.error(err),
+      error: console.error,
     });
   }
 
   calculateTime() {
-    let time: number;
-    const estimatedTime = this.selectedTraining.exercises.map(
-      (element) => (time = element.breakTime * element.sets.length)
-    );
-    estimatedTime.forEach((num) => {
-      this.selectedTraining.estimatedTime += num;
-    });
+    this.selectedTraining.estimatedTime =
+      this.selectedTraining.exercises.reduce(
+        (sum, ex) => sum + ex.breakTime * ex.sets.length,
+        0
+      );
   }
+
   removeTraining(id: string) {
     this.trainingService.removeTraining(id).subscribe({
-      next: (response: TrainingList) => {
-        if (response) {
-          this.getAllTraining();
-          this.openSnackBar('Usunięcie powiodło się', 'success');
-        }
+      next: () => {
+        this.getAllTraining();
+        this.openSnackBar('Usunięcie powiodło się', 'success');
       },
-      error: (err: any) => {
+      error: (err) => {
         this.openSnackBar(
           'Usunięcie nie powiodło się, spróbuj ponownie.',
           'warning'
@@ -118,15 +126,9 @@ export class TrainingSession implements OnInit {
       },
     });
   }
+
   editTraining(training: TrainingList) {
     this.changeStateWorkout(training, 'trainingEdit');
-  }
-  get currentExercise() {
-    return this.selectedTraining.exercises[this.currentExerciseIndex];
-  }
-
-  get currentRep() {
-    return this.currentExercise.sets[this.currentRepIndex];
   }
 
   handleDoneExercises(data: TimeItem[]) {
@@ -141,28 +143,18 @@ export class TrainingSession implements OnInit {
     this.state = 'trainingList';
     this.doneExercises.set([]);
   }
+
   stopTimer() {
     this.timerComponent.stop();
   }
-  openSnackBar(message: string, mode: string) {
-    if (mode === 'success') {
-      this._snackBar.open(message, '', {
-        duration: this.durationInSeconds,
-        panelClass: ['snackbar', 'snackbar--success'],
-      });
-    } else if (mode === 'warning') {
-      this._snackBar.open(message, '', {
-        duration: this.durationInSeconds,
-        panelClass: ['snackbar', 'snackbar--warning'],
-      });
-    }
-  }
-  toggleBadge(value: TrainingList, id: string) {
-    value.badge = !value.badge;
-    this.trainingService.updateTraining(value, id).subscribe({
-      next: (response) => {
+
+  toggleBadge(training: TrainingList, id: string) {
+    training.badge = !training.badge;
+
+    this.trainingService.updateTraining(training, id).subscribe({
+      next: () => {
         this.openSnackBar(
-          value.badge ? 'Dodano do ulubionych.' : 'Usunięto z ulubionych.',
+          training.badge ? 'Dodano do ulubionych.' : 'Usunięto z ulubionych.',
           'success'
         );
         this.getAllTraining();
@@ -173,30 +165,33 @@ export class TrainingSession implements OnInit {
       },
     });
   }
+
   toggleView() {
     this.viewMode = this.viewMode === 'all' ? 'days' : 'all';
     localStorage.setItem('trainingSessionViewMode', this.viewMode);
   }
+
   formatEstimatedTime(time: number): string {
     return formatTime(time);
   }
 
   groupByDay(trainings: TrainingList[]): TrainingsByDay {
     return trainings.reduce((acc, training) => {
-      if (training.day !== undefined) {
-        acc[training.day] ??= [];
-        acc[training.day].push(training);
-      } else {
-        acc[0] ??= [];
-        acc[0].push(training);
-      }
+      const day = training.day ?? 0;
+      acc[day] ??= [];
+      acc[day].push(training);
       return acc;
     }, {} as TrainingsByDay);
   }
 
   getHeaderForDay(day: string): string {
-    let convertDay = Number(day);
-    return this.listHeader[convertDay];
+    return this.listHeader[Number(day)];
+  }
+
+  openSnackBar(message: string, mode: 'success' | 'warning') {
+    this.snackBar.open(message, '', {
+      duration: this.durationInSeconds,
+      panelClass: ['snackbar', `snackbar--${mode}`],
+    });
   }
 }
-type TrainingsByDay = Record<number, TrainingList[]>;
