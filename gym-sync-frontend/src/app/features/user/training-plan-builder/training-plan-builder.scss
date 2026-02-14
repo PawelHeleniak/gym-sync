@@ -1,181 +1,112 @@
 @use "../../../../styles.scss" as style;
 
-// .workout {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 2rem;
-//   &__wrapper {
-//     padding: 5.6rem 1rem 1rem 1rem;
-//     position: relative;
-//     background-color: var(--color-bg-secondary);
-//     border-radius: var(--border-radius-primary);
-//     gap: 1rem;
-//     @include tablet {
-//       padding: 1rem;
-//     }
-//   }
-// }
-// .button {
-//   justify-content: center;
-//   &__control {
-//     background-color: var(--color-bg-secondary);
-//     &:hover {
-//       background-color: var(--color-bg-surface);
-//     }
-//   }
-// }
-// .sets {
-//   display: grid;
-//   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-//   grid-gap: 2rem;
-//   &__box {
-//     position: relative;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     background-color: var(--color-bg-surface);
-//     border-radius: var(--border-radius-primary);
-//     padding: 1rem;
-//     gap: 1rem;
-//     height: max-content;
-//   }
-// }
-// .--sets {
-//   align-items: center;
-//   width: max-content;
-//   margin: 0 auto;
-//   @include tablet {
-//     margin: initial;
-//   }
-//   button {
-//     aspect-ratio: 1;
-//   }
-// }
-// .button.--removeSet,
-// .button.--removeExercise {
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   padding: 1rem;
-//   button {
-//     border-radius: 5rem;
-//     padding: 1.2rem;
-//     width: 36px;
-//     height: 36px;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     &:hover {
-//       background-color: var(--warning);
-//     }
-//   }
-// }
-// .button.--removeSet {
-//   button {
-//     background-color: transparent;
-//     width: 32px;
-//     height: 32px;
-//     &:hover {
-//       background-color: var(--warning);
-//     }
-//   }
-// }
-// // Form
-// .form {
-//   display: flex;
-//   flex-direction: column;
-//   &__header {
-//     margin-bottom: 1rem;
-//     padding: 0.5rem;
-//   }
-//   &__group {
-//     display: flex;
-//     &--row {
-//       flex-direction: column;
-//       gap: 1rem;
-//       @include tablet {
-//         flex-direction: row;
-//       }
-//     }
-//     &--column {
-//       flex-direction: column;
-//     }
-//   }
-// }
-// .form {
-//   &__header {
-//     display: flex;
-//     justify-content: space-between;
-//   }
-// }
-// // .form {
-// //   &__header {
-// //     display: flex;
-// //     flex-direction: row;
-// //     justify-content: space-between;
-// //     border-radius: var(--border-radius-primary);
-// //     padding: 1rem;
-// //     background: #4a097933;
-// //     border-radius: 16px;
-// //     backdrop-filter: blur(0.8rem);
-// //     -webkit-backdrop-filter: blur(0.8rem);
-// //     border: 1px solid #641ad933;
-// //     margin-bottom: 2rem;
-// //   }
-// // }
-// // .workout {
-// //   display: flex;
-// //   flex-direction: column;
-// //   gap: 2rem;
-// //   &__wrapper {
-// //     border-radius: var(--border-radius-primary);
-// //     padding: 1rem;
-// //     background: #4a097933;
-// //     border-radius: 16px;
-// //     backdrop-filter: blur(0.8rem);
-// //     -webkit-backdrop-filter: blur(0.8rem);
-// //     border: 1px solid #641ad933;
-// //   }
-// // }
-// // .input-field {
-// //   display: flex;
-// //   flex-direction: column;
-// //   position: relative;
-// //   width: 100%;
-// //   &__input {
-// //     background-color: transparent;
-// //     color: var(--text-primary);
-// //     padding: 1rem;
-// //     border: none;
-// //     font-size: var(--font-size-base);
-// //     background: rgba(74, 9, 121, 0.2);
-// //     border-radius: 12px;
-// //     backdrop-filter: blur(0.8rem);
-// //     -webkit-backdrop-filter: blur(0.8rem);
-// //     border: 1px solid rgba(100, 26, 217, 0.2);
-// //     position: relative;
-// //   }
-// // }
 .form {
   &__header {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    gap: 1rem;
+    margin-bottom: 2rem;
+    gap: 2rem;
+  }
+  &__estimatedTime {
+    .ui-field__input {
+      display: flex;
+      gap: 1rem;
+    }
   }
 }
-.workout {
+.exercise {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   &__wrapper {
-    padding: 0.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 2rem;
+    &--break {
+      background-color: var(--accent-opacity);
+    }
   }
   &__top {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
+    width: calc(100% - 6.4rem);
+  }
+  &__remove {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    button {
+      padding: 0;
+      width: 4.7rem;
+      height: 4.7rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.sets {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  & > :last-child {
+    margin-top: 1rem;
+  }
+  &__box {
+    display: flex;
+    gap: 2rem;
+    background-color: var(--color-bg-surface);
+    border: none;
+    h3 {
+      display: flex;
+      align-items: center;
+      min-width: 10rem;
+    }
+    .ui-field {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.6rem 1rem;
+      align-items: center;
+      &__label {
+        font-size: var(--font-size-m);
+      }
+    }
+  }
+  &__add {
+    display: flex;
+    justify-content: center;
+    // margin-top: 2rem;
+    button {
+      padding: 0;
+      width: 4.7rem;
+      height: 4.7rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  &__remove {
+    position: relative;
+    button {
+      padding: 0;
+      width: 4.7rem;
+      height: 4.7rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.control {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  &__btn {
+    width: 100%;
+  }
+}
+.sumbit {
+  &__btn {
+    width: 100%;
   }
 }

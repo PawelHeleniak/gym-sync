@@ -2,26 +2,29 @@
   {{!existingPlan? "Dodaj nowy trening": "Edytuj plan"}}
 </h2>
 <form [formGroup]="planForm" class="form">
-  <div class="form__header box">
-    <div class="input-field" [class.filled]="planForm.get('name')?.value">
+  <div class="form__header">
+    <div
+      class="ui-field"
+      [class.ui-field--error]="planForm.get('name')?.invalid && planForm.get('name')?.touched"
+    >
       <input
         type="text"
         formControlName="name"
         placeholder="Nazwa treningu"
         required
         id="PlanName"
-        class="input-field__control"
+        class="ui-field__input"
       />
       @if(planForm.get('name')?.invalid && planForm.get('name')?.touched){
-      <small class="input-field__error">Nazwa treningu jest wymagana</small>
+      <small class="ui-field__error">Nazwa treningu jest wymagana</small>
       }
     </div>
-    <div class="input-field" [class.filled]="planForm.get('day')?.value">
+    <div class="ui-field">
       <select
         formControlName="day"
         required
         id="PlanDay"
-        class="input-field__input"
+        class="ui-field__input"
       >
         <option value="0">Nie przypisano</option>
         <option value="1">Poniedziałek</option>
@@ -32,125 +35,119 @@
         <option value="6">Sobota</option>
         <option value="7">Niedziela</option>
       </select>
-      @if(planForm.get('name')?.invalid && planForm.get('name')?.touched){
-      <small class="input-field__error">Nazwa treningu jest wymagana</small>
+      @if(planForm.get('day')?.invalid && planForm.get('day')?.touched){
+      <small class="ui-field__error">Dzień treningu jest wymagany</small>
       }
     </div>
-    <div class="input-field" [class.filled]="planForm.get('name')?.value">
-      <span>Szacowany czas:</span>
-      <span>{{ planForm.get('estimatedTime')?.value }}</span>
+    <div class="ui-field form__estimatedTime">
+      <div class="ui-field__input ui-field__input--disabled">
+        <p>
+          Szacowany czas:
+          <span>{{ planForm.get('estimatedTime')?.value }} h</span>
+        </p>
+      </div>
     </div>
   </div>
-  <div class="workout" formArrayName="exercises">
+  <div class="exercise" formArrayName="exercises">
     @for (exercise of exercisesArray.controls; track exercise; let i = $index) {
-    <div class="workout__wrapper box">
+    <div
+      class="exercise__wrapper box"
+      [class.exercise__wrapper--break]="exercise.get('isBreak')?.value"
+    >
       <ng-container [formGroupName]="i">
-        <div class="workout__top">
-          <div class="input-field" [class.filled]="exercise.get('name')?.value">
+        <div class="exercise__top">
+          <div class="ui-field">
             <input
               type="text"
               formControlName="name"
               required="true"
               id="name-{{i}}"
-              class="input-field__control"
+              class="ui-field__input"
               placeholder="Nazwa ćwiczenia"
             />
             @if(exercise.get('name')?.invalid && exercise.get('name')?.touched){
-            <small class="input-field__error"
-              >Nazwa ćwiczenia jest wymagana</small
-            >
+            <small class="ui-field__error">Nazwa ćwiczenia jest wymagana</small>
             }
           </div>
-          <div
-            class="input-field"
-            [class.filled]="exercise.get('breakTime')?.value || exercise.get('breakTime')?.value === 0"
-          >
+          <div class="ui-field">
             <input
               type="number"
               formControlName="breakTime"
               required="true"
               id="breakTime-{{i}}"
-              class="input-field__control"
+              class="ui-field__input"
               placeholder="Przerwa między seriami (sek.)"
             />
             @if(exercise.get('breakTime')?.invalid &&
             exercise.get('breakTime')?.touched){
-            <small class="input-field__error">Czas przerwy jest wymagany</small>
+            <small class="ui-field__error">Czas przerwy jest wymagany</small>
             }@else if(exercise.get('breakTime')?.value === 0){
-            <small class="input-field__error">Przerwa nie może wynosić 0</small>
+            <small class="ui-field__error">Przerwa nie może wynosić 0</small>
             }
           </div>
         </div>
-        <div
-          class="input-field"
-          [class.filled]="exercise.get('comment')?.value"
-        >
+        @if(existingPlan){
+        <div class="ui-field">
           <textarea
             formControlName="comment"
             id="comment-{{i}}"
-            class="input-field__input"
+            class="ui-field__input"
             placeholder="Komentarz do ćwiczenia"
           ></textarea>
         </div>
-        <div class="input-field input-field--checkbox d-none">
-          <label for="isBreak-{{i}}" class="input-field__label"
-            >Czy przerwa</label
-          >
+        }
+        <div class="ui-field ui-field--checkbox d-none">
+          <label for="isBreak-{{i}}" class="ui-field__label">Czy przerwa</label>
           <input
             type="checkbox"
             formControlName="isBreak"
             id="isBreak-{{i}}"
-            class="input-field__input"
+            class="ui-field__input"
           />
         </div>
         @if(!exercise.get('isBreak')?.value){
         <div formArrayName="sets" class="sets">
           @for (set of getSets(i).controls; track set; let j = $index) {
           <ng-container [formGroupName]="j">
-            <div class="sets__box">
+            <div class="sets__box box">
               <h3>Seria {{j + 1}}</h3>
-              <div
-                class="input-field"
-                [class.filled]="set.get('repsCount')?.value || set.get('repsCount')?.value === 0"
-              >
-                <label for="repsCount-{{i}}-{{j}}" class="input-field__label"
-                  >Powtórzenia</label
+              <div class="ui-field">
+                <label for="repsCount-{{i}}-{{j}}" class="ui-field__label"
+                  >Powtórzenia:</label
                 >
                 <input
                   type="number"
                   formControlName="repsCount"
                   required="true"
                   id="repsCount-{{i}}-{{j}}"
-                  class="input-field__input"
+                  class="ui-field__input"
+                  [class.ui-field__input--error]="(set.get('repsCount')?.invalid || set.get('repsCount')?.value === 0) && set.get('repsCount')?.touched"
                 />
-                @if(set.get('repsCount')?.invalid &&
+                <!-- @if(set.get('repsCount')?.invalid &&
                 set.get('repsCount')?.touched){
-                <div class="input-field__error">Powtórzenia są wymagane</div>
+                <div class="ui-field__error">Powtórzenia są wymagane</div>
                 }@else if(set.get('repsCount')?.value === 0){
-                <div class="input-field__error">
+                <div class="ui-field__error">
                   Powtórzenia nie mogą wynosić 0
                 </div>
-                }
+                } -->
               </div>
-              <div
-                class="input-field"
-                [class.filled]="set.get('weight')?.value || set.get('weight')?.value === 0"
-              >
-                <label for="weight-{{i}}-{{j}}" class="input-field__label"
-                  >Ciężar</label
+              <div class="ui-field">
+                <label for="weight-{{i}}-{{j}}" class="ui-field__label"
+                  >Ciężar:</label
                 >
                 <input
                   type="text"
                   formControlName="weight"
                   id="weight-{{i}}-{{j}}"
-                  class="input-field__input"
+                  class="ui-field__input"
                 />
               </div>
-              <div class="button --removeSet">
+              <div class="sets__remove">
                 <button
                   type="button"
                   (click)="removeExerciseSet(i, j)"
-                  class="button__control"
+                  class="ui-btn ui-btn--danger"
                 >
                   <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -158,11 +155,11 @@
             </div>
           </ng-container>
           }
-          <div class="button --sets">
+          <div class="sets__add">
             <button
               type="button"
               (click)="addExerciseSetButton(i)"
-              class="button__control"
+              class="ui-btn ui-btn--secondary"
             >
               <i class="fa-solid fa-plus"></i>
             </button>
@@ -170,39 +167,47 @@
         </div>
         }
       </ng-container>
-      <div class="button --removeExercise">
-        <button class="button__control" (click)="removeExercise(i)">
+      <div class="exercise__remove">
+        <button class="ui-btn ui-btn--danger" (click)="removeExercise(i)">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
     </div>
     }
-    <div class="button">
-      <button
-        type="button"
-        (click)="addExercise('Nowe ćwiczenie', 120, false, '')"
-        class="button__control"
-      >
-        Dodaj ćwiczenie
-      </button>
+    <div class="control">
       <button
         type="button"
         (click)="addExercise('Przerwa', 60, true, '')"
-        class="button__control"
+        class="ui-btn control__btn"
       >
-        Dodaj Przerwę
+        <i class="fa-solid fa-pause"></i> Dodaj Przerwę
+      </button>
+      <button
+        type="button"
+        (click)="addExercise('Nowe ćwiczenie', 120, false, '')"
+        class="ui-btn control__btn"
+      >
+        <i class="fa-solid fa-dumbbell"></i> Dodaj ćwiczenie
       </button>
     </div>
   </div>
 </form>
-<div class="button mt-1">
-  @if(!existingPlan){
-  <button type="button" (click)="addPlanForm()" class="button__control">
-    Dodaj plan
+<div class="sumbit mt-1">
+  @if(exercisesArray.length > 0){ @if(!existingPlan){
+  <button
+    type="button"
+    (click)="addPlanForm()"
+    class="ui-btn ui-btn--arrow ui-btn--primary sumbit__btn"
+  >
+    Dodaj plan <i class="fa-solid fa-arrow-right"></i>
   </button>
   }@else{
-  <button type="button" (click)="updateTraining()" class="button__control">
-    Edytuj plan
+  <button
+    type="button"
+    (click)="updateTraining()"
+    class="ui-btn ui-btn--arrow ui-btn--primary sumbit__btn"
+  >
+    Edytuj plan <i class="fa-solid fa-arrow-right"></i>
   </button>
-  }
+  } }
 </div>

@@ -9,15 +9,26 @@
   --primary: hsl(271, 80%, 38%);
   --secondary: hsl(268, 88%, 25%);
   --accent: hsl(293, 100%, 35%);
+  --accent-opacity: hsl(293, 100%, 35%, 0.6);
   --color-bg-primary: #020104;
   --color-bg-secondary: hsla(275, 38%, 12%, 0.7);
-  --color-bg-surface: hsl(263, 28%, 14%);
+  --color-bg-surface: hsla(267, 28%, 14%, 0.7);
   --color-text-primary: hsl(243, 76%, 95%);
-  --color-text-secondary: hsl(243, 76%, 95%);
+  --color-text-secondary: hsl(240, 14%, 75%);
 
   --color-btn: hsla(270, 35%, 18%, 0.85);
   --color-btn-danger: hsla(350, 45%, 20%, 0.85);
   --color-btn-success: hsla(145, 40%, 20%, 0.85);
+  --color-btn-primary: hsla(271, 80%, 38%, 0.85);
+  --color-btn-secondary: hsla(268, 88%, 25%, 0.85);
+
+  --color-input: hsla(265, 30%, 16%, 0.7);
+  --color-input-border: hsla(262, 100%, 68%, 0.12);
+  --color-input-text: var(--color-text-primary);
+  --color-input-placeholder: rgba(220, 210, 255, 0.45);
+  --color-input-text-disabled: var(--color-input-placeholder);
+  --color-input-border-focus: hsl(271, 80%, 55%);
+  --color-input-focus-glow: rgba(170, 120, 255, 0.25);
 
   --warning: hsl(0, 100%, 40%);
   --warning-hover: hsl(0, 100%, 50%);
@@ -28,7 +39,7 @@
   --border-radius-primary: 1.2rem;
   --border-radius-secondary: 1.6rem;
 
-  --max-width: 1920px;
+  --max-width: 1600px;
 
   // Font size
   --font-scale: 1.25;
@@ -158,57 +169,46 @@ button {
   @include tablet {
     flex-direction: row;
   }
-  &__control {
-    background-color: var(--color-bg-secondary);
-    padding: 1rem 1.2rem;
-    border-radius: var(--border-radius-primary);
-    border: none;
-    transition: 0.2s ease-in background;
-    width: 100%;
-    &:hover {
-      background-color: var(--color-bg-surface);
-    }
-    &--warning {
-      background-color: var(--warning);
-      &:hover {
-        background-color: var(--warning-hover);
-      }
-    }
-    &--success {
-      background-color: var(--success);
-      &:hover {
-        background-color: var(--success-hover);
-      }
-    }
-  }
 }
 
 .layout {
-  &__box {
-    border-radius: var(--border-radius-primary);
-    background-color: var(--color-bg-secondary);
-    padding: 2rem;
-    width: 100%;
-  }
-  &__row {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    width: 100%;
-  }
-  &__column {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-  }
+  // &__box {
+  //   border-radius: var(--border-radius-primary);
+  //   background-color: var(--color-bg-secondary);
+  //   padding: 2rem;
+  //   width: 100%;
+  // }
+  // &__row {
+  //   display: flex;
+  //   flex-direction: row;
+  //   gap: 1rem;
+  //   width: 100%;
+  // }
+  // &__column {
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 1rem;
+  //   width: 100%;
+  // }
   &__header {
     margin-bottom: 0.5rem;
+    @include tablet {
+      margin-bottom: 1rem;
+    }
   }
 }
 
 .mt-1 {
+  margin-top: 0.5rem;
+  @include tablet {
+    margin-top: 1rem;
+  }
+}
+.mt-2 {
   margin-top: 1rem;
+  @include tablet {
+    margin-top: 2rem;
+  }
 }
 .d-none {
   display: none !important;
@@ -229,6 +229,7 @@ button {
 }
 // Przyciski
 .ui-btn {
+  padding: 1.2rem 1.6rem;
   border: none;
   border-radius: var(--border-radius-secondary);
   background-color: var(--color-btn);
@@ -291,25 +292,83 @@ button {
       background: var(--color-btn-success);
     }
   }
-}
-// INPUTY
-.input-field {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 100%;
-  &__control {
-    background: rgba(74, 9, 121, 0.2);
-    border-radius: 1.2rem;
-    border: 1px solid rgba(100, 26, 217, 0.2);
-    padding: 1.2rem 1.6rem;
-    color: #fff;
-    font-size: var(--font-size-base);
-    outline: none;
-    transition: border-color 0.2s ease-in;
-    width: 100%;
-    &:focus {
-      border-color: rgba(100, 26, 217, 0.7);
+  &--primary {
+    background-color: var(--color-btn-primary);
+
+    &::before {
+      box-shadow:
+        rgb(120, 50, 220) 0px 0px 5px,
+        rgb(150, 80, 235) 0px 0px 15px,
+        rgb(180, 120, 245) 0px 0px 30px,
+        rgb(210, 160, 255) 0px 0px 60px;
+
+      background: var(--color-btn-primary);
     }
   }
+  &--secondary {
+    background-color: var(--color-btn-secondary);
+
+    &::before {
+      box-shadow:
+        rgb(90, 40, 180) 0px 0px 5px,
+        rgb(120, 70, 210) 0px 0px 15px,
+        rgb(150, 110, 230) 0px 0px 30px,
+        rgb(180, 150, 250) 0px 0px 60px;
+
+      background: var(--color-btn-secondary);
+    }
+  }
+}
+// Inputy
+.ui-field {
+  width: 100%;
+  &__input {
+    background: var(--color-input);
+    border-radius: var(--border-radius-primary);
+    border: 1px solid var(--color-input-border);
+    padding: 1.2rem 1.6rem;
+    color: var(--color-input-text);
+    font-size: var(--font-size-m);
+    outline: none;
+    transition:
+      border-color 0.2s ease-in,
+      box-shadow 0.2s ease-in;
+    width: 100%;
+    &::placeholder {
+      color: var(--color-input-placeholder);
+    }
+    &:focus {
+      border-color: var(--color-input-border-focus);
+      box-shadow: 0 0 8px var(--color-input-focus-glow);
+    }
+    &--disabled {
+      color: var(--color-input-text-disabled);
+    }
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      transition: background-color 9999s ease-in-out 0s;
+      -webkit-text-fill-color: var(--color-text-primary) !important;
+    }
+
+    &--error {
+      border-color: var(--warning);
+    }
+  }
+  &__error {
+    color: var(--warning);
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

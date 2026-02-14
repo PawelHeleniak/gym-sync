@@ -1,67 +1,85 @@
 <div class="layout__column">
-  <h2 class="layout__header">Historia</h2>
-  <div class="layout__box">
-    <div class="layout__row --history-btn">
-      @for (training of trainings; track $index) {
-      <div class="button" [ngClass]="{active: training._id === activeId}">
-        <button
-          type="button"
-          (click)="getHistoryTraining(training._id ?? '')"
-          class="button__control"
-        >
-          <div>{{training.name}}</div>
-          <div>Łączna liczba wpisów: {{training.historyCount ?? 0}}</div>
-        </button>
+  <h2 class="layout__header">Raporty treningowe</h2>
+  <div class="layout__box list">
+    @for (training of trainings; track $index) {
+    <button
+      type="button"
+      (click)="getHistoryTraining(training._id ?? '')"
+      class="list__btn ui-btn"
+      [class.list__btn--active]="training._id === activeId"
+    >
+      <div class="list__name">{{training.name}}</div>
+      <div class="list__count">
+        Łączna liczba wpisów: {{training.historyCount ?? 0}}
       </div>
-      }
-    </div>
+    </button>
+    }
   </div>
   @if(allHistoryTraining.length > 0){
-  <div class="layout__box">
+  <div class="layout__box history">
     @for (historyTraining of allHistoryTraining; track $index) {
-    <div class="history">
-      <div class="history__box">
-        <span class="history__name">Data treningu: </span>
-        <span class="history__value"
-          >{{historyTraining.date | date:'yyyy-MM-dd HH:MM'}}</span
-        >
+    <div class="history__box box">
+      <div class="history__top">
+        <div class="history__date">
+          <i class="fa-regular fa-calendar-days"></i> {{historyTraining.date |
+          date:'yyyy-MM-dd HH:MM'}}
+        </div>
+        <div class="history__time">
+          Czas trwania: {{format(historyTraining.totalTime)}} h
+        </div>
       </div>
-      <div class="history__box">
-        <span class="history__name">Czas treningu: </span>
-        <span class="history__value"
-          >{{format(historyTraining.totalTime)}} h</span
-        >
-      </div>
-      <div class="history__box">
-        <span class="history__name">Wykonane ćwiczenia:</span>
-        <div class="exercise mt-1">
+
+      <div class="history__exercises">
+        <div class="exercises box mt-2">
           @for (exercise of historyTraining.exercises; track $index) {
           <div
-            class="exercise__box"
-            [ngClass]="{'exercise__box--break': exercise.isBreak}"
+            class="exercises__box"
+            [ngClass]="{'exercises__box--break': exercise.isBreak}"
           >
-            <!-- @if(!exercise.isBreak){ -->
-            <span>{{exercise.name}}</span>
-            <span>{{exercise.comment}}</span>
-            <span>Przerwa między seriami: {{exercise.breakTime}} s</span>
-            <div class="set">
-              <div class="set__series">Serie:</div>
-              @for (set of exercise.sets; track $index) {
-              <div class="set__box">
-                <span>{{set.repsCount}} - {{set.weight}} kg</span>
+            @if(!exercise.isBreak){
+            <div class="exercises__info">
+              <div class="exercises__desc">
+                <span class="exercises__name">{{exercise.name}}</span>
+                <span
+                  >(Przerwa między seriami:
+                  <strong>{{exercise.breakTime}}</strong> s)</span
+                >
+              </div>
+              @if(exercise.comment){
+              <span class="exercises__comment"
+                ><i class="fa-regular fa-comment"></i>
+                {{exercise.comment}}</span
+              >
+              }
+            </div>
+            <div class="sets">
+              @for (set of exercise.sets; track $index; let j = $index) {
+              <div class="sets__box">
+                {{j + 1}}.
+                <strong
+                  >@if(set.weight){ {{set.weight}} kg x } {{set.repsCount}}
+                  powtórzeń</strong
+                >
               </div>
               }
             </div>
-            <!-- }@else {
-            <span class="exercise__break">{{exercise.name}}</span>
-            <span>Czas trwania przerwy: {{exercise.breakTime}} s</span>
-            } -->
+            }@else {
+            <span class="exercises__name"
+              >{{exercise.name}} - Czas trwania: {{exercise.breakTime}} s</span
+            >
+            }
           </div>
           }
         </div>
       </div>
     </div>
     }
+  </div>
+  }@else{
+  <div class="layout__box history">
+    <div class="history__box box">
+      <p class="history__empty">Brak historii treningów</p>
+    </div>
   </div>
   }
 </div>
