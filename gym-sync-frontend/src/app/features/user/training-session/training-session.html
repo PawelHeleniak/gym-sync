@@ -3,9 +3,9 @@
   <div class="layout__column">
     <div class="layout__header">
       <h2 class="layout__header--name">Wybierz trening</h2>
-      <button class="layout__header--btn" (click)="toggleView()">
+      <!-- <button class="layout__header--btn" (click)="toggleView()">
         <i class="fa-solid fa-grip"></i>
-      </button>
+      </button> -->
     </div>
 
     @for (trainingList of trainingListTest | keyvalue; track trainingList) {
@@ -15,7 +15,7 @@
       <div class="list">
         @for (training of trainingList.value; track training; let i = $index) {
 
-        <div class="layout__row list__item">
+        <div class="layout__row list__item box">
           <div class="list__info">
             <h3>{{ training.name }}</h3>
             <span>{{ formatEstimatedTime(training.estimatedTime) }}</span>
@@ -23,18 +23,18 @@
 
           <div class="list__buttons">
             <button
-              class="button__control button__control--warning"
+              class="ui-btn ui-btn--danger"
               (click)="removeTraining(training._id ? training._id : '')"
             >
               <i class="fa-solid fa-x"></i>
             </button>
 
-            <button class="button__control" (click)="editTraining(training)">
+            <button class="ui-btn ui-btn" (click)="editTraining(training)">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
 
             <button
-              class="button__control button__control--start"
+              class="ui-btn ui-btn--arrow"
               (click)="changeStateWorkout(training, 'trainingDetails')"
             >
               Start <i class="fa-solid fa-arrow-right"></i>

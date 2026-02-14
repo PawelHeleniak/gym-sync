@@ -26,7 +26,7 @@ export class TrainingPlanBuilder {
 
   constructor(
     private trainingService: TrainingService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +62,8 @@ export class TrainingPlanBuilder {
       this.addExercise(
         exercise.name,
         exercise.breakTime,
-        exercise.isBreak ?? false
+        exercise.isBreak ?? false,
+        exercise.comment ?? '',
       );
 
       const sets = this.getSets(idx);
@@ -76,13 +77,18 @@ export class TrainingPlanBuilder {
     });
   }
 
-  addExercise(name: string, breakTime: number, isBreak: boolean) {
+  addExercise(
+    name: string,
+    breakTime: number,
+    isBreak: boolean,
+    comment: string,
+  ) {
     const workoutGroup = new FormGroup({
       name: new FormControl(name, Validators.required),
       breakTime: new FormControl(breakTime, Validators.required),
       isBreak: new FormControl(isBreak),
       sets: new FormArray([]),
-      comment: new FormControl('', Validators.required),
+      comment: new FormControl(comment, Validators.required),
     });
 
     this.exercisesArray.push(workoutGroup);
@@ -106,7 +112,7 @@ export class TrainingPlanBuilder {
     this.addExerciseSet(
       j,
       repsArray.at(-1).value.repsCount,
-      repsArray.at(-1).value.weight
+      repsArray.at(-1).value.weight,
     );
   }
   addExerciseSet(j: number, repsCount: number, weight: number) {
@@ -137,7 +143,7 @@ export class TrainingPlanBuilder {
       error: (err: any) => {
         this.openSnackBar(
           'Nie udało się dodać trening, spróbuj ponownie.',
-          'warning'
+          'warning',
         );
         console.error(err);
       },
@@ -155,7 +161,7 @@ export class TrainingPlanBuilder {
         error: (err) => {
           this.openSnackBar(
             'Nie udało zaktualizować się treningu, spróbuj ponownie.',
-            'warning'
+            'warning',
           );
           console.error(err);
         },

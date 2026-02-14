@@ -1,4 +1,4 @@
-@import "../../../../styles.scss";
+@use "../../../../styles.scss" as styles;
 
 .button {
   &.active {
@@ -49,16 +49,16 @@
 .--history-btn {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  @include tablet {
+  @include styles.tablet {
     grid-template-columns: repeat(2, 1fr);
   }
-  @include laptop {
+  @include styles.laptop {
     grid-template-columns: repeat(3, 1fr);
   }
-  @include desktop {
+  @include styles.desktop {
     grid-template-columns: repeat(4, 1fr);
   }
-  @include xlDesktop {
+  @include styles.xlDesktop {
     grid-template-columns: repeat(5, 1fr);
   }
 }

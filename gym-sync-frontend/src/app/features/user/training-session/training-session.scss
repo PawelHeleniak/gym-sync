@@ -1,167 +1,5 @@
 @use "../../../../styles.scss" as style;
 
-// .btn {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   gap: 1rem;
-//   border: 2px solid var(--color-bg-secondary);
-//   cursor: pointer;
-//   font-size: var(--font-size-base);
-//   i {
-//     font-size: var(--font-size-s);
-//   }
-
-//   &:hover {
-//     // background-color: var(--color-bg-surface);
-//     border-color: var(--primary);
-//   }
-// }
-// .workout {
-//   display: flex;
-//   flex-direction: column;
-//   &__title {
-//     text-align: center;
-//     margin-bottom: 1rem;
-//   }
-//   &__box {
-//     display: flex;
-//     flex-direction: column;
-//     gap: 1rem;
-//   }
-//   &__name {
-//     text-align: center;
-//     margin-bottom: 0.5rem;
-//     font-size: var(--font-size-xl);
-//   }
-//   &__info {
-//     display: flex;
-//     justify-content: space-between;
-//   }
-//   &__time {
-//     span {
-//       color: var(--success);
-//     }
-//     &--stop {
-//       span {
-//         color: var(--warning);
-//       }
-//     }
-//   }
-//   // REPY
-//   &__reps {
-//     display: flex;
-//     justify-content: center;
-//     gap: 0.5rem;
-//   }
-//   &__rep {
-//     width: 36px;
-//     height: 36px;
-//     border-radius: 50px;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     background-color: var(--color-bg-surface);
-//     transition: 0.2s ease-in background;
-//     &--current {
-//       background-color: var(--accent);
-//     }
-//     &--done {
-//       background-color: var(--primary);
-//       opacity: 0.5;
-//     }
-//   }
-//   // Button
-//   &__btns {
-//     display: flex;
-//     flex-direction: row;
-//     gap: 0.5rem;
-//   }
-//   &__btn {
-//     background-color: var(--color-bg-secondary);
-//     color: var(--color-text-primary);
-//     border-radius: 50px;
-//     border: none;
-//     padding: 0.8rem;
-//     transition: 0.2s ease-in background;
-//     width: 100%;
-//     &:hover {
-//       background-color: var(--color-bg-surface);
-//     }
-//     &--warning {
-//       background-color: var(--warning);
-//       &:hover {
-//         background-color: var(--warning-hover);
-//       }
-//     }
-//   }
-// }
-// .list {
-//   display: flex;
-//   flex-direction: column;
-//   @include style.laptop {
-//     display: grid;
-//     grid-template-columns: repeat(4, 1fr);
-//     gap: 1rem;
-//   }
-//   &__item {
-//     display: flex;
-//     flex-direction: column;
-//     .buttons {
-//       display: flex;
-//     }
-//     // display: grid;
-//     // grid-template-columns: 1fr;
-//     // gap: 1rem;
-//     // position: relative;
-//     // @include style.tablet {
-//     //   display: flex;
-//     // }
-//     // &:has(:nth-child(2)) {
-//     //   grid-template-columns: repeat(2, 1fr);
-//     // }
-
-//     // &:has(:nth-child(3)) > :first-child {
-//     //   grid-column: 1 / -1;
-//     // }
-//     // &:not(:last-child) {
-//     //   padding-bottom: 1rem;
-//     //   margin-bottom: 1rem;
-//     //   @include style.tablet {
-//     //     margin-bottom: 0;
-//     //   }
-//     //   &::before {
-//     //     content: "";
-//     //     width: 100%;
-//     //     height: 1px;
-//     //     left: 0;
-//     //     bottom: 0;
-//     //     position: absolute;
-//     //     background-color: var(--color-bg-surface);
-//     //     @include style.tablet {
-//     //       display: none;
-//     //     }
-//     //   }
-//     // }
-//     // button {
-//     //   width: 100% !important;
-//     //   @include style.tablet {
-//     //     &.button__control {
-//     //       width: max-content !important;
-//     //     }
-//     //   }
-//     // }
-//   }
-// }
-// .layout__row {
-//   &.--top {
-//     display: flex;
-//     flex-direction: column-reverse;
-//     @include style.laptop {
-//       flex-direction: initial;
-//     }
-//   }
-// }
 .list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -169,14 +7,6 @@
   &__item {
     display: flex;
     flex-direction: column;
-    // background-color: var(--color-bg-surface);
-    border-radius: var(--border-radius-primary);
-    padding: 1rem;
-    background: #4a097933;
-    border-radius: 16px;
-    backdrop-filter: blur(0.8rem);
-    -webkit-backdrop-filter: blur(0.8rem);
-    border: 1px solid #641ad933;
     position: relative;
   }
   &__info {
@@ -194,42 +24,46 @@
     grid-template-columns: 4.8rem 4.8rem 2fr;
     gap: 1rem;
     height: 4.8rem;
-    button {
-      background: #4a097933;
-      border-radius: 16px;
-      backdrop-filter: blur(0.8rem);
-      -webkit-backdrop-filter: blur(0.8rem);
-      border: 1px solid #641ad933;
-      position: relative;
-      overflow: hidden;
-      &::before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        bottom: -0.4rem;
-        width: 100%;
-        height: 0rem;
-        transform: translateX(-50%);
-        box-shadow: rgb(128, 41, 221) 0px 0px 5px,
-          rgb(150, 80, 235) 0px 0px 15px, rgb(170, 120, 245) 0px 0px 30px,
-          rgb(190, 160, 255) 0px 0px 60px;
-        background: rgb(90, 30, 160);
-        transition: 0.2s ease-in height;
-      }
-      &:hover {
-        &::before {
-          height: 0.4rem;
-        }
-      }
-    }
+    // button {
+    //   background: #4a097933;
+    //   border-radius: 16px;
+    //   backdrop-filter: blur(0.8rem);
+    //   -webkit-backdrop-filter: blur(0.8rem);
+    //   border: 1px solid #641ad933;
+    //   position: relative;
+    //   overflow: hidden;
+    //   &::before {
+    //     content: "";
+    //     position: absolute;
+    //     left: 50%;
+    //     bottom: -0.4rem;
+    //     width: 100%;
+    //     height: 0rem;
+    //     transform: translateX(-50%);
+    //     box-shadow:
+    //       rgb(128, 41, 221) 0px 0px 5px,
+    //       rgb(150, 80, 235) 0px 0px 15px,
+    //       rgb(170, 120, 245) 0px 0px 30px,
+    //       rgb(190, 160, 255) 0px 0px 60px;
+    //     background: rgb(90, 30, 160);
+    //     transition: 0.2s ease-in height;
+    //   }
+    //   &:hover {
+    //     &::before {
+    //       height: 0.4rem;
+    //     }
+    //   }
+    // }
     .button {
       &__control {
         &--warning {
           background-color: #79090933 !important;
           border: 1px solid #79090933 !important;
           &::before {
-            box-shadow: rgb(121, 9, 0) 0px 0px 5px,
-              rgb(150, 40, 30) 0px 0px 15px, rgb(180, 80, 70) 0px 0px 30px,
+            box-shadow:
+              rgb(121, 9, 0) 0px 0px 5px,
+              rgb(150, 40, 30) 0px 0px 15px,
+              rgb(180, 80, 70) 0px 0px 30px,
               rgb(210, 130, 120) 0px 0px 60px;
             background-color: #790909 !important;
           }

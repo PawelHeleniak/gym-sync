@@ -2,28 +2,21 @@
   {{!existingPlan? "Dodaj nowy trening": "Edytuj plan"}}
 </h2>
 <form [formGroup]="planForm" class="form">
-  <div class="form__header">
-    <div
-      class="input-field form__header"
-      [class.filled]="planForm.get('name')?.value"
-    >
-      <label for="PlanName" class="input-field__label">Nazwa treningu</label>
+  <div class="form__header box">
+    <div class="input-field" [class.filled]="planForm.get('name')?.value">
       <input
         type="text"
         formControlName="name"
+        placeholder="Nazwa treningu"
         required
         id="PlanName"
-        class="input-field__input"
+        class="input-field__control"
       />
       @if(planForm.get('name')?.invalid && planForm.get('name')?.touched){
-      <div class="input-field__error">Nazwa treningu jest wymagana</div>
+      <small class="input-field__error">Nazwa treningu jest wymagana</small>
       }
     </div>
-    <div
-      class="input-field form__header"
-      [class.filled]="planForm.get('day')?.value"
-    >
-      <label for="PlanDay" class="input-field__label">Dzień treningowy</label>
+    <div class="input-field" [class.filled]="planForm.get('day')?.value">
       <select
         formControlName="day"
         required
@@ -40,58 +33,64 @@
         <option value="7">Niedziela</option>
       </select>
       @if(planForm.get('name')?.invalid && planForm.get('name')?.touched){
-      <div class="input-field__error">Nazwa treningu jest wymagana</div>
+      <small class="input-field__error">Nazwa treningu jest wymagana</small>
       }
     </div>
-    <div
-      class="input-field form__header"
-      [class.filled]="planForm.get('name')?.value"
-    >
+    <div class="input-field" [class.filled]="planForm.get('name')?.value">
       <span>Szacowany czas:</span>
       <span>{{ planForm.get('estimatedTime')?.value }}</span>
     </div>
   </div>
   <div class="workout" formArrayName="exercises">
     @for (exercise of exercisesArray.controls; track exercise; let i = $index) {
-    <div class="workout__wrapper form__group form__group--column">
+    <div class="workout__wrapper box">
       <ng-container [formGroupName]="i">
-        <div class="form__group form__group--row">
+        <div class="workout__top">
           <div class="input-field" [class.filled]="exercise.get('name')?.value">
-            <label for="name-{{i}}" class="input-field__label"
-              >Nazwa ćwiczenia</label
-            >
             <input
               type="text"
               formControlName="name"
               required="true"
               id="name-{{i}}"
-              class="input-field__input"
+              class="input-field__control"
+              placeholder="Nazwa ćwiczenia"
             />
             @if(exercise.get('name')?.invalid && exercise.get('name')?.touched){
-            <div class="input-field__error">Nazwa ćwiczenia jest wymagana</div>
+            <small class="input-field__error"
+              >Nazwa ćwiczenia jest wymagana</small
+            >
             }
           </div>
           <div
             class="input-field"
             [class.filled]="exercise.get('breakTime')?.value || exercise.get('breakTime')?.value === 0"
           >
-            <label for="breakTime-{{i}}" class="input-field__label"
-              >Przerwa między seriami (sek.)</label
-            >
             <input
               type="number"
               formControlName="breakTime"
               required="true"
               id="breakTime-{{i}}"
-              class="input-field__input"
+              class="input-field__control"
+              placeholder="Przerwa między seriami (sek.)"
             />
             @if(exercise.get('breakTime')?.invalid &&
             exercise.get('breakTime')?.touched){
-            <div class="input-field__error">Czas przerwy jest wymagany</div>
+            <small class="input-field__error">Czas przerwy jest wymagany</small>
             }@else if(exercise.get('breakTime')?.value === 0){
-            <div class="input-field__error">Przerwa nie może wynosić 0</div>
+            <small class="input-field__error">Przerwa nie może wynosić 0</small>
             }
           </div>
+        </div>
+        <div
+          class="input-field"
+          [class.filled]="exercise.get('comment')?.value"
+        >
+          <textarea
+            formControlName="comment"
+            id="comment-{{i}}"
+            class="input-field__input"
+            placeholder="Komentarz do ćwiczenia"
+          ></textarea>
         </div>
         <div class="input-field input-field--checkbox d-none">
           <label for="isBreak-{{i}}" class="input-field__label"
@@ -181,14 +180,14 @@
     <div class="button">
       <button
         type="button"
-        (click)="addExercise('Nowe ćwiczenie', 120, false)"
+        (click)="addExercise('Nowe ćwiczenie', 120, false, '')"
         class="button__control"
       >
         Dodaj ćwiczenie
       </button>
       <button
         type="button"
-        (click)="addExercise('Przerwa', 60, true)"
+        (click)="addExercise('Przerwa', 60, true, '')"
         class="button__control"
       >
         Dodaj Przerwę
