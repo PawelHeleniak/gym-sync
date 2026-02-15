@@ -1,11 +1,32 @@
 <h2 class="layout__header">Twoja aktywność</h2>
 <div class="stats box">
-  <h3>Ten miesiąc</h3>
-
-  <div>Treningi: <b>{{ workoutsMonth }}</b></div>
-
-  <div>Łączny czas: <b>{{ formatTime(totalTimeMonth) }}</b></div>
-  <div>Szacowany czas: <b>{{ formatTime(totalEstimatedTimeMonth) }}</b></div>
-
-  <div>Seria treningów: <b>{{ streak }}</b></div>
+  <h3 class="stats__title">Podsumowanie miesiąca</h3>
+  <div class="stats__grid">
+    <div class="stats__item box">
+      <div class="stats__item--count">
+        <i class="fa-solid fa-dumbbell"></i> {{ workoutsMonth }}
+      </div>
+      <div class="stats__item--name">Ilość treningów</div>
+    </div>
+    <div class="stats__item box">
+      <div class="stats__item--count">
+        <i class="fa-solid fa-stopwatch"></i>
+        {{ formatTime(totalTimeMonth) }} h
+      </div>
+      <div class="stats__item--name">Łączny czas</div>
+    </div>
+    <div class="stats__item box">
+      <div class="stats__item--count">
+        <i class="fa-solid fa-hourglass-half"></i>
+        {{ formatTime(totalEstimatedTimeMonth) }} h
+      </div>
+      <div class="stats__item--name">Szacowany czas</div>
+    </div>
+    <div class="stats__item box">
+      <div class="stats__item--count">
+        <i class="fa-solid fa-chart-line"></i> {{ streak }}
+      </div>
+      <div class="stats__item--name">Seria tygodni treningowych</div>
+    </div>
+  </div>
 </div>

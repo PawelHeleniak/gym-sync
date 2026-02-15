@@ -1,1 +1,36 @@
 <h2 class="layout__header">Kalendarz treningów</h2>
+<div class="box">
+  <div class="calendar">
+    <div class="calendar__top">
+      <button class="calendar__btn ui-btn" (click)="prevMonth()">
+        <i class="fa-solid fa-angle-left"></i>
+      </button>
+      <h3>{{ monthName }}</h3>
+      <button class="calendar__btn ui-btn" (click)="nextMonth()">
+        <i class="fa-solid fa-angle-right"></i>
+      </button>
+    </div>
+    <!-- Dni tygodnia -->
+    <div class="calendar__weeks">
+      @for (day of weekDays; track day) {
+      <div class="calendar__weeks--day">{{ day }}</div>
+      }
+    </div>
+
+    <!-- Grid poszczególnych dni kalendarza -->
+    <div class="calendar__days">
+      @for (day of days; track day.date) {
+      <div
+        class="calendar__day"
+        [ngClass]="{
+          'calendar__day--opacity': !day.isCurrentMonth,
+          'calendar__day--today': day.isToday,
+          'calendar__day--workout': day.isWorkoutDay && day.isCurrentMonth
+        }"
+      >
+        {{ day.dayNumber }}
+      </div>
+      }
+    </div>
+  </div>
+</div>

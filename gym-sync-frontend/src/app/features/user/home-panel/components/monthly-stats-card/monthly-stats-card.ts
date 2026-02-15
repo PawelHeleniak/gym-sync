@@ -10,6 +10,7 @@ import { WorkoutHistory } from '../../../../../shared/models/trainingHistory.mod
   standalone: true,
   imports: [CommonModule],
   templateUrl: './monthly-stats-card.html',
+  styleUrl: './monthly-stats-card.scss',
   providers: [TrainingHistoryService],
 })
 export class MonthlyStatsCardComponent implements OnInit {
@@ -31,7 +32,7 @@ export class MonthlyStatsCardComponent implements OnInit {
       this.workoutsMonth = this.getWorkoutCountMonth(data);
       this.totalTimeMonth = this.getTotalTimeMonth(data);
       this.totalEstimatedTimeMonth = this.getTotalEstimatedTimeMonth(data);
-      this.streak = this.getWorkoutStreak(data);
+      this.streak = this.getWorkoutWeekStreak(data);
     });
   }
 
@@ -64,27 +65,31 @@ export class MonthlyStatsCardComponent implements OnInit {
     );
   }
 
-  getWorkoutStreak(history: any[]) {
+  getWorkoutWeekStreak(history: WorkoutHistory[]) {
     if (!history.length) return 0;
 
-    const uniqueDays = history
-      .map((h) => new Date(h.date).toDateString())
-      .filter((v, i, arr) => arr.indexOf(v) === i)
-      .map((d) => new Date(d))
-      .sort((a, b) => b.getTime() - a.getTime());
+    const weeksSet = new Set<string>();
+
+    history.forEach((h) => {
+      const date = new Date(h.date);
+      const weekKey = this.getWeekKey(date);
+      weeksSet.add(weekKey);
+    });
+
+    const weeks = Array.from(weeksSet).sort().reverse();
 
     let streak = 0;
-    let today = new Date();
-    today.setHours(0, 0, 0, 0);
+    let currentDate = new Date();
 
-    for (let i = 0; i < uniqueDays.length; i++) {
-      const d = new Date(uniqueDays[i]);
-      d.setHours(0, 0, 0, 0);
+    while (true) {
+      const key = this.getWeekKey(currentDate);
 
-      const diff = (today.getTime() - d.getTime()) / (1000 * 60 * 60 * 24);
-
-      if (diff === streak) streak++;
-      else break;
+      if (weeksSet.has(key)) {
+        streak++;
+        currentDate.setDate(currentDate.getDate() - 7);
+      } else {
+        break;
+      }
     }
 
     return streak;
@@ -92,5 +97,32 @@ export class MonthlyStatsCardComponent implements OnInit {
 
   formatTime(seconds: number) {
     return formatTime(seconds);
+  }
+
+  private getWeekKey(date: Date) {
+    const d = new Date(date);
+
+    const day = d.getDay() || 7;
+    if (day !== 1) {
+      d.setDate(d.getDate() - day + 1);
+    }
+
+    const year = d.getFullYear();
+    const week = this.getWeekNumber(d);
+
+    return `${year}-W${week}`;
+  }
+
+  private getWeekNumber(date: Date) {
+    const d = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+    );
+    const dayNum = d.getUTCDay() || 7;
+
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+
+    return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   }
 }
