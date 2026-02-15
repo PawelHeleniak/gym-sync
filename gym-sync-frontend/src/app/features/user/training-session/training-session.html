@@ -70,8 +70,8 @@
     ></app-training-details>
   </div>
   } @else if (state === 'trainingActive' && selectedTraining) {
-  <div class="trainingActive">
-    <div class="layout__column">
+  <div class="training-active">
+    <div class="training-active__steps">
       <app-steps
         [selectedTraining]="selectedTraining"
         (doneWorkout)="handleDoneExercises($event)"
@@ -81,7 +81,7 @@
       ></app-steps>
     </div>
 
-    <div class="layout__column">
+    <div class="training-active__timer">
       <app-timer
         #timer
         [estimatedTime]="selectedTraining.estimatedTime"

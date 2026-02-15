@@ -1,20 +1,5 @@
-.btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  border: 2px solid var(--color-bg-secondary);
-  cursor: pointer;
-  font-size: var(--font-size-base);
-  i {
-    font-size: var(--font-size-s);
-  }
+@use "../../../../../../styles.scss" as style;
 
-  &:hover {
-    // background-color: var(--color-bg-surface);
-    border-color: var(--primary);
-  }
-}
 .workout {
   display: flex;
   flex-direction: column;
@@ -82,11 +67,24 @@
     }
   }
   &__btns {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "topLeft topRight"
+      "bottom bottom";
+
     gap: 1rem;
-    button {
-      flex: 1;
+
+    & > :nth-child(1) {
+      grid-area: bottom;
+    }
+
+    & > :nth-child(2) {
+      grid-area: topLeft;
+    }
+
+    & > :nth-child(3) {
+      grid-area: topRight;
     }
   }
 }

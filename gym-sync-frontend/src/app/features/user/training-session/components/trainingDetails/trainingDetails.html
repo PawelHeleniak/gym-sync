@@ -4,12 +4,12 @@
     <h2>Podgląd treningu</h2>
   </div>
   }
-  <div class="trainingDetails box" [class.trainingDetails--steps]="stepsView">
-    <div class="trainingDetails__top">
-      <div class="trainingDetails__date">{{selectedTraining.name}}</div>
-      <div class="trainingDetails__time">Szacowany czas: {{time}} h</div>
+  <div class="details box" [class.details--steps]="stepsView">
+    <div class="details__top">
+      <div class="details__date">{{selectedTraining.name}}</div>
+      <div class="details__time">Szacowany czas: {{time}} h</div>
     </div>
-    <div class="trainingDetails__exercises">
+    <div class="details__exercises">
       <div class="exercises box mt-1">
         @for (exercise of selectedTraining.exercises; track exercise; let i =
         $index) {

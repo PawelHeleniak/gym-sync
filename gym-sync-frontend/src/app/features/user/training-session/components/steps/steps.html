@@ -31,6 +31,11 @@
       </div>
       }
     </div>
+    }@else{
+    <div class="workout__info v-hidden">
+      <div class="workout__weight">Ciężar: <span>- kg.</span></div>
+      <div class="workout__weight">Powtórzenia: <span>-</span></div>
+    </div>
     }
     <div class="ui-field">
       <textarea
@@ -52,7 +57,8 @@
 <div class="workout__btns button mt-1">
   @if (!endTraining) {
   <button class="workout__btn ui-btn ui-btn--danger" (click)="backToList()">
-    <i class="fa-solid fa-x"></i> Przerwij trening
+    <i class="fa-solid fa-x"></i>
+    Przerwij trening
   </button>
 
   @if (currentExerciseIndex !== 0 || currentRepIndex !== 0) {
@@ -81,6 +87,7 @@
   }
 </div>
 <app-training-details
+  class="d-none--laptop"
   [selectedTraining]="selectedTraining"
   [stepsView]="true"
 ></app-training-details>

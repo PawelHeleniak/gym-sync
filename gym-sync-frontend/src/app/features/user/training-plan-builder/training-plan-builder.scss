@@ -3,9 +3,14 @@
 .form {
   &__header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 1rem;
     margin-bottom: 2rem;
-    gap: 2rem;
+    @include style.tablet {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 2rem;
+    }
   }
   &__estimatedTime {
     .ui-field__input {
@@ -28,13 +33,23 @@
   }
   &__top {
     display: flex;
-    gap: 2rem;
-    width: calc(100% - 6.4rem);
+    flex-direction: column;
+    gap: 1rem;
+    width: calc(100% - 5.8rem);
+    @include style.tablet {
+      flex-direction: row;
+      gap: 2rem;
+      width: calc(100% - 6.4rem);
+    }
   }
   &__remove {
     position: absolute;
-    top: 2rem;
-    right: 2rem;
+    top: 1rem;
+    right: 1rem;
+    @include style.tablet {
+      top: 2rem;
+      right: 2rem;
+    }
     button {
       padding: 0;
       width: 4.7rem;
@@ -54,19 +69,32 @@
   }
   &__box {
     display: flex;
-    gap: 2rem;
+    flex-direction: column;
+    gap: 1rem;
     background-color: var(--color-bg-surface);
     border: none;
+    @include style.tablet {
+      flex-direction: row;
+      gap: 2rem;
+    }
     h3 {
       display: flex;
       align-items: center;
       min-width: 10rem;
+      margin: 0.6rem 0 0.6rem 0;
+      @include style.tablet {
+        margin: 0;
+      }
     }
     .ui-field {
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: minmax(12rem, 1fr) 2fr;
       gap: 0.6rem 1rem;
       align-items: center;
+      @include style.tablet {
+        grid-template-columns: auto 1fr;
+        gap: 0.6rem 1rem;
+      }
       &__label {
         font-size: var(--font-size-m);
       }
@@ -86,14 +114,23 @@
     }
   }
   &__remove {
-    position: relative;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    @include style.tablet {
+      position: initial;
+    }
     button {
       padding: 0;
-      width: 4.7rem;
-      height: 4.7rem;
+      width: 4.2rem;
+      height: 4.2rem;
       display: flex;
       justify-content: center;
       align-items: center;
+      @include style.tablet {
+        width: 4.7rem;
+        height: 4.7rem;
+      }
     }
   }
 }
@@ -101,6 +138,10 @@
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  margin-top: 1rem;
+  @include style.tablet {
+    margin-top: 0;
+  }
   &__btn {
     width: 100%;
   }

@@ -1,3 +1,11 @@
+@use "../../../../../../styles.scss" as style;
+
+.layout__header {
+  display: none;
+  @include style.laptop {
+    display: block;
+  }
+}
 .timer {
   &__center {
     display: flex;

@@ -2,8 +2,17 @@
 
 .list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  @include style.tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include style.laptop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @include style.desktop {
+    grid-template-columns: repeat(4, 1fr);
+  }
   &__item {
     display: flex;
     flex-direction: column;
@@ -100,11 +109,27 @@
   display: flex;
   flex-direction: column;
   .list__header {
-    margin: 1rem 0 1rem 0;
+    margin: 2rem auto 1rem auto;
+    @include style.tablet {
+      margin: 2rem 0 1rem 0;
+    }
   }
 }
-.trainingActive {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.layout__header + .grid-wrapper {
+  .list__header {
+    margin: 0 auto 1rem auto;
+    @include style.tablet {
+      margin: 0 0 1rem 0;
+    }
+  }
+}
+.training-active {
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
+
+  @include style.laptop {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
