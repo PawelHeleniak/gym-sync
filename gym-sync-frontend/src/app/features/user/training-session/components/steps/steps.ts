@@ -89,15 +89,16 @@ export class Steps implements OnInit {
       this.currentRepIndex = 0;
     }
 
-    this.emitLastStep();
     this.timer(this.currentExercise.breakTime || 0);
   }
   hanldeEndTraining() {
     this.endTraining = true;
     this.stop.emit();
+
     const getTime = document.querySelector('.timer__time--start')?.textContent;
     this.endTrainingTime = getTime ? getTime : '';
 
+    this.emitLastStep();
     this.handleDoneWorkout();
     this.updateTraining();
   }
@@ -137,6 +138,8 @@ export class Steps implements OnInit {
     });
   }
   back() {
+    this.removeLastDoneWorkout();
+
     if (this.currentRepIndex !== 0) this.currentRepIndex--;
     else {
       this.currentExerciseIndex--;
@@ -151,9 +154,7 @@ export class Steps implements OnInit {
     this.goBack.emit();
   }
   private emitLastStep() {
-    if (this.isLastStep) {
-      this.lastStep.emit();
-    }
+    this.lastStep.emit();
   }
   handleDoneWorkout() {
     const newItems: any[] = [];
@@ -183,5 +184,11 @@ export class Steps implements OnInit {
       ...newItems,
     ]);
     this.doneWorkout.emit([...this.connectionDoneWorkout()]);
+  }
+  private removeLastDoneWorkout() {
+    const list = [...this.connectionDoneWorkout()];
+    list.pop();
+    this.connectionDoneWorkout.set(list);
+    this.doneWorkout.emit(list);
   }
 }

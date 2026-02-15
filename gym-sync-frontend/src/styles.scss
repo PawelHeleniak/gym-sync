@@ -364,7 +364,7 @@ button {
       box-shadow: 0 0 8px var(--color-input-focus-glow);
     }
     &--disabled {
-      color: var(--color-input-text-disabled);
+      color: var(--color-text-secondary);
     }
     &:-webkit-autofill,
     &:-webkit-autofill:hover,

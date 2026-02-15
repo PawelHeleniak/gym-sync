@@ -26,7 +26,6 @@ export class Timer implements OnInit {
       this.startTimeFromatted = formatTime(this.seconds);
     }, 1000);
     this.endTimeFromatted = formatTime(this.estimatedTime);
-    console.log(this.reversedList());
   }
   stop() {
     if (this.intervalId) {

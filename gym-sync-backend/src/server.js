@@ -11,10 +11,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:4200",
-  })
+    origin: true,
+  }),
 );
-app.use(cors());
+
 app.use(express.json());
 
 // Routery
@@ -29,9 +29,8 @@ const PORT = process.env.PORT || 3000;
 const startServer = async () => {
   try {
     await connectDB();
-    app.listen(PORT, () => console.log(`Serwer działa na porcie: ${PORT}`));
-    app.listen(PORT, () =>
-      console.log(`Serwer działa na linku: http://localhost:${PORT}`)
+    app.listen(PORT, "0.0.0.0", () =>
+      console.log(`Serwer działa na: http://localhost:${PORT}`),
     );
   } catch (error) {
     console.error("Błąd startu serwera", error.message);

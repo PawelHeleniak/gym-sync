@@ -137,6 +137,7 @@ export class TrainingSession implements OnInit {
   }
 
   goToWorkout() {
+    this.isLastStep = false;
     this.state = 'trainingActive';
   }
 
