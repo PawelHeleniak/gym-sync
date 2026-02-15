@@ -10,6 +10,7 @@ import { TimeItem } from '../../models/training-session.model';
 })
 export class Timer implements OnInit {
   @Input() estimatedTime: number = 0;
+  @Input() isLastStep: boolean = false;
   list = input<TimeItem[]>([]);
 
   seconds: number = 0;
@@ -25,6 +26,7 @@ export class Timer implements OnInit {
       this.startTimeFromatted = formatTime(this.seconds);
     }, 1000);
     this.endTimeFromatted = formatTime(this.estimatedTime);
+    console.log(this.reversedList());
   }
   stop() {
     if (this.intervalId) {

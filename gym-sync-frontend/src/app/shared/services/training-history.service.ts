@@ -9,7 +9,6 @@ export class TrainingHistoryService {
   private baseUrl = environment.apiUrl;
 
   addHisotyTraining(body: any): Observable<any> {
-    console.log(body);
     return this.http.post<any>(`${this.baseUrl}/history/add`, body);
   }
   getHistoryTrainings(id: string): Observable<any[]> {

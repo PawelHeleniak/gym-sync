@@ -103,3 +103,8 @@
     margin: 1rem 0 1rem 0;
   }
 }
+.trainingActive {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}

@@ -61,13 +61,20 @@
         text-align: end;
       }
     }
+    &--done,
+    &--inProgress,
     &--break {
-      background-color: var(--primary);
+      grid-template-columns: repeat(1, 1fr);
+      justify-items: center;
+    }
+    &--break {
+      background-color: var(--accent-opacity);
     }
     &--inProgress {
-      display: flex;
-      justify-content: center;
-      background-color: var(--color-bg-primary);
+      background-color: var(--secondary);
+    }
+    &--done {
+      background-color: var(--color-btn-success);
     }
   }
   &__body {

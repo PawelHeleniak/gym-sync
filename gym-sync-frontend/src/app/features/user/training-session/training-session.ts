@@ -62,6 +62,7 @@ export class TrainingSession implements OnInit {
 
   doneExercises = signal<TimeItem[]>([]);
   durationInSeconds = 3000;
+  isLastStep = false;
 
   @ViewChild('timer') timerComponent!: Timer;
 
@@ -107,7 +108,7 @@ export class TrainingSession implements OnInit {
     this.selectedTraining.estimatedTime =
       this.selectedTraining.exercises.reduce(
         (sum, ex) => sum + ex.breakTime * ex.sets.length,
-        0
+        0,
       );
   }
 
@@ -120,7 +121,7 @@ export class TrainingSession implements OnInit {
       error: (err) => {
         this.openSnackBar(
           'Usunięcie nie powiodło się, spróbuj ponownie.',
-          'warning'
+          'warning',
         );
         console.error(err);
       },
@@ -143,7 +144,9 @@ export class TrainingSession implements OnInit {
     this.state = 'trainingList';
     this.doneExercises.set([]);
   }
-
+  handleLastStep() {
+    this.isLastStep = true;
+  }
   stopTimer() {
     this.timerComponent.stop();
   }
@@ -155,7 +158,7 @@ export class TrainingSession implements OnInit {
       next: () => {
         this.openSnackBar(
           training.badge ? 'Dodano do ulubionych.' : 'Usunięto z ulubionych.',
-          'success'
+          'success',
         );
         this.getAllTraining();
       },

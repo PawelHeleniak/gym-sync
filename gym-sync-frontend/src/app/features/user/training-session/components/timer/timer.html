@@ -1,5 +1,5 @@
 <h2 class="layout__header">Stoper</h2>
-<div class="layout__box">
+<div class="layout__box box">
   <div class="timer">
     <div class="timer__center">
       <div class="timer__time">
@@ -10,20 +10,32 @@
     <div class="timer__list">
       <div class="timer__list--header">
         <div class="timer__workout">Nazwa ćwicznia</div>
-        <div class="timer__sets">Powtórzenia - ciężar</div>
+        <div class="timer__sets">Ciężar x powtórzenia</div>
         <div class="timer__info">Czas</div>
       </div>
       <div class="timer__body">
+        @if(!isLastStep){
         <div class="timer__item timer__item--inProgress">W trakcie</div>
-        @for (item of reversedList(); track $index; let i = $index ) {
-        <div class="timer__item" [class]="{'timer__item--break': item.isBreak}">
+        }@else {
+        <div class="timer__item timer__item--done">
+          Ostatnia seria zakończona
+        </div>
+        } @for (item of reversedList(); track $index; let i = $index ) {
+        @if(!item.isBreak){
+        <div class="timer__item">
           <div class="timer__workout">{{item.name}}</div>
           <div class="timer__sets">
-            {{item.repsCount}} - {{item.weight? item.weight : 0}} kg
+            {{item.weight? `${item.weight} kg` : `Brak ciężaru`}} x
+            {{item.repsCount}}
           </div>
           <div class="timer__info">{{item.time}}</div>
         </div>
-        }
+
+        }@else {
+        <div class="timer__item timer__item--break">
+          Przerwa ({{item.breakTime}} s)
+        </div>
+        } }
       </div>
     </div>
   </div>

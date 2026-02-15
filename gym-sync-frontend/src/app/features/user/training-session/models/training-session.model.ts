@@ -4,4 +4,5 @@ export interface TimeItem {
   weight?: number;
   time: string;
   isBreak?: boolean;
+  breakTime: number;
 }

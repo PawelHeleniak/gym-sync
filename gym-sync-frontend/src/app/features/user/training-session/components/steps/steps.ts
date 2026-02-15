@@ -28,6 +28,7 @@ export class Steps implements OnInit {
   @Output() doneWorkout = new EventEmitter<any[]>();
   @Output() goBack = new EventEmitter<void>();
   @Output() stop = new EventEmitter<void>();
+  @Output() lastStep = new EventEmitter<void>();
   connectionDoneWorkout = signal<any[]>([]);
 
   currentExerciseIndex: number = 0;
@@ -38,9 +39,10 @@ export class Steps implements OnInit {
   endTrainingTime: string = '';
   private timerInterval?: ReturnType<typeof setInterval>;
   comment: string = '';
+
   constructor(
     private trainingService: TrainingService,
-    private trainingHistoryService: TrainingHistoryService
+    private trainingHistoryService: TrainingHistoryService,
   ) {}
   ngOnInit() {
     const firstExercise = this.selectedTraining.exercises[0];
@@ -53,6 +55,16 @@ export class Steps implements OnInit {
 
   get currentRep() {
     return this.currentExercise.sets[this.currentRepIndex];
+  }
+
+  get isLastStep() {
+    return (
+      this.currentExerciseIndex ===
+        this.selectedTraining.exercises.length - 1 &&
+      this.currentRepIndex ===
+        this.selectedTraining.exercises[this.currentExerciseIndex].sets.length -
+          1
+    );
   }
 
   timer(time: number) {
@@ -77,6 +89,7 @@ export class Steps implements OnInit {
       this.currentRepIndex = 0;
     }
 
+    this.emitLastStep();
     this.timer(this.currentExercise.breakTime || 0);
   }
   hanldeEndTraining() {
@@ -114,7 +127,6 @@ export class Steps implements OnInit {
       totalTime: this.toSeconds(this.endTrainingTime),
       exercises: plan.exercises,
     };
-    console.log(finished);
     this.trainingHistoryService.addHisotyTraining(finished).subscribe({
       next: (response) => {
         console.log(response);
@@ -138,7 +150,11 @@ export class Steps implements OnInit {
     clearInterval(this.timerInterval);
     this.goBack.emit();
   }
-
+  private emitLastStep() {
+    if (this.isLastStep) {
+      this.lastStep.emit();
+    }
+  }
   handleDoneWorkout() {
     const newItems: any[] = [];
 
@@ -159,6 +175,7 @@ export class Steps implements OnInit {
       weight: currentExercise.sets[this.currentRepIndex].weight,
       time: getTime,
       isBreak: currentExercise.isBreak ? currentExercise.isBreak : false,
+      breakTime: currentExercise.breakTime ? currentExercise.breakTime : 0,
     });
 
     this.connectionDoneWorkout.set([

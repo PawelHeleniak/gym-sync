@@ -64,14 +64,15 @@
     gap: 0.5rem;
   }
   &__rep {
-    width: 36px;
-    height: 36px;
-    border-radius: 50px;
+    width: 4.2rem;
+    height: 4.2rem;
+    border-radius: 5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--color-bg-surface);
     transition: 0.2s ease-in background;
+    font-size: var(--font-size-m);
     &--current {
       background-color: var(--accent);
     }
@@ -80,27 +81,12 @@
       opacity: 0.5;
     }
   }
-  // Button
-  // &__btns {
-  //   display: flex;
-  //   flex-direction: row;
-  //   gap: 0.5rem;
-  // }
-  // &__btn {
-  //   background-color: var(--color-bg-secondary);
-  //   color: var(--color-text-primary);
-  //   border: none;
-  //   padding: 0.8rem;
-  //   transition: 0.2s ease-in background;
-  //   width: 100%;
-  //   &:hover {
-  //     background-color: var(--color-bg-surface);
-  //   }
-  //   &--warning {
-  //     background-color: var(--warning);
-  //     &:hover {
-  //       background-color: var(--warning-hover);
-  //     }
-  //   }
-  // }
+  &__btns {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    button {
+      flex: 1;
+    }
+  }
 }

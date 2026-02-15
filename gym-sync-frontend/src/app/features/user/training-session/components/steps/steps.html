@@ -1,6 +1,6 @@
 <h2 class="layout__header">{{selectedTraining.name}}</h2>
 <div class="workout">
-  <div class="workout__box layout__box">
+  <div class="workout__box box">
     @if(!endTraining){
     <div class="workout__name">
       {{selectedTraining.exercises[currentExerciseIndex].name}}
@@ -32,18 +32,15 @@
       }
     </div>
     }
-    <div
-      class="input-field input-field--textarea"
-      [ngClass]="{filled: currentExercise.comment}"
-    >
-      <label for="comment" class="input-field__label">Komentarz</label>
+    <div class="ui-field">
       <textarea
         id="comment"
-        class="input-field__input"
+        class="ui-field__input"
         style="resize: none"
         [(ngModel)]="currentExercise.comment"
         rows="4"
         cols="50"
+        placeholder="Dodaj komentarz"
       ></textarea>
     </div>
     }@else {
@@ -54,36 +51,31 @@
 </div>
 <div class="workout__btns button mt-1">
   @if (!endTraining) {
-  <button
-    class="workout__btn workout__btn--warning button__control button__control--warning"
-    (click)="backToList()"
-  >
-    Zakończ trening <i class="fa-solid fa-x"></i>
+  <button class="workout__btn ui-btn ui-btn--danger" (click)="backToList()">
+    <i class="fa-solid fa-x"></i> Przerwij trening
   </button>
 
   @if (currentExerciseIndex !== 0 || currentRepIndex !== 0) {
-  <button class="workout__btn button__control" (click)="back()">
+  <button class="workout__btn ui-btn" (click)="back()">
     <i class="fa-solid fa-arrow-left"></i> Wstecz
   </button>
   } @else {
-  <button class="workout__btn button__control" (click)="backToList()">
+  <button class="workout__btn ui-btn" (click)="backToList()">
     <i class="fa-solid fa-arrow-left"></i> Powrót
   </button>
-  } @if ( currentExerciseIndex !== selectedTraining.exercises.length - 1 ||
-  currentRepIndex !==
-  selectedTraining.exercises[currentExerciseIndex].sets.length - 1 ) {
-  <button class="workout__btn button__control" (click)="next()">
+  } @if (!isLastStep) {
+  <button class="workout__btn ui-btn ui-btn--arrow" (click)="next()">
     Następne <i class="fa-solid fa-arrow-right"></i>
   </button>
   } @else {
   <button
-    class="workout__btn button__control button__control--success"
+    class="workout__btn ui-btn ui-btn--success"
     (click)="hanldeEndTraining()"
   >
-    Zakończ trening <i class="fa-solid fa-check"></i>
+    <i class="fa-solid fa-check"></i> Zakończ trening
   </button>
   } } @else {
-  <button class="workout__btn button__control" (click)="backToList()">
+  <button class="workout__btn ui-btn" (click)="backToList()">
     <i class="fa-solid fa-arrow-left"></i> Powrót do listy ćwiczeń
   </button>
   }

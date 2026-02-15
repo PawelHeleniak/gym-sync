@@ -1,42 +1,59 @@
 <div class="layout">
   @if(!stepsView){
   <div class="layout__header">
-    <h2>{{selectedTraining.name}}</h2>
-    <h3>{{time}} h</h3>
+    <h2>Podgląd treningu</h2>
   </div>
   }
-  <div
-    class="layout__column mt-1 trainingDetails"
-    [class.trainingDetails--steps]="stepsView"
-  >
-    @for (exercise of selectedTraining.exercises; track exercise; let i =
-    $index) {
-    <div class="layout__box exercise" [class.filled]>
-      <div class="exercise__name">
-        <div>Ćwiczenie: <span>{{exercise.name}}</span></div>
-        <div>Przerwy: <span>{{exercise.breakTime}} s.</span></div>
-      </div>
-      @if(!exercise.isBreak){
-      <div class="set">
-        @for (set of exercise.sets; track set; let j = $index) {
-        <div class="set__box">
-          <div class="set__name">Seria {{j + 1}}</div>
-          <div class="set__desc">
-            <span>{{set.weight}} kg</span>
-            /
-            <span>{{set.repsCount}}</span>
+  <div class="trainingDetails box" [class.trainingDetails--steps]="stepsView">
+    <div class="trainingDetails__top">
+      <div class="trainingDetails__date">{{selectedTraining.name}}</div>
+      <div class="trainingDetails__time">Szacowany czas: {{time}} h</div>
+    </div>
+    <div class="trainingDetails__exercises">
+      <div class="exercises box mt-1">
+        @for (exercise of selectedTraining.exercises; track exercise; let i =
+        $index) {
+        <div
+          class="exercises__box"
+          [ngClass]="{'exercises__box--break': exercise.isBreak}"
+        >
+          @if(!exercise.isBreak){
+          <div class="exercises__info">
+            <div class="exercises__desc">
+              <span class="exercises__name">{{exercise.name}}</span>
+              <span
+                >(Przerwa między seriami:
+                <strong>{{exercise.breakTime}}</strong> s)</span
+              >
+            </div>
           </div>
+          <div class="sets">
+            @for (set of exercise.sets; track $index; let j = $index) {
+            <div class="sets__box">
+              {{j + 1}}.
+              <strong
+                >@if(set.weight){ {{set.weight}} kg x } {{set.repsCount}}
+                powtórzeń</strong
+              >
+            </div>
+            }
+          </div>
+          }@else {
+          <span class="exercises__name"
+            >{{exercise.name}} - Czas trwania: {{exercise.breakTime}} s</span
+          >
+          }
         </div>
         }
       </div>
-      }
     </div>
-    }
   </div>
   @if(!stepsView){
-  <div class="button mt-1">
-    <button (click)="backToList()" class="button__control">Powrót</button>
-    <button (click)="goToWorkout()" class="button__control">Start</button>
+  <div class="control mt-1">
+    <button (click)="backToList()" class="ui-btn control__btn">Powrót</button>
+    <button (click)="goToWorkout()" class="ui-btn ui-btn--arrow control__btn">
+      Start <i class="fa-solid fa-arrow-right"></i>
+    </button>
   </div>
   }
 </div>

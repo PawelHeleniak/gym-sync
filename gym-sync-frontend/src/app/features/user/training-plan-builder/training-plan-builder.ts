@@ -57,7 +57,6 @@ export class TrainingPlanBuilder {
     plan.day
       ? this.planForm.get('day')?.setValue(plan.day)
       : this.planForm.get('day')?.setValue(0);
-    console.log(plan);
     plan.exercises.forEach((exercise, idx) => {
       this.addExercise(
         exercise.name,
@@ -105,7 +104,6 @@ export class TrainingPlanBuilder {
     this.exercisesArray.removeAt(i);
   }
   addExerciseSetButton(j: number) {
-    console.log(`%c ${j}`, 'color: blue');
     const workout = this.exercisesArray.at(j) as FormGroup;
     const repsArray = workout.get('sets') as FormArray;
 
@@ -116,7 +114,6 @@ export class TrainingPlanBuilder {
     );
   }
   addExerciseSet(j: number, repsCount: number, weight: number) {
-    console.log(`%c ${j}`, 'color: purple');
     const workout = this.exercisesArray.at(j) as FormGroup;
     const repsArray = workout.get('sets') as FormArray;
 
@@ -138,7 +135,6 @@ export class TrainingPlanBuilder {
       next: (response) => {
         this.openSnackBar('Pomyślnie dodano trening.', 'success');
         this.router.navigate(['/trening']);
-        console.log(response);
       },
       error: (err: any) => {
         this.openSnackBar(
@@ -150,13 +146,11 @@ export class TrainingPlanBuilder {
     });
   }
   updateTraining() {
-    console.log(this.planForm);
     this.trainingService
       .updateTraining(this.planForm.value, this.existingPlan?._id)
       .subscribe({
         next: (response) => {
           this.openSnackBar('Pomyślnie zaktualizowano trening.', 'success');
-          console.log(response);
         },
         error: (err) => {
           this.openSnackBar(

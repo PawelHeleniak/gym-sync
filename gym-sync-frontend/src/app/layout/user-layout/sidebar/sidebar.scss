@@ -1,6 +1,8 @@
+@use "../../../../styles.scss" as style;
+
 .sidebar {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
@@ -10,6 +12,10 @@
   border: 1px solid #641ad933;
   border-radius: 50px;
   gap: 0.5rem;
+  position: relative;
+  @include style.tablet {
+    flex-direction: column;
+  }
   &__link {
     width: 100%;
     display: flex;
@@ -19,7 +25,9 @@
     width: 48px;
     height: 48px;
     border-radius: 50px;
-    transition: 0.2s ease-in background, 0.2s ease-in color;
+    transition:
+      0.2s ease-in background,
+      0.2s ease-in color;
     &:hover {
       background: #4a097933;
       backdrop-filter: blur(0.8rem);

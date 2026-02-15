@@ -19,7 +19,7 @@ export class TrainingReport {
 
   constructor(
     private trainingHistoryService: TrainingHistoryService,
-    private trainingService: TrainingService
+    private trainingService: TrainingService,
   ) {}
 
   ngOnInit() {
@@ -46,7 +46,7 @@ export class TrainingReport {
       next: (response: any) => {
         if (response.length) {
           const count = this.trainings.find(
-            (el) => el._id === response[0].planId
+            (el) => el._id === response[0].planId,
           );
           if (count) count.historyCount = response.length;
         }

@@ -37,7 +37,7 @@
               class="ui-btn ui-btn--arrow"
               (click)="changeStateWorkout(training, 'trainingDetails')"
             >
-              Start <i class="fa-solid fa-arrow-right"></i>
+              Trening <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
 
@@ -70,21 +70,25 @@
     ></app-training-details>
   </div>
   } @else if (state === 'trainingActive' && selectedTraining) {
-  <div class="layout__column">
-    <app-steps
-      [selectedTraining]="selectedTraining"
-      (doneWorkout)="handleDoneExercises($event)"
-      (goBack)="backToList()"
-      (stop)="stopTimer()"
-    ></app-steps>
-  </div>
+  <div class="trainingActive">
+    <div class="layout__column">
+      <app-steps
+        [selectedTraining]="selectedTraining"
+        (doneWorkout)="handleDoneExercises($event)"
+        (goBack)="backToList()"
+        (stop)="stopTimer()"
+        (lastStep)="handleLastStep()"
+      ></app-steps>
+    </div>
 
-  <div class="layout__column">
-    <app-timer
-      #timer
-      [estimatedTime]="selectedTraining.estimatedTime"
-      [list]="doneExercises()"
-    ></app-timer>
+    <div class="layout__column">
+      <app-timer
+        #timer
+        [estimatedTime]="selectedTraining.estimatedTime"
+        [list]="doneExercises()"
+        [isLastStep]="isLastStep"
+      ></app-timer>
+    </div>
   </div>
   }
 </div>
