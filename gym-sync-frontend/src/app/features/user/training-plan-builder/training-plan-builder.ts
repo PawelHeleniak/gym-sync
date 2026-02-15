@@ -10,6 +10,7 @@ import { TrainingService } from '../../../shared/services/training-session.servi
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TrainingList } from '../../../shared/models/training.model';
+import { formatTime } from '../../../shared/utils/time';
 
 @Component({
   selector: 'app-training-plan-builder',
@@ -43,6 +44,17 @@ export class TrainingPlanBuilder {
 
   get exercisesArray(): FormArray {
     return this.planForm.get('exercises') as FormArray;
+  }
+
+  get liveEstimatedTime(): number {
+    if (!this.planForm?.value?.exercises) return 0;
+
+    return this.planForm.value.exercises.reduce((sum: number, ex: any) => {
+      const setsCount = ex.sets?.length || 0;
+      const breakTime = Number(ex.breakTime || 0);
+
+      return sum + breakTime * setsCount;
+    }, 0);
   }
 
   getExercise(i: number): FormGroup {
@@ -176,5 +188,9 @@ export class TrainingPlanBuilder {
         panelClass: ['snackbar', 'snackbar--warning'],
       });
     }
+  }
+
+  formatTime(seconds: number) {
+    return formatTime(seconds);
   }
 }
