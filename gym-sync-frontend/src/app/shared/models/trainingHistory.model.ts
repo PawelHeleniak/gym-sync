@@ -1,18 +1,18 @@
-export interface WorkoutExerciseSetHisotry {
+export interface WorkoutExerciseSetHistory {
   repsCount: number;
   weight?: number;
   done: boolean;
 }
-export interface WorkoutExerciseHisotry {
+export interface WorkoutExerciseHistory {
   name: string;
   breakTime: number;
   isBreak?: boolean;
   comment: string;
-  sets: WorkoutExerciseSetHisotry[];
+  sets: WorkoutExerciseSetHistory[];
 }
-export interface WorkoutHisotry {
+export interface WorkoutHistory {
   date: string;
   planId: number;
   totalTime: number;
-  exercises: WorkoutExerciseHisotry[];
+  exercises: WorkoutExerciseHistory[];
 }

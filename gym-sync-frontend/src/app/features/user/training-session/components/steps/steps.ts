@@ -126,6 +126,7 @@ export class Steps implements OnInit {
     const finished = {
       planId: plan._id,
       totalTime: this.toSeconds(this.endTrainingTime),
+      estimatedTime: plan.estimatedTime,
       exercises: plan.exercises,
     };
     this.trainingHistoryService.addHisotyTraining(finished).subscribe({

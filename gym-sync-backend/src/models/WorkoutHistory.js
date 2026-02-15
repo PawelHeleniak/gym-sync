@@ -18,6 +18,7 @@ const workoutHistorySchema = new mongoose.Schema({
   planId: { type: String, required: true },
   date: { type: Date, default: Date.now },
   totalTime: { type: Number, required: true },
+  estimatedTime: { type: Number, default: null },
   day: { type: Number },
   badge: { type: Boolean },
   exercises: [exerciseSchema],

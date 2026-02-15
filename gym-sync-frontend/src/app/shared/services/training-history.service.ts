@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environment/environment';
 import { Observable } from 'rxjs';
+import { WorkoutHistory } from '../../shared/models/trainingHistory.model';
 
 @Injectable({ providedIn: 'root' })
 export class TrainingHistoryService {
@@ -13,5 +14,8 @@ export class TrainingHistoryService {
   }
   getHistoryTrainings(id: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/history/${id}`);
+  }
+  getAllHistory() {
+    return this.http.get<WorkoutHistory[]>(`${this.baseUrl}/history`);
   }
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TrainingHistoryService } from '../../../shared/services/training-history.service';
 import { TrainingService } from '../../../shared/services/training-session.service';
 import { TrainingList } from '../../../shared/models/training.model';
-import { WorkoutHisotry } from '../../../shared/models/trainingHistory.model';
+import { WorkoutHistory } from '../../../shared/models/trainingHistory.model';
 import { formatTime } from '../../../shared/utils/time';
 
 @Component({
@@ -14,7 +14,7 @@ import { formatTime } from '../../../shared/utils/time';
 })
 export class TrainingReport {
   trainings: TrainingList[] = [];
-  allHistoryTraining: WorkoutHisotry[] = [];
+  allHistoryTraining: WorkoutHistory[] = [];
   activeId: string = '';
 
   constructor(
