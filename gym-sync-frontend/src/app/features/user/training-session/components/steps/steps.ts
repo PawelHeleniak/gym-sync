@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output,
@@ -12,6 +13,7 @@ import { TrainingService } from '../../../../../shared/services/training-session
 import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
 import { TrainingList } from '../../../../../shared/models/training.model';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-steps',
@@ -39,6 +41,10 @@ export class Steps implements OnInit {
   endTrainingTime: string = '';
   private timerInterval?: ReturnType<typeof setInterval>;
   comment: string = '';
+
+  durationInSeconds = 3000;
+
+  private snackBar = inject(MatSnackBar);
 
   constructor(
     private trainingService: TrainingService,
@@ -129,9 +135,9 @@ export class Steps implements OnInit {
       estimatedTime: plan.estimatedTime,
       exercises: plan.exercises,
     };
-    this.trainingHistoryService.addHisotyTraining(finished).subscribe({
-      next: (response) => {
-        console.log(response);
+    this.trainingHistoryService.addHistoryTraining(finished).subscribe({
+      next: () => {
+        this.openSnackBar('Trening zakończony', 'success');
       },
       error: (err) => {
         console.error(err);
@@ -186,10 +192,18 @@ export class Steps implements OnInit {
     ]);
     this.doneWorkout.emit([...this.connectionDoneWorkout()]);
   }
+
   private removeLastDoneWorkout() {
     const list = [...this.connectionDoneWorkout()];
     list.pop();
     this.connectionDoneWorkout.set(list);
     this.doneWorkout.emit(list);
+  }
+
+  openSnackBar(message: string, mode: 'success' | 'warning') {
+    this.snackBar.open(message, '', {
+      duration: this.durationInSeconds,
+      panelClass: ['snackbar', `snackbar--${mode}`],
+    });
   }
 }

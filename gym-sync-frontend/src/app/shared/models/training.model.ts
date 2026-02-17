@@ -12,7 +12,7 @@ export interface Exercise {
 }
 export interface TrainingList {
   _id?: string;
-  name: string;
+  name?: string;
   day?: number;
   badge?: boolean;
   estimatedTime: number;

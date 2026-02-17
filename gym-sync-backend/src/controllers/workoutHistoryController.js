@@ -8,6 +8,7 @@ export const addFinishedWorkout = async (req, res) => {
       estimatedTime: req.body.estimatedTime || null,
       exercises: req.body.exercises,
     });
+
     const saved = await finished.save();
     res.status(201).json(saved);
   } catch (err) {
