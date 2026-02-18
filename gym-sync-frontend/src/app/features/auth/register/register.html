@@ -1,18 +1,74 @@
-<form>
+<form [formGroup]="registerForm" class="form">
   <div class="ui-field">
-    <input type="text" placeholder="Login" class="ui-field__input" />
+    <input
+      type="email"
+      placeholder="Email"
+      class="ui-field__input"
+      formControlName="email"
+    />
+    @if ( registerForm.get('email')?.invalid &&
+    registerForm.get('email')?.touched ) {
+    <small class="ui-field__error">
+      @if (registerForm.get('email')?.errors?.['required']) { Email jest
+      wymagany } @if (registerForm.get('email')?.errors?.['pattern']) { Adres
+      email jest niepoprawny }
+    </small>
+    }
   </div>
   <div class="ui-field">
-    <input type="password" placeholder="Hasło" class="ui-field__input" />
+    <input
+      type="text"
+      placeholder="Login"
+      class="ui-field__input"
+      formControlName="login"
+    />
+
+    @if (registerForm.get('login')?.invalid &&
+    registerForm.get('login')?.touched) {
+    <small class="ui-field__error"> Login jest wymagany </small>
+    }
   </div>
+
+  <div class="ui-field">
+    <input
+      type="password"
+      placeholder="Hasło"
+      class="ui-field__input"
+      formControlName="password"
+    />
+
+    @if (registerForm.get('password')?.invalid &&
+    registerForm.get('password')?.touched) {
+    <small class="ui-field__error">
+      @if (registerForm.get('password')?.errors?.['required']) { Hasło jest
+      wymagane } @if (registerForm.get('password')?.errors?.['pattern']) { Hasło
+      musi mieć min. 6 znaków, 1 dużą literę i 1 cyfrę }
+    </small>
+    }
+  </div>
+
   <div class="ui-field">
     <input
       type="password"
       placeholder="Powtórz hasło"
       class="ui-field__input"
+      formControlName="repeatPassword"
     />
+
+    @if (registerForm.get('repeatPassword')?.invalid &&
+    registerForm.get('repeatPassword')?.touched) {
+    <small class="ui-field__error"> Powtórzenie hasła jest wymagane </small>
+    } @if (registerForm.errors?.['passwordsMismatch'] &&
+    registerForm.get('repeatPassword')?.touched) {
+    <small class="ui-field__error"> Hasła różnią się od siebie </small>
+    }
   </div>
-  <button class="ui-btn ui-btn--arrow">
+
+  <button
+    class="ui-btn ui-btn--arrow"
+    [class.ui-btn--disabled]="disabled"
+    (click)="handleRegister()"
+  >
     Zarejestruj się <i class="fa-solid fa-arrow-right"></i>
   </button>
 </form>

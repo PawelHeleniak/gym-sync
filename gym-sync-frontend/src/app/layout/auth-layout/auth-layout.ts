@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Login } from '../../features/auth/login/login';
 import { Register } from '../../features/auth/register/register';
-import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-auth-layout',

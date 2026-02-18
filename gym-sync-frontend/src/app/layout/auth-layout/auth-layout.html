@@ -6,7 +6,7 @@
     @if(view === "login"){
     <app-login></app-login>
     }@else {
-    <app-register></app-register>
+    <app-register (view)="[handleView($event)]"></app-register>
     }
     <div class="auth__info">
       <span>{{ view === 'login' ? 'Nie masz konta?' : 'Masz konto?' }}</span>

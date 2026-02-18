@@ -6,10 +6,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TrainingService } from '../../../shared/services/training-session.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+
+import { TrainingService } from '../../../shared/services/training-session.service';
 import { TrainingList } from '../../../shared/models/training.model';
+
 import { formatTime } from '../../../shared/utils/time';
 
 @Component({
@@ -175,8 +177,6 @@ export class TrainingPlanBuilder {
   }
 
   openSnackBar(message: string, mode: string) {
-    console.log(message);
-    console.log(mode);
     if (mode === 'success') {
       this._snackBar.open(message, '', {
         duration: this.durationInSeconds,

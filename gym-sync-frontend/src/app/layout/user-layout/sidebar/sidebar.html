@@ -1,26 +1,33 @@
-<div class="sidebar box">
-  <a
-    routerLink="/panel"
-    routerLinkActive="sidebar__link--active"
-    class="sidebar__link"
-    ><i class="fa-regular fa-house"></i
-  ></a>
-  <a
-    routerLink="/kreator-planu"
-    routerLinkActive="sidebar__link--active"
-    class="sidebar__link"
-    ><i class="fa-solid fa-plus"></i
-  ></a>
-  <a
-    routerLink="/trening"
-    routerLinkActive="sidebar__link--active"
-    class="sidebar__link"
-    ><i class="fa-solid fa-person-running"></i
-  ></a>
-  <a
-    routerLink="/raport"
-    routerLinkActive="sidebar__link--active"
-    class="sidebar__link"
-    ><i class="fa-regular fa-calendar-days"></i
-  ></a>
+<div class="sidebar">
+  <div class="sidebar__top box">
+    <a
+      routerLink="/panel"
+      routerLinkActive="sidebar__link--active"
+      class="sidebar__link"
+      ><i class="fa-regular fa-house"></i
+    ></a>
+    <a
+      routerLink="/kreator-planu"
+      routerLinkActive="sidebar__link--active"
+      class="sidebar__link"
+      ><i class="fa-solid fa-plus"></i
+    ></a>
+    <a
+      routerLink="/trening"
+      routerLinkActive="sidebar__link--active"
+      class="sidebar__link"
+      ><i class="fa-solid fa-person-running"></i
+    ></a>
+    <a
+      routerLink="/raport"
+      routerLinkActive="sidebar__link--active"
+      class="sidebar__link"
+      ><i class="fa-regular fa-calendar-days"></i
+    ></a>
+  </div>
+  <div class="sidebar__bottom box">
+    <button (click)="handleLogOut()" class="sidebar__link">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    </button>
+  </div>
 </div>

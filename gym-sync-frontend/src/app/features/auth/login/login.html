@@ -1,11 +1,33 @@
-<form>
+<form [formGroup]="loginForm" class="form">
   <div class="ui-field">
-    <input type="text" placeholder="Login" class="ui-field__input" />
+    <input
+      formControlName="login"
+      type="text"
+      placeholder="Login"
+      class="ui-field__input"
+    />
+
+    @if (loginForm.get('login')?.invalid && loginForm.get('login')?.touched) {
+    <small class="ui-field__error">Login jest wymagany</small>
+    }
   </div>
   <div class="ui-field">
-    <input type="password" placeholder="Hasło" class="ui-field__input" />
+    <input
+      formControlName="password"
+      type="password"
+      placeholder="Hasło"
+      class="ui-field__input"
+    />
+    @if (loginForm.get('password')?.invalid &&
+    loginForm.get('password')?.touched) {
+    <small class="ui-field__error">Hasło jest wymagane</small>
+    }
   </div>
-  <button class="ui-btn ui-btn--arrow">
+  <button
+    class="ui-btn ui-btn--arrow"
+    [class.ui-btn--disabled]="disabled"
+    (click)="handleLogin()"
+  >
     Zaloguj się <i class="fa-solid fa-arrow-right"></i>
   </button>
 </form>

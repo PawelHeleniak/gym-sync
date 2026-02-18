@@ -341,6 +341,10 @@ button {
       background: var(--color-btn-secondary);
     }
   }
+  &--disabled {
+    pointer-events: none;
+    cursor: default;
+  }
 }
 // Inputy
 .ui-field {
