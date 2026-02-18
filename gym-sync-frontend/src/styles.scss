@@ -52,7 +52,7 @@
   --font-size-l: 2rem; //h4
   --font-size-xl: 2.4rem; //h3
   --font-size-2xl: 2.8rem; //h2
-  --font-size-3xl: 3.6rem; //h1
+  --font-size-3xl: 3.2rem; //h1
 
   // Font style
   --font-family-base: "Lato", sans-serif;
@@ -152,6 +152,7 @@ body {
     ),
     var(--color-bg-primary);
   font-size: var(--font-size-base);
+  min-height: 100vh;
   &::before {
     content: "";
     width: 100%;

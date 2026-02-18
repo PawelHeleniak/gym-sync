@@ -1,0 +1,62 @@
+@use "../../../styles.scss" as style;
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  margin: 0 auto;
+  width: 100%;
+  padding: 1.2rem;
+  margin-bottom: 8.5rem;
+  align-items: center;
+  justify-content: center;
+  @include style.tablet {
+    padding: 2.4rem 2.4rem 2.4rem 1.2rem;
+    margin-bottom: 0;
+  }
+}
+.auth {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  min-width: 100%;
+  @include style.mobile {
+    min-width: 36rem;
+  }
+  &__header {
+    text-align: center;
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    padding-top: 2rem;
+    &::before {
+      content: "";
+      position: absolute;
+      background-color: var(--border-color);
+      height: 0.1rem;
+      width: 60%;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+    }
+    span {
+      font-size: var(--font-size-base);
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      background-color: transparent;
+      font-size: var(--font-size-base);
+      transition: 0.2s ease-in color;
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+}
