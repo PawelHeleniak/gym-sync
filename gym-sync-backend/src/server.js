@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./db/connect.js";
 import workoutRoutes from "./routes/workoutRouter.js";
 import workoutHistoryRoutes from "./routes/workoutHistoryRouter.js";
+import userRoutes from "./routes/userRouter.js";
 import cors from "cors";
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(express.json());
 // Routery
 app.use("/workout", workoutRoutes);
 app.use("/history", workoutHistoryRoutes);
+app.use("/auth", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Połączono");
