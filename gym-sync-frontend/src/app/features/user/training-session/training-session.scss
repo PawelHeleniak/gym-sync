@@ -133,3 +133,22 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+.workout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  &__box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  &__empty {
+    font-size: var(--font-size-m);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+}

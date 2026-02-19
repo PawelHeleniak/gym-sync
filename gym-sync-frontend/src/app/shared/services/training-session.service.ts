@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environment/environment';
 import { Observable } from 'rxjs';
 import { TrainingList } from '../models/training.model';
+
 interface UpdateTrainingResponse {
   message: string;
   workout: TrainingList;
@@ -10,7 +11,9 @@ interface UpdateTrainingResponse {
 @Injectable({ providedIn: 'root' })
 export class TrainingService {
   constructor(private http: HttpClient) {}
+
   private baseUrl = environment.apiUrl;
+
   getAllTrainings(): Observable<TrainingList[]> {
     return this.http.get<TrainingList[]>(`${this.baseUrl}/workout`);
   }
@@ -20,23 +23,23 @@ export class TrainingService {
   addTraining(training: TrainingList): Observable<TrainingList> {
     return this.http.post<TrainingList>(
       `${this.baseUrl}/workout/add`,
-      training
+      training,
     );
   }
   updateTraining(
     training: TrainingList,
-    additionalId?: string
+    additionalId?: string,
   ): Observable<UpdateTrainingResponse> {
     return this.http.put<UpdateTrainingResponse>(
       `${this.baseUrl}/workout/update/${
         additionalId ? additionalId : training._id
       }`,
-      training
+      training,
     );
   }
   removeTraining(id: string): Observable<TrainingList> {
     return this.http.delete<TrainingList>(
-      `${this.baseUrl}/workout/delete/${id}`
+      `${this.baseUrl}/workout/delete/${id}`,
     );
   }
 }

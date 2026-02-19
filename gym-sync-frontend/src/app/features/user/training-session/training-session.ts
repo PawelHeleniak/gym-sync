@@ -1,11 +1,4 @@
-import {
-  Component,
-  inject,
-  Input,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { Timer } from './components/timer/timer';
 import { Steps } from './components/steps/steps';
 import { TrainingService } from '../../../shared/services/training-session.service';
@@ -16,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TrainingPlanBuilder } from '../training-plan-builder/training-plan-builder';
 import { formatTime } from '../../../shared/utils/time';
 import { KeyValuePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 type TrainingState =
   | 'trainingList'
@@ -28,7 +22,14 @@ type TrainingsByDay = Record<number, TrainingList[]>;
 
 @Component({
   selector: 'app-training-session',
-  imports: [Timer, Steps, TrainingDetails, TrainingPlanBuilder, KeyValuePipe],
+  imports: [
+    Timer,
+    Steps,
+    TrainingDetails,
+    TrainingPlanBuilder,
+    KeyValuePipe,
+    RouterLink,
+  ],
   templateUrl: './training-session.html',
   styleUrls: ['./training-session.scss'],
 })

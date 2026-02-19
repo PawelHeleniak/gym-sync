@@ -5,7 +5,12 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  private userId: string = '';
+
+  constructor(private http: HttpClient) {
+    const storage = localStorage.getItem('user');
+    if (storage) this.userId = storage;
+  }
   private baseUrl = environment.apiUrl;
 
   register(body: any): Observable<any> {
@@ -13,5 +18,15 @@ export class AuthService {
   }
   login(body: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/auth/login`, body);
+  }
+
+  getUserId() {
+    this.getLocalStorage();
+    return this.userId;
+  }
+
+  getLocalStorage() {
+    const storage = localStorage.getItem('user');
+    if (storage) this.userId = storage;
   }
 }

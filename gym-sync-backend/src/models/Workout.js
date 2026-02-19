@@ -20,9 +20,10 @@ const exerciseSchema = new mongoose.Schema({
   },
 });
 
-const workoutPlanSchema = new mongoose.Schema({
+const workoutSchema = new mongoose.Schema({
   plan: { type: mongoose.Schema.Types.ObjectId, ref: "Workout" },
   name: { type: String, required: true, unique: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   estimatedTime: { type: Number },
   day: { type: Number },
   badge: { type: Boolean },
@@ -35,5 +36,5 @@ const workoutPlanSchema = new mongoose.Schema({
   },
 });
 
-const Workout = mongoose.model("Workout", workoutPlanSchema);
+const Workout = mongoose.model("Workout", workoutSchema);
 export default Workout;

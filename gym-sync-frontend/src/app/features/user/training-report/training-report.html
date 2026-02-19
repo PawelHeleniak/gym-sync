@@ -76,7 +76,7 @@
     }
   </div>
   }@else{
-  <div class="layout__box history">
+  <div class="layout__box history" [class.history--none]="!trainings.length">
     <div class="history__box box">
       <p class="history__empty">Brak historii do wyświetlenia</p>
     </div>

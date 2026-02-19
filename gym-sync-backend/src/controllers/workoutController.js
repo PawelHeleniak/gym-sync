@@ -3,10 +3,13 @@ import Workout from "../models/Workout.js";
 export const addWorkout = async (req, res) => {
   try {
     const newBody = req.body;
+    const { userId } = req.query;
 
     newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
+    newBody.userId = userId;
     const newWorkout = new Workout(newBody);
     const savedWorkout = await newWorkout.save();
+
     res.status(201).json(savedWorkout);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -14,9 +17,14 @@ export const addWorkout = async (req, res) => {
 };
 export const getWorkout = async (req, res) => {
   try {
-    const workout = await Workout.findById(req.params.id);
+    const { userId } = req.query;
+    const workout = await Workout.findOne({
+      _id: req.params.id,
+      userId,
+    });
     if (!workout)
       return res.status(404).json({ error: "Trening nie znaleziony" });
+
     res.status(200).json(workout);
   } catch (err) {
     console.error("Błąd pobierania treningu:", err.message);
@@ -25,9 +33,12 @@ export const getWorkout = async (req, res) => {
 };
 export const getWorkouts = async (req, res) => {
   try {
-    const workout = await Workout.find();
+    const { userId } = req.query;
+    const workout = await Workout.find({ userId });
+
     if (!workout)
       return res.status(404).json({ error: "Lista treningów nie znaleziona" });
+
     res.status(200).json(workout);
   } catch (err) {
     console.error("Błąd pobierania listy treningów:", err.message);
@@ -36,7 +47,12 @@ export const getWorkouts = async (req, res) => {
 };
 export const deleteWorkout = async (req, res) => {
   try {
-    const workout = await Workout.findByIdAndDelete(req.params.id);
+    const { userId } = req.query;
+    const workout = await Workout.findOneAndDelete({
+      _id: req.params.id,
+      userId,
+    });
+
     if (!workout)
       return res.status(404).json({ error: "Trening nie znaleziony" });
 
@@ -50,13 +66,15 @@ export const updateWorkout = async (req, res) => {
   try {
     const { id } = req.params;
     const newBody = req.body;
+    const { userId } = req.query;
 
     newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
 
-    const updatedWorkout = await Workout.findByIdAndUpdate(id, newBody, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedWorkout = await Workout.findOneAndUpdate(
+      { _id: id, userId },
+      newBody,
+      { new: true, runValidators: true },
+    );
 
     if (!updatedWorkout) {
       return res.status(404).json({ error: "Trening nie znaleziony" });

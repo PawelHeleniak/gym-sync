@@ -43,7 +43,7 @@ export class Login {
     this.disabled = true;
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
-        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('user', response.user.id);
         this.router.navigate(['/panel']);
         this.disabled = false;
       },
