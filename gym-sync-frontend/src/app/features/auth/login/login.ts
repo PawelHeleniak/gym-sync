@@ -47,9 +47,11 @@ export class Login {
         this.router.navigate(['/panel']);
         this.disabled = false;
       },
-      error: () => {
+      error: (err) => {
         this.openSnackBar(
-          'Nie udało się zalogować, odśwież stronę i spróbuj ponownie.',
+          err.error.message
+            ? err.error.message
+            : 'Nie udało się zalogować, odśwież stronę i spróbuj ponownie.',
           'warning',
         );
         this.disabled = false;

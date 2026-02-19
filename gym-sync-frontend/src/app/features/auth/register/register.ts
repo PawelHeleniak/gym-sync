@@ -42,7 +42,7 @@ export class Register {
         login: new FormControl('', Validators.required),
         password: new FormControl('', [
           Validators.required,
-          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{6,}$/),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/),
         ]),
         repeatPassword: new FormControl('', [Validators.required]),
       },

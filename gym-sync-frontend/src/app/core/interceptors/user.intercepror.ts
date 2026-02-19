@@ -5,7 +5,7 @@ import { AuthService } from '../services/auth.service';
 export const userInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const userId = authService.getUserId();
-  console.log(userId);
+
   if (!userId) return next(req);
 
   const modifiedReq = req.clone({

@@ -176,7 +176,7 @@ export class Steps implements OnInit {
       finalCount = allDoneCounts.at(-1);
     }
     const getTime = document.querySelector('.timer__time--start')?.textContent;
-    if (finalCount) console.log(currentExercise);
+
     newItems.push({
       name: currentExercise.name,
       repsCount: finalCount,

@@ -1,30 +1,6 @@
+import argon2 from "argon2";
+
 import User from "../models/User.js";
-
-export const login = async (req, res) => {
-  try {
-    const { login, password } = req.body;
-
-    const user = await User.findOne({ login });
-
-    if (!user) {
-      return res.status(401).json({ message: "Nieprawidłowe dane logowania" });
-    }
-
-    if (user.password !== password) {
-      return res.status(401).json({ message: "Nieprawidłowe dane logowania" });
-    }
-
-    return res.status(200).json({
-      message: "Login success",
-      user: {
-        id: user._id,
-        email: user.email,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
 
 export const register = async (req, res) => {
   try {
@@ -34,7 +10,7 @@ export const register = async (req, res) => {
       $or: [{ login }, { email }],
     });
 
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
@@ -55,10 +31,17 @@ export const register = async (req, res) => {
       });
     }
 
+    const hashedPassword = await argon2.hash(password, {
+      type: argon2.argon2id,
+      memoryCost: 65536,
+      timeCost: 3,
+      parallelism: 1,
+    });
+
     const user = await User.create({
       email,
       login,
-      password,
+      password: hashedPassword,
     });
 
     return res.status(201).json({
@@ -66,6 +49,34 @@ export const register = async (req, res) => {
       user: {
         id: user._id,
         login: user.login,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const login = async (req, res) => {
+  try {
+    const { login, password } = req.body;
+
+    const user = await User.findOne({ login });
+
+    if (!user) {
+      return res.status(401).json({ message: "Nieprawidłowe dane logowania" });
+    }
+
+    const isMatch = await argon2.verify(user.password, password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Nieprawidłowe dane logowania" });
+    }
+
+    return res.status(200).json({
+      message: "Login success",
+      user: {
+        id: user._id,
         email: user.email,
       },
     });

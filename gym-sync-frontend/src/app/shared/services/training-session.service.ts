@@ -1,4 +1,4 @@
-import { HttpClient, HttpHandler, HttpRequest } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environment/environment';
 import { Observable } from 'rxjs';
