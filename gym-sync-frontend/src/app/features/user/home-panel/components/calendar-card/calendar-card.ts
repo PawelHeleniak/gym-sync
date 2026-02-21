@@ -1,17 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
+import { TrainingService } from '../../../../../shared/services/training-session.service';
 
 import { WorkoutHistory } from '../../../../../shared/models/trainingHistory.model';
+import { TrainingList } from '../../../../../shared/models/training.model';
 
-interface CalendarDay {
+type CalendarDay = {
   date: Date;
   dayNumber: number;
   isCurrentMonth: boolean;
   isWorkoutDay: boolean;
+  isPlanWorkoutDay: boolean;
   isToday: boolean;
-}
-
+};
+type Legend = {
+  text: string;
+  color: string;
+};
 @Component({
   selector: 'app-calendar-card',
   imports: [CommonModule],
@@ -20,17 +26,37 @@ interface CalendarDay {
 })
 export class CalendarCard implements OnInit {
   history: WorkoutHistory[] = [];
+  training: number[] = [];
   currentDate = new Date();
   days: CalendarDay[] = [];
 
   weekDays = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd'];
-
-  constructor(private historyService: TrainingHistoryService) {}
+  legend: Legend[] = [
+    {
+      text: 'Bieżący dzień',
+      color: 'var(--accent)',
+    },
+    {
+      text: 'Zrealizowany trening',
+      color: 'var(--primary)',
+    },
+    {
+      text: 'Zaplanowany trening',
+      color: 'var(--color-btn-secondary)',
+    },
+  ];
+  constructor(
+    private historyService: TrainingHistoryService,
+    private trainingService: TrainingService,
+  ) {}
 
   ngOnInit() {
     this.historyService.getAllHistory().subscribe((data) => {
       this.history = data;
       this.generateCalendar();
+    });
+    this.trainingService.getWorkoutDays().subscribe((data) => {
+      this.training = data;
     });
   }
 
@@ -85,17 +111,21 @@ export class CalendarCard implements OnInit {
         dayNumber: d.getDate(),
         isCurrentMonth: false,
         isWorkoutDay: workoutDays.has(d.toDateString()),
+        isPlanWorkoutDay: false,
         isToday: this.isSameDay(d, today),
       });
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
       const d = new Date(year, month, day);
+      const plannedDays = this.getPlanWorkoutDaysSet(d);
+
       days.push({
         date: d,
         dayNumber: day,
         isCurrentMonth: true,
         isWorkoutDay: workoutDays.has(d.toDateString()),
+        isPlanWorkoutDay: plannedDays,
         isToday: this.isSameDay(d, today),
       });
     }
@@ -109,6 +139,7 @@ export class CalendarCard implements OnInit {
           dayNumber: d.getDate(),
           isCurrentMonth: false,
           isWorkoutDay: workoutDays.has(d.toDateString()),
+          isPlanWorkoutDay: false,
           isToday: this.isSameDay(d, today),
         });
       }
@@ -124,7 +155,15 @@ export class CalendarCard implements OnInit {
       a.getDate() === b.getDate()
     );
   }
-  private getWorkoutDaysSet() {
+  private getWorkoutDaysSet(): Set<string> {
     return new Set(this.history.map((h) => new Date(h.date).toDateString()));
+  }
+  private getPlanWorkoutDaysSet(d: any) {
+    const day = d.getDay();
+
+    const checkDay = this.training.some((e) => {
+      return e !== 0 && day === e;
+    });
+    return checkDay;
   }
 }

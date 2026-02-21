@@ -1,34 +1,47 @@
 <h2 class="layout__header">Kalendarz treningów</h2>
-<div class="box">
-  <div class="calendar">
-    <div class="calendar__top">
-      <button class="calendar__btn ui-btn" (click)="prevMonth()">
-        <i class="fa-solid fa-angle-left"></i>
-      </button>
-      <h3>{{ monthName }}</h3>
-      <button class="calendar__btn ui-btn" (click)="nextMonth()">
-        <i class="fa-solid fa-angle-right"></i>
-      </button>
-    </div>
-    <!-- Dni tygodnia -->
-    <div class="calendar__weeks">
-      @for (day of weekDays; track day) {
-      <div class="calendar__weeks--day">{{ day }}</div>
-      }
-    </div>
+<div class="layout_column">
+  <div class="box">
+    <div class="calendar">
+      <div class="calendar__top">
+        <button class="calendar__btn ui-btn" (click)="prevMonth()">
+          <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <h3>{{ monthName }}</h3>
+        <button class="calendar__btn ui-btn" (click)="nextMonth()">
+          <i class="fa-solid fa-angle-right"></i>
+        </button>
+      </div>
+      <!-- Dni tygodnia -->
+      <div class="calendar__weeks">
+        @for (day of weekDays; track day) {
+        <div class="calendar__weeks--day">{{ day }}</div>
+        }
+      </div>
 
-    <!-- Grid poszczególnych dni kalendarza -->
-    <div class="calendar__days">
-      @for (day of days; track day.date) {
-      <div
-        class="calendar__day"
-        [ngClass]="{
+      <!-- Grid poszczególnych dni kalendarza -->
+      <div class="calendar__days">
+        @for (day of days; track day.date; let i = $index) {
+        <div
+          class="calendar__day"
+          [ngClass]="{
           'calendar__day--opacity': !day.isCurrentMonth,
           'calendar__day--today': day.isToday,
-          'calendar__day--workout': day.isWorkoutDay && day.isCurrentMonth
+          'calendar__day--workout': day.isWorkoutDay && day.isCurrentMonth,
+          'calendar__day--planWorkout': day.isPlanWorkoutDay
         }"
-      >
-        {{ day.dayNumber }}
+        >
+          {{ day.dayNumber }}
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="box mt-1">
+    <div class="legend">
+      @for (item of legend; track $index) {
+      <div class="legend__box">
+        <div class="legend__color" [style.background]="item.color"></div>
+        <div class="legend__text">{{item.text}}</div>
       </div>
       }
     </div>

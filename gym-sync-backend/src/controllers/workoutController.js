@@ -76,9 +76,8 @@ export const updateWorkout = async (req, res) => {
       { new: true, runValidators: true },
     );
 
-    if (!updatedWorkout) {
+    if (!updatedWorkout)
       return res.status(404).json({ error: "Trening nie znaleziony" });
-    }
 
     res
       .status(200)
@@ -95,4 +94,19 @@ const calculateEstimatedTime = (exercises = []) => {
     const breakTime = Number(e.breakTime) || 0;
     return sum + breakTime * setsCount;
   }, 0);
+};
+
+export const getWorkoutDays = async (req, res) => {
+  try {
+    const { userId } = req.query;
+
+    if (!userId) return res.status(404).json({ error: "Brak userId" });
+
+    const days = await Workout.distinct("day", { userId });
+
+    res.status(200).json(days);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Nie udało się pobrać treningu" });
+  }
 };

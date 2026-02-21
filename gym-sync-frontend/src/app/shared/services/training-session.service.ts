@@ -42,4 +42,7 @@ export class TrainingService {
       `${this.baseUrl}/workout/delete/${id}`,
     );
   }
+  getWorkoutDays(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/workout/getWorkoutDays`);
+  }
 }

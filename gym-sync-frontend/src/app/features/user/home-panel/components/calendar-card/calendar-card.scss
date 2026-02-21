@@ -36,10 +36,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
+    border-radius: 0.6rem;
     background: var(--color-btn);
     &--opacity {
       opacity: 0.35;
+    }
+    &--planWorkout {
+      background-color: var(--color-btn-secondary);
     }
     &--workout {
       background-color: var(--primary);
@@ -47,5 +50,20 @@
     &--today {
       background-color: var(--accent);
     }
+  }
+}
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  &__box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  &__color {
+    border-radius: 0.6rem;
+    width: 2.4rem;
+    height: 2.4rem;
   }
 }
