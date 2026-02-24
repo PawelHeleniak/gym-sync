@@ -1,29 +1,15 @@
 <div class="sidebar">
   <div class="sidebar__top box">
+    @for (item of sidebarItems; track $index) {
     <a
-      routerLink="/panel"
+      routerLink="{{item.link}}"
       routerLinkActive="sidebar__link--active"
+      [routerLinkActiveOptions]="{ exact: true }"
       class="sidebar__link"
-      ><i class="fa-regular fa-house"></i
+      [attr.aria-label]="item.ariaLabel"
+      ><i class="{{item.icon}}"></i
     ></a>
-    <a
-      routerLink="/kreator-planu"
-      routerLinkActive="sidebar__link--active"
-      class="sidebar__link"
-      ><i class="fa-solid fa-plus"></i
-    ></a>
-    <a
-      routerLink="/trening"
-      routerLinkActive="sidebar__link--active"
-      class="sidebar__link"
-      ><i class="fa-solid fa-person-running"></i
-    ></a>
-    <a
-      routerLink="/raport"
-      routerLinkActive="sidebar__link--active"
-      class="sidebar__link"
-      ><i class="fa-regular fa-calendar-days"></i
-    ></a>
+    }
   </div>
   <div class="sidebar__bottom box">
     <button (click)="handleLogOut()" class="sidebar__link">

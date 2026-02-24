@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import argon2 from "argon2";
 
 import User from "../models/User.js";
@@ -27,7 +28,8 @@ export const register = async (req, res) => {
 
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
-        message: "Hasło musi mieć min. 6 znaków, 1 dużą literę i 1 cyfrę",
+        message:
+          "Hasło musi mieć min. 8 znaków, 1 dużą literę, 1 cyfrę i 1 znak specjalny",
       });
     }
 
@@ -82,5 +84,75 @@ export const login = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  try {
+    const { password, newPassword } = req.body;
+    const { userId } = req.query;
+
+    if (!password || !newPassword) {
+      return res.status(400).json({
+        message: "Wszystkie pola są wymagane",
+      });
+    }
+
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
+    if (!passwordRegex.test(newPassword)) {
+      return res.status(400).json({
+        message:
+          "Hasło musi mieć min. 8 znaków, 1 dużą literę, 1 cyfrę i 1 znak specjalny",
+      });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Użytkownik nie istnieje",
+      });
+    }
+
+    const isValidPassword = await argon2.verify(user.password, password);
+
+    if (!isValidPassword) {
+      return res.status(401).json({
+        message: "Nieprawidłowe obecne hasło",
+      });
+    }
+
+    const hashedPassword = await argon2.hash(newPassword, {
+      type: argon2.argon2id,
+      memoryCost: 65536,
+      timeCost: 3,
+      parallelism: 1,
+    });
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({
+      message: "Hasło zostało zmienione",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+export const getUser = async (req, res) => {
+  try {
+    const { userId } = req.query;
+    const user = await User.findById(userId).select("login email");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Użytkownik nie istnieje",
+      });
+    }
+
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 };

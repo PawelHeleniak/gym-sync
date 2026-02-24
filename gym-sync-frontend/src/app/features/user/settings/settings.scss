@@ -1,0 +1,21 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  &__box {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    max-width: 50rem;
+    // .ui-field {}
+    .ui-btn {
+      height: 4.7rem;
+      min-width: max-content;
+    }
+  }
+}

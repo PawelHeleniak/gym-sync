@@ -1,0 +1,69 @@
+<div class="layout__row --top">
+  <div class="layout__column">
+    <div class="layout__header">
+      <h2 class="layout__header--name">Ustawienia</h2>
+    </div>
+  </div>
+  <div class="settings box">
+    <form [formGroup]="emailForm">
+      <div class="settings__box">
+        <div class="ui-field">
+          <input
+            class="ui-field__input"
+            placeholder="Email"
+            formControlName="email"
+          />
+        </div>
+        <button class="ui-btn ui-btn--primary">Aktualizuj</button>
+      </div>
+    </form>
+    <div class="settings__box">
+      <div class="ui-field">
+        <input
+          class="ui-field__input ui-field__input--disabled"
+          placeholder="Login"
+          [value]="login"
+          disabled
+        />
+      </div>
+    </div>
+    <form [formGroup]="passwordForm">
+      <div class="settings__box">
+        <div class="ui-field">
+          <input
+            type="password"
+            class="ui-field__input"
+            placeholder="Hasło"
+            formControlName="password"
+          />
+          @if (passwordForm.get('password')?.errors?.['required'] &&
+          passwordForm.get('password')?.touched) {
+          <small class="ui-field__error"> Nowe hasło jest wymagane </small>
+          }
+        </div>
+      </div>
+      <div class="settings__box">
+        <div class="ui-field">
+          <input
+            type="password"
+            class="ui-field__input"
+            placeholder="Nowe hasło"
+            formControlName="newPassword"
+          />
+          @if (passwordForm.get('newPassword')?.errors?.['required'] &&
+          passwordForm.get('newPassword')?.touched) {
+          <small class="ui-field__error"> Nowe hasło jest wymagane </small>
+          } @if (passwordForm.get('newPassword')?.errors?.['pattern']) {
+          <small class="ui-field__error">
+            Hasło musi mieć min. 8 znaków, 1 dużą literę, 1 cyfrę i 1 znak
+            specjalny
+          </small>
+          }
+        </div>
+        <button class="ui-btn ui-btn--primary" (click)="updatePassword()">
+          Aktualizuj
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
