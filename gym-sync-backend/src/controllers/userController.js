@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import argon2 from "argon2";
+import nodemailer from "nodemailer";
 
 import User from "../models/User.js";
 
@@ -152,6 +153,109 @@ export const getUser = async (req, res) => {
     }
 
     return res.status(200).json(user);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+// Transporter SMTP
+console.log("HOST:", process.env.SMTP_HOST);
+console.log("PORT:", process.env.SMTP_PORT);
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: true,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+export const requestEmailChange = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const { newEmail } = req.body;
+    const { userId } = req.query;
+
+    if (!email) return res.status(400).json({ message: "Email wymagany" });
+
+    if (!newEmail)
+      return res.status(400).json({ message: "Nowy email wymagany" });
+
+    const user = await User.findById(userId);
+
+    if (!user)
+      return res.status(404).json({ message: "Użytkownik nie istnieje" });
+
+    const existingUser = await User.findOne({ email: newEmail });
+
+    if (existingUser)
+      return res.status(400).json({ message: "Email jest zajęty" });
+
+    const code = crypto.randomInt(100000, 999999).toString();
+
+    const hashedCode = crypto.createHash("sha256").update(code).digest("hex");
+
+    user.emailChangeCode = hashedCode;
+    user.emailChangeCodeExpires = Date.now() + 1000 * 60 * 10;
+    user.pendingEmail = newEmail;
+
+    await user.save();
+
+    await sendEmailChangeCode(user.email, code);
+
+    return res.status(200).json({
+      message: "Kod został wysłany na stary email",
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+export const sendEmailChangeCode = async (to, code) => {
+  await transporter.sendMail({
+    from: `"RepEvo" <${process.env.SMTP_USER}>`,
+    to,
+    subject: "Kod zmiany email",
+    html: `
+      <h2>Kod zmiany email</h2>
+      <p>Twój kod to:</p>
+      <h1>${code}</h1>
+      <p>Kod ważny 10 minut.</p>
+    `,
+  });
+};
+export const confirmEmailChange = async (req, res) => {
+  try {
+    const { code } = req.body;
+    const { userId } = req.query;
+
+    if (!code) return res.status(400).json({ message: "Kod wymagany" });
+
+    const user = await User.findById(userId);
+
+    if (!user)
+      return res.status(404).json({ message: "Użytkownik nie istnieje" });
+
+    if (user.emailChangeCodeExpires < Date.now())
+      return res.status(400).json({
+        message: "Kod wygasł",
+      });
+
+    const hashedCode = crypto.createHash("sha256").update(code).digest("hex");
+
+    if (hashedCode !== user.emailChangeCode)
+      return res.status(400).json({
+        message: "Nieprawidłowy kod",
+      });
+
+    user.email = user.pendingEmail;
+    user.pendingEmail = undefined;
+    user.emailChangeCode = undefined;
+    user.emailChangeCodeExpires = undefined;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Email został zmieniony",
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

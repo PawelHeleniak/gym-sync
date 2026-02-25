@@ -1,12 +1,10 @@
 import express from "express";
-import dotenv from "dotenv";
+import "dotenv/config";
 import connectDB from "./db/connect.js";
 import workoutRoutes from "./routes/workoutRouter.js";
 import workoutHistoryRoutes from "./routes/workoutHistoryRouter.js";
 import userRoutes from "./routes/userRouter.js";
 import cors from "cors";
-
-dotenv.config();
 
 const app = express();
 
