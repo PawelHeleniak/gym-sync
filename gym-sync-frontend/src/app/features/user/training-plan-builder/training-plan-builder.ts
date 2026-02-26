@@ -146,13 +146,15 @@ export class TrainingPlanBuilder {
 
   addPlanForm(): void {
     this.trainingService.addTraining(this.planForm.value).subscribe({
-      next: (response) => {
+      next: () => {
         this.openSnackBar('Pomyślnie dodano trening.', 'success');
         this.router.navigate(['/trening']);
       },
       error: (err: any) => {
         this.openSnackBar(
-          'Nie udało się dodać trening, spróbuj ponownie.',
+          err.error.message
+            ? err.error.message
+            : 'Nie udało się dodać treningu, spróbuj ponownie.',
           'warning',
         );
         console.error(err);

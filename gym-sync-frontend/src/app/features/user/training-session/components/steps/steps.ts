@@ -150,10 +150,12 @@ export class Steps implements OnInit {
     if (this.currentRepIndex !== 0) this.currentRepIndex--;
     else {
       this.currentExerciseIndex--;
-      this.currentRepIndex = this.currentExercise.sets.length;
+      this.currentRepIndex =
+        this.selectedTraining.exercises[this.currentExerciseIndex].sets.length -
+        1;
     }
-    this.currentExercise.sets[this.currentRepIndex].done = false;
 
+    this.currentExercise.sets[this.currentRepIndex].done = false;
     this.timer(this.currentExercise.breakTime || 0);
   }
   backToList() {

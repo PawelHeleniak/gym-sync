@@ -12,7 +12,7 @@ import { loginLimiter, registerLimiter } from "../middlewares/authLimiter.js";
 const router = express.Router();
 
 router.get("/getUser", getUser);
-router.post("/login", loginLimiter, login);
+router.post("/login", login);
 router.post("/register", registerLimiter, register);
 router.patch("/updatePassword", updatePassword);
 router.post("/requestEmailChange", requestEmailChange);

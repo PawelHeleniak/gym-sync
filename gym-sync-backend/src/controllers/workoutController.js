@@ -5,6 +5,17 @@ export const addWorkout = async (req, res) => {
     const newBody = req.body;
     const { userId } = req.query;
 
+    const existingWorkout = await Workout.findOne({
+      name: newBody.name,
+      userId,
+    });
+
+    if (existingWorkout) {
+      return res
+        .status(400)
+        .json({ message: "Trening o tej nazwie już istnieje" });
+    }
+
     newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
     newBody.userId = userId;
     const newWorkout = new Workout(newBody);
