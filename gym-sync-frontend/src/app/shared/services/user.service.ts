@@ -20,7 +20,15 @@ export class UserService {
 
     return this.http.patch<any>(`${this.baseUrl}/auth/updatePassword`, body);
   }
-  // updateEmail(body: any): Observable<any[]> {
-  //   return this.http.patch<any>(`${this.baseUrl}/auth/updatePassword`, body);
-  // }
+  updateEmail(email: string, newEmail: string): Observable<any[]> {
+    const body = {
+      email,
+      newEmail,
+    };
+    return this.http.post<any>(`${this.baseUrl}/auth/requestEmailChange`, body);
+  }
+  confirmEmail(code: string): Observable<any[]> {
+    const body = { code };
+    return this.http.post<any>(`${this.baseUrl}/auth/confirmEmailChange`, body);
+  }
 }

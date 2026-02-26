@@ -144,7 +144,9 @@ export const updatePassword = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const { userId } = req.query;
-    const user = await User.findById(userId).select("login email");
+    const user = await User.findById(userId).select(
+      "login email emailChangeCodeExpires",
+    );
 
     if (!user) {
       return res.status(404).json({
@@ -215,11 +217,31 @@ export const sendEmailChangeCode = async (to, code) => {
     to,
     subject: "Kod zmiany email",
     html: `
-      <h2>Kod zmiany email</h2>
-      <p>Twój kod to:</p>
-      <h1>${code}</h1>
-      <p>Kod ważny 10 minut.</p>
-    `,
+    <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #333;">
+      <tr>
+        <td align="left">
+          <p style="font-size: 24px; font-weight: bold;">
+            Twój kod to:
+          </p>
+          <p style="font-size: 36px; font-weight: bold; color: #9e00b3; margin: 0 0 15px 0;">
+            ${code}
+          </p>
+          <p style="margin: 0 0 5px 0;">
+            Kod jest ważny przez 10 minut.
+          </p>
+          <p style="margin: 0;">
+            Kod należy wpisać w panelu użytkownika.
+          </p>
+
+          <div style="height: 1px; background-color: #777; margin: 20px 0;"></div>
+
+          <p style="margin: 0; font-size: 13px; color: #777;">
+            Jeśli to nie Ty próbujesz zmienić adres email, zignoruj tę wiadomość.
+          </p>
+        </td>
+      </tr>
+    </table>
+      `,
   });
 };
 export const confirmEmailChange = async (req, res) => {

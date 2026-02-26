@@ -1,0 +1,35 @@
+<div class="ui-dialog">
+  <div class="ui-dialog__header">
+    <h2 class="ui-dialog__title">{{ data.title }}</h2>
+    <p class="ui-dialog__subtitle">{{ data.subTitle }}</p>
+  </div>
+  <form class="ui-dialog__form" [formGroup]="codeForm">
+    <div class="ui-field">
+      <input
+        class="ui-field__input"
+        placeholder="Kod potwierdzający"
+        formControlName="code"
+        maxlength="6"
+        inputmode="numeric"
+        pattern="\d*"
+      />
+      @if(codeForm.get('code')?.errors?.['required'] &&
+      codeForm.get('code')?.touched) {
+      <small class="ui-field__error">Kod jest wymagany</small>
+      } @if(codeForm.get('code')?.errors?.['pattern']) {
+      <small class="ui-field__error">Kod musi składać się z 6 cyfr</small>
+      }
+    </div>
+
+    <button
+      class="ui-btn ui-btn--primary"
+      [class.ui-btn--disabled]="disabled"
+      (click)="confirmCode()"
+    >
+      Potwierdź kod
+    </button>
+    @if(error){
+    <p class="ui-dialog__error">{{ errorInfo }}</p>
+    }
+  </form>
+</div>

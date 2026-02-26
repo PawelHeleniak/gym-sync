@@ -13,10 +13,36 @@
             placeholder="Email"
             formControlName="email"
           />
+          @if (emailForm.get('email')?.errors?.['required'] &&
+          emailForm.get('email')?.touched) {
+          <small class="ui-field__error"> Email jest wymagany </small>
+          } @if (emailForm.get('email')?.errors?.['pattern']) {
+          <small class="ui-field__error">Adres email jest niepoprawny</small> }
         </div>
-        <button class="ui-btn ui-btn--primary">Aktualizuj</button>
+        @if(emailForm.get('email')?.dirty && originalEmail !==
+        emailForm.get('email')?.value && emailForm.get('email')?.value &&
+        !emailForm.get('email')?.errors?.['pattern']) {
+        <button
+          class="ui-btn ui-btn--primary"
+          [class.ui-btn--disabled]="disabledEmail"
+          (click)="updateEmail()"
+        >
+          Aktualizuj
+        </button>
+        }
       </div>
     </form>
+    @if(codeButton) {
+    <div class="settings__box settings__box--code">
+      <button
+        class="ui-btn ui-btn--secondary"
+        style="width: 100%"
+        (click)="confirmCode()"
+      >
+        Potwierdź kod
+      </button>
+    </div>
+    }
     <div class="settings__box">
       <div class="ui-field">
         <input
