@@ -6,13 +6,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

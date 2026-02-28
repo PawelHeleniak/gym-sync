@@ -1,7 +1,27 @@
 @use "../../../../styles.scss" as style;
 
-form {
+.form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  &__remember {
+    align-self: center;
+    align-items: flex-end;
+    background: none;
+    color: var(--color-text-secondary);
+    font-size: 1.4rem;
+    border: none;
+    margin-bottom: 1.5rem;
+    margin-left: auto;
+    cursor: pointer;
+    transition: 0.2s ease-in color;
+    &:hover {
+      color: var(--color-text-primary);
+    }
+  }
+  .ui-btn {
+    max-width: 18rem;
+    width: 100%;
+    margin: 0 auto;
+  }
 }

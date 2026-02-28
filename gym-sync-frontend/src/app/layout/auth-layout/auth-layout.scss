@@ -7,56 +7,201 @@
   margin: 0 auto;
   width: 100%;
   padding: 1.2rem;
-  margin-bottom: 8.5rem;
   align-items: center;
   justify-content: center;
+
   @include style.tablet {
     padding: 2.4rem 2.4rem 2.4rem 1.2rem;
     margin-bottom: 0;
   }
 }
+
 .auth {
   display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  @include style.mobile {
-    width: 100%;
-    max-width: 36rem;
+  flex-direction: column-reverse;
+  gap: 0;
+  max-width: 40rem;
+  width: 100%;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+  @include style.tablet {
+    max-width: 100rem;
+    gap: 4rem;
+    flex-direction: row;
   }
   &__header {
     text-align: center;
+    @include style.tablet {
+      text-align: start;
+    }
   }
+  &--register {
+    .auth__info {
+      @include style.tablet {
+        transform: translateX(-100%);
+      }
+    }
+
+    .auth__form--login {
+      opacity: 0;
+      scale: 0.9;
+      display: none;
+      @include style.tablet {
+        pointer-events: none;
+        display: flex;
+      }
+    }
+  }
+
+  &--login {
+    .auth__form--register {
+      opacity: 0;
+      scale: 0.9;
+      display: none;
+      @include style.tablet {
+        pointer-events: none;
+        display: flex;
+      }
+    }
+  }
+
+  &__box {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    position: relative;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 2rem 1rem;
+    justify-content: center;
+    flex: 0 0 100%;
+    transition:
+      0.2s ease-in opacity,
+      0.2s ease-in scale;
+
+    @include style.tablet {
+      flex: 1;
+      min-width: initial;
+      padding: 3rem;
+      min-height: 50rem;
+    }
+  }
+
+  &__subtitle {
+    margin-top: 1rem;
+    color: var(--color-text-secondary);
+  }
+
+  /* ===== INFO ===== */
+
   &__info {
+    position: relative;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: max-content;
+    background-color: var(--primary);
+    border-radius: var(--border-radius-secondary);
+    overflow: hidden;
+    transition: transform 0.2s ease-in;
+    @include style.tablet {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+    }
+  }
+
+  &__info-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    position: relative;
-    padding-top: 2rem;
-    &::before {
-      content: "";
-      position: absolute;
-      background-color: var(--border-color);
-      height: 0.1rem;
-      width: 60%;
-      left: 50%;
-      top: 0;
-      transform: translateX(-50%);
+    gap: 1rem;
+    padding: 2rem;
+    height: 100%;
+    transition:
+      transform 0.2s ease-in,
+      opacity 0.2s ease-in;
+  }
+
+  &__info-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--primary);
+    z-index: 2;
+    width: 100%;
+  }
+
+  &__info-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    text-align: center;
+    @include style.tablet {
+      margin: initial;
     }
-    span {
-      font-size: var(--font-size-base);
-    }
-    button {
-      padding: 0.6rem 1.2rem;
-      border: none;
-      position: relative;
-      overflow: hidden;
-      background-color: transparent;
-      font-size: var(--font-size-base);
-      transition: 0.2s ease-in color;
-      &:hover {
-        color: var(--accent);
+  }
+
+  &__info-login-info,
+  &__info-register-info,
+  .ui-btn {
+    transition:
+      transform 0.2s ease-in,
+      opacity 0.2s ease-in;
+  }
+
+  &__info-register-info {
+    transition-delay: 0.1s;
+  }
+
+  .ui-btn {
+    transition-delay: 0.2s;
+    border: 2px solid var(--color-text-primary);
+    background: none;
+  }
+  @include style.tablet {
+    &__info-content.--animating {
+      .auth__info-login-info,
+      .auth__info-register-info,
+      .ui-btn {
+        transform: translateY(-1rem);
+        opacity: 0;
+        pointer-events: none;
       }
+    }
+  }
+
+  &__info-login-info {
+    margin-top: 1rem;
+    display: none;
+    @include style.tablet {
+      display: block;
+    }
+  }
+
+  &__info-register-info {
+    margin-bottom: 1.5rem;
+    display: none;
+    @include style.tablet {
+      display: block;
+    }
+  }
+
+  &__info-img {
+    border-radius: 25rem;
+    max-width: 6.4rem;
+    @include style.tablet {
+      max-width: 9.6rem;
     }
   }
 }

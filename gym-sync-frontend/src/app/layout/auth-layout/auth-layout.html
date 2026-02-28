@@ -1,18 +1,56 @@
 <div class="layout">
-  <div class="auth box">
-    <h1 class="auth__header">
-      {{ view === 'login' ? 'Logowanie' : 'Rejestracja' }}
-    </h1>
-    @if(view === "login"){
-    <app-login></app-login>
-    }@else {
-    <app-register (view)="[handleView($event)]"></app-register>
-    }
+  <div
+    class="auth box"
+    [ngClass]="{
+      'auth--login': view === 'login',
+      'auth--register': view === 'register'
+    }"
+  >
+    <div class="auth__box">
+      <div class="auth__form auth__form--login">
+        <div class="auth__header">
+          <h1 class="auth__title">Logowanie</h1>
+          <p class="auth__subtitle">Podaj swoje dane logowania</p>
+        </div>
+        <app-login></app-login>
+      </div>
+
+      <div class="auth__form auth__form--register">
+        <div class="auth__header">
+          <h1 class="auth__title">Rejestracja</h1>
+          <p class="auth__subtitle">Utwórz nowe konto</p>
+        </div>
+        <app-register></app-register>
+      </div>
+    </div>
     <div class="auth__info">
-      <span>{{ view === 'login' ? 'Nie masz konta?' : 'Masz konto?' }}</span>
-      <button (click)="handleView(view === 'login' ? 'register' : 'login')">
-        {{ view === 'login' ? 'Zarejestuj się' : 'Zaloguj się' }}
-      </button>
+      <div class="auth__info-content" [class.--animating]="isAnimating">
+        <div class="auth__info-top">
+          <img src="logo-128.webp" alt="Ikona strony" class="auth__info-img" />
+          <h2 class="auth__info-header">Witaj w RepEvo!</h2>
+        </div>
+
+        <div class="auth__info-bottom">
+          <p class="auth__info-login-info">
+            {{ viewDelay === 'login' ? 'Zaloguj się, aby przejść do swojej
+            aplikacji fitness.' : 'Zarejestruj się, aby przejść do swojej
+            aplikacji fitness.' }}
+          </p>
+
+          <p class="auth__info-register-info">
+            {{ viewDelay === 'login' ? 'Nie masz konta? Zarejestruj się!' :
+            'Masz już konto? Zaloguj się!' }}
+          </p>
+
+          <button
+            class="ui-btn"
+            (click)="handleView(view === 'login' ? 'register' : 'login')"
+          >
+            {{ isMobile ? (view === 'login' ? 'Zarejestruj się' : 'Zaloguj się')
+            : (viewDelay === 'login' ? 'Zarejestruj się' : 'Zaloguj się') }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

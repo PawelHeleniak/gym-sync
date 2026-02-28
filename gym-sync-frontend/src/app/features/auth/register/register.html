@@ -28,43 +28,45 @@
     <small class="ui-field__error"> Login jest wymagany </small>
     }
   </div>
+  <div class="form__row">
+    <div class="ui-field">
+      <input
+        type="password"
+        placeholder="Hasło"
+        class="ui-field__input"
+        formControlName="password"
+      />
 
-  <div class="ui-field">
-    <input
-      type="password"
-      placeholder="Hasło"
-      class="ui-field__input"
-      formControlName="password"
-    />
+      @if (registerForm.get('password')?.invalid &&
+      registerForm.get('password')?.touched) {
+      <small class="ui-field__error">
+        @if (registerForm.get('password')?.errors?.['required']) { Hasło jest
+        wymagane } @if (registerForm.get('password')?.errors?.['pattern']) {
+        Min. 8 znaków, 1 wielka litera, 1 cyfra i znak specjalny. }
+      </small>
+      }
+    </div>
 
-    @if (registerForm.get('password')?.invalid &&
-    registerForm.get('password')?.touched) {
-    <small class="ui-field__error">
-      @if (registerForm.get('password')?.errors?.['required']) { Hasło jest
-      wymagane } @if (registerForm.get('password')?.errors?.['pattern']) { Hasło
-      musi mieć min. 8 znaków, 1 dużą literę, 1 cyfrę i 1 znak specjalny }
-    </small>
-    }
-  </div>
+    <div class="ui-field">
+      <input
+        type="password"
+        placeholder="Powtórz hasło"
+        class="ui-field__input"
+        formControlName="repeatPassword"
+      />
 
-  <div class="ui-field">
-    <input
-      type="password"
-      placeholder="Powtórz hasło"
-      class="ui-field__input"
-      formControlName="repeatPassword"
-    />
-
-    @if (registerForm.get('repeatPassword')?.invalid &&
-    registerForm.get('repeatPassword')?.touched) {
-    <small class="ui-field__error"> Powtórzenie hasła jest wymagane </small>
-    } @if (registerForm.errors?.['passwordsMismatch'] &&
-    registerForm.get('repeatPassword')?.touched) {
-    <small class="ui-field__error"> Hasła różnią się od siebie </small>
-    }
+      @if (registerForm.get('repeatPassword')?.invalid &&
+      registerForm.get('repeatPassword')?.touched) {
+      <small class="ui-field__error"> Powtórz hasło jest wymagane </small>
+      } @if (registerForm.errors?.['passwordsMismatch'] &&
+      registerForm.get('repeatPassword')?.touched) {
+      <small class="ui-field__error"> Hasła różnią się od siebie </small>
+      }
+    </div>
   </div>
 
   <button
+    style="margin-top: 1.5rem"
     class="ui-btn ui-btn--arrow"
     [class.ui-btn--disabled]="disabled"
     (click)="handleRegister()"

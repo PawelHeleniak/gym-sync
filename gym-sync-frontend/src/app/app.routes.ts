@@ -9,6 +9,7 @@ import { TrainingReport } from './features/user/training-report/training-report'
 import { Settings } from './features/user/settings/settings';
 
 import { AuthLayout } from './layout/auth-layout/auth-layout';
+import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,10 @@ export const routes: Routes = [
   {
     path: 'autoryzacja',
     component: AuthLayout,
+  },
+  {
+    path: 'autoryzacja/reset-hasla',
+    component: ForgotPassword,
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
