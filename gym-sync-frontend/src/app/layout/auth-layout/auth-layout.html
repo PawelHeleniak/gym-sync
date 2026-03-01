@@ -20,13 +20,19 @@
           <h1 class="auth__title">Rejestracja</h1>
           <p class="auth__subtitle">Utwórz nowe konto</p>
         </div>
-        <app-register></app-register>
+        <app-register (view)="[handleView($event)]"></app-register>
       </div>
     </div>
     <div class="auth__info">
       <div class="auth__info-content" [class.--animating]="isAnimating">
         <div class="auth__info-top">
-          <img src="logo-128.webp" alt="Ikona strony" class="auth__info-img" />
+          <div class="auth__image">
+            <img
+              src="logo-128.webp"
+              alt="Ikona strony"
+              class="auth__image--img"
+            />
+          </div>
           <h2 class="auth__info-header">Witaj w RepEvo!</h2>
         </div>
 

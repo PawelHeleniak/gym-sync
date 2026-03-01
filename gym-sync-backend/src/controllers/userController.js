@@ -41,14 +41,24 @@ export const register = async (req, res) => {
       parallelism: 1,
     });
 
+    const code = crypto.randomBytes(32).toString("hex");
+    const hashedCode = crypto.createHash("sha256").update(code).digest("hex");
+
     const user = await User.create({
       email,
       login,
       password: hashedPassword,
+      verifiedChangeCode: hashedCode,
+      verifiedChangeCodeExpires: Date.now() + 1000 * 60 * 60,
     });
 
+    await user.save();
+
+    await sendRequestVerifiedAccount(email, code);
+
     return res.status(201).json({
-      message: "Użytkownik utworzony",
+      message:
+        "Użytkownik utworzony, kod weryfikacyjny został wysłany na email",
       user: {
         id: user._id,
         login: user.login,
@@ -74,6 +84,13 @@ export const login = async (req, res) => {
 
     if (!isMatch) {
       return res.status(401).json({ message: "Nieprawidłowe dane logowania" });
+    }
+
+    if (!user.isVerified) {
+      return res.status(403).json({
+        message: "Zweryfikuj email, kod został wysłany na adres email",
+        isVerified: false,
+      });
     }
 
     return res.status(200).json({
@@ -159,9 +176,47 @@ export const getUser = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+export const resendVerification = async (req, res) => {
+  try {
+    const { login } = req.body;
+
+    if (!login)
+      return res.status(400).json({
+        message: "Login jest wymagany",
+      });
+
+    const user = await User.findOne({ login });
+
+    if (!user)
+      return res.status(404).json({
+        message: "Użytkownik nie istnieje",
+      });
+
+    if (user.isVerified)
+      return res.status(400).json({
+        message: "Konto jest już zweryfikowane",
+      });
+
+    const code = crypto.randomBytes(32).toString("hex");
+    const hashedCode = crypto.createHash("sha256").update(code).digest("hex");
+
+    user.verifiedChangeCode = hashedCode;
+    user.verifiedChangeCodeExpires = Date.now() + 1000 * 60 * 60;
+
+    await user.save();
+
+    await sendRequestVerifiedAccount(user.email, code);
+
+    return res.status(200).json({
+      message: "Nowy link weryfikacyjny został wysłany na adres email",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
+  }
+};
 // Transporter SMTP
-console.log("HOST:", process.env.SMTP_HOST);
-console.log("PORT:", process.env.SMTP_PORT);
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
@@ -171,6 +226,36 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,
   },
 });
+export const sendRequestVerifiedAccount = async (to, code) => {
+  await transporter.sendMail({
+    from: `"RepEvo" <${process.env.SMTP_USER}>`,
+    to,
+    subject: "Link do weryfikacji konta",
+    html: `
+    <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #333;">
+      <tr>
+        <td align="left">
+          <p style="font-size: 24px; font-weight: bold;">
+            Twój kod to:
+          </p>
+          <a href="https://repevo.pl/autoryzacja/weryfikacja-konta?token=${code}" style="margin: 0 0 15px 0;">
+            Zweryfikuj adres email
+          </a>
+          <p style="margin: 0;">
+            Link jest ważny przez 60 minut.
+          </p>
+
+          <div style="height: 1px; background-color: #777; margin: 20px 0;"></div>
+
+          <p style="margin: 0; font-size: 13px; color: #777;">
+            Jeśli to nie Ty próbujesz założyć konto, zignoruj tę wiadomość.
+          </p>
+        </td>
+      </tr>
+    </table>
+      `,
+  });
+};
 export const requestEmailChange = async (req, res) => {
   try {
     const { email } = req.body;
@@ -280,5 +365,41 @@ export const confirmEmailChange = async (req, res) => {
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
+  }
+};
+export const confirmAccount = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token)
+      return res.status(400).json({
+        message: "Brak tokenu weryfikacyjnego",
+      });
+
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await User.findOne({
+      verifiedChangeCode: hashedToken,
+      verifiedChangeCodeExpires: { $gt: Date.now() },
+    });
+
+    if (!user)
+      return res.status(400).json({
+        message: "Token jest nieprawidłowy lub wygasł",
+      });
+
+    user.isVerified = true;
+    user.verifiedChangeCode = undefined;
+    user.verifiedChangeCodeExpires = undefined;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Konto zostało zweryfikowane",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message,
+    });
   }
 };

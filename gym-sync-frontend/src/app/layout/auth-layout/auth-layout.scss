@@ -197,11 +197,18 @@
     }
   }
 
-  &__info-img {
+  &__image {
     border-radius: 25rem;
     max-width: 6.4rem;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background-color: var(--color-bg-primary);
     @include style.tablet {
       max-width: 9.6rem;
+    }
+    &--img {
+      width: 100%;
     }
   }
 }

@@ -54,11 +54,22 @@ export class Login {
             : 'Nie udało się zalogować, odśwież stronę i spróbuj ponownie.',
           'warning',
         );
+        if (!err.error.isVerified) this.resendVerificationEmail();
+
         this.disabled = false;
       },
     });
   }
-
+  resendVerificationEmail() {
+    // Wiem że nie najlepsza opcja, ale nie chciałem tworzyć nowego widoku pod wpisanie emaila
+    this.authService
+      .resendVerificationEmail(this.loginForm.get('login')?.value)
+      .subscribe({
+        next: () => {
+          this.disabled = false;
+        },
+      });
+  }
   openSnackBar(message: string, mode: string) {
     if (mode === 'success') {
       this._snackBar.open(message, '', {

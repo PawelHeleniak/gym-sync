@@ -10,6 +10,7 @@ import { Settings } from './features/user/settings/settings';
 
 import { AuthLayout } from './layout/auth-layout/auth-layout';
 import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
+import { VerifyAccount } from './features/auth/verify-account/verify-account';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,10 @@ export const routes: Routes = [
   {
     path: 'autoryzacja/reset-hasla',
     component: ForgotPassword,
+  },
+  {
+    path: 'autoryzacja/weryfikacja-konta',
+    component: VerifyAccount,
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

@@ -1,0 +1,24 @@
+@use "../../../../styles.scss" as style;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+  @include style.mobile {
+    padding: 2rem;
+  }
+}
+.verify {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  &__text {
+    font-size: var(--font-size-m);
+  }
+}

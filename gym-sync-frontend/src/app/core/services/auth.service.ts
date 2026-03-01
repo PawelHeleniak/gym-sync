@@ -29,4 +29,16 @@ export class AuthService {
     const storage = localStorage.getItem('user');
     if (storage) this.userId = storage;
   }
+
+  resendVerificationEmail(login?: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/auth/resendVerificationEmail`, {
+      login,
+    });
+  }
+
+  confirmAccount(token: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/auth/confirmAccount`, {
+      token,
+    });
+  }
 }

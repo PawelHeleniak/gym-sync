@@ -69,8 +69,13 @@ export class Register {
 
     this.disabled = true;
     this.authService.register(this.registerForm.value).subscribe({
-      next: () => {
-        this.openSnackBar('Użytkownik został utworzony.', 'success');
+      next: (response) => {
+        this.openSnackBar(
+          response?.message
+            ? response?.message
+            : 'Użytkownik został utworzony.',
+          'success',
+        );
         this.handleLogin();
         this.disabled = false;
       },
