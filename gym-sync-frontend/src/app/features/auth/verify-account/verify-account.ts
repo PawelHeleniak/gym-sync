@@ -11,12 +11,25 @@ import { AuthService } from '../../../core/services/auth.service';
 export class VerifyAccount {
   private route = inject(ActivatedRoute);
   constructor(private authService: AuthService) {}
+  view: 'waiting' | 'success' | 'error' = 'waiting';
 
   ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
       const token = params.get('token');
 
-      if (token) this.authService.confirmAccount(token).subscribe();
+      if (!token) {
+        this.view = 'error';
+        return;
+      }
+
+      this.authService.confirmAccount(token).subscribe({
+        next: () => {
+          this.view = 'success';
+        },
+        error: () => {
+          this.view = 'error';
+        },
+      });
     });
   }
 }

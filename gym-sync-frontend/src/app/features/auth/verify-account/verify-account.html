@@ -1,12 +1,31 @@
 <div class="layout">
   <div class="verify box">
-    <h1>Gotowe, twoje konto jest aktywne</h1>
+    <!-- WAITING -->
+    @if(view === 'waiting') {
+    <h1>Trwa weryfikacja konta...</h1>
     <p class="verify__text">
-      Weryfikacja przebiegła pomyślnie. Teraz możesz się zalogować i zacząć
-      działać.
+      Sprawdzamy poprawność linku. To może potrwać chwilę.
     </p>
-    <a [routerLink]="['/autoryzacja']" class="ui-btn ui-btn--arrow"
-      >Zaloguj się <i class="fa-solid fa-arrow-right"></i
-    ></a>
+    }
+
+    <!-- SUCCESS -->
+    @else if(view === 'success') {
+    <h1>Gotowe, Twoje konto jest aktywne</h1>
+    <p class="verify__text">
+      Weryfikacja przebiegła pomyślnie. Teraz możesz się zalogować.
+    </p>
+    <a [routerLink]="['/autoryzacja']" class="ui-btn ui-btn--arrow">
+      Zaloguj się <i class="fa-solid fa-arrow-right"></i>
+    </a>
+    }
+
+    <!-- ERROR -->
+    @else if(view === 'error') {
+    <h1>Link jest nieprawidłowy lub wygasł</h1>
+    <p class="verify__text">
+      Spróbuj ponownie lub wygeneruj nowy link weryfikacyjny.
+    </p>
+    <a [routerLink]="['/autoryzacja']" class="ui-btn"> Wróć do logowania </a>
+    }
   </div>
 </div>

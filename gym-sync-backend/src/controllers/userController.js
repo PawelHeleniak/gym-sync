@@ -89,6 +89,9 @@ export const login = async (req, res) => {
         isVerified: false,
       });
 
+    user.lastLoginAt = new Date();
+    await user.save();
+
     return res.status(200).json({
       message: "Login success",
       user: {
@@ -195,7 +198,7 @@ export const resendVerification = async (req, res) => {
 
     await user.save();
 
-    await sendRequestVerifiedAccount(user.email, code);
+    await sendVerifiedAccount(user.email, code);
 
     return res.status(200).json({
       message: "Nowy link weryfikacyjny został wysłany na adres email",
