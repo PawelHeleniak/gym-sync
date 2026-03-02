@@ -111,6 +111,21 @@
           <ng-container [formGroupName]="j">
             <div class="sets__box box">
               <h3>Seria {{j + 1}}</h3>
+              @if(exercise.get('type')?.value === 'time') {
+              <div class="ui-field">
+                <label for="repsCount-{{i}}-{{j}}" class="ui-field__label"
+                  >Czas trwania (sek.):</label
+                >
+                <input
+                  type="number"
+                  formControlName="timeCount"
+                  required="true"
+                  id="timeCount-{{i}}-{{j}}"
+                  class="ui-field__input"
+                  [class.ui-field__input--error]="(set.get('timeCount')?.invalid || set.get('timeCount')?.value === 0) && set.get('timeCount')?.touched"
+                />
+              </div>
+              } @else{
               <div class="ui-field">
                 <label for="repsCount-{{i}}-{{j}}" class="ui-field__label"
                   >Powtórzenia:</label
@@ -123,15 +138,8 @@
                   class="ui-field__input"
                   [class.ui-field__input--error]="(set.get('repsCount')?.invalid || set.get('repsCount')?.value === 0) && set.get('repsCount')?.touched"
                 />
-                <!-- @if(set.get('repsCount')?.invalid &&
-                set.get('repsCount')?.touched){
-                <div class="ui-field__error">Powtórzenia są wymagane</div>
-                }@else if(set.get('repsCount')?.value === 0){
-                <div class="ui-field__error">
-                  Powtórzenia nie mogą wynosić 0
-                </div>
-                } -->
               </div>
+              }
               <div class="ui-field">
                 <label for="weight-{{i}}-{{j}}" class="ui-field__label"
                   >Ciężar:</label
@@ -177,17 +185,24 @@
     <div class="control">
       <button
         type="button"
-        (click)="addExercise('Przerwa', 60, true, '')"
+        (click)="addExercise('Przerwa', 60, true, '', 'break')"
         class="ui-btn control__btn"
       >
         <i class="fa-solid fa-pause"></i> Dodaj Przerwę
       </button>
       <button
         type="button"
-        (click)="addExercise('Nowe ćwiczenie', 120, false, '')"
+        (click)="addExercise('Nowe ćwiczenie', 120, false, '', 'reps')"
         class="ui-btn control__btn"
       >
-        <i class="fa-solid fa-dumbbell"></i> Dodaj ćwiczenie
+        <i class="fa-solid fa-dumbbell"></i> Ćwiczenie siłowe
+      </button>
+      <button
+        type="button"
+        (click)="addExercise('Ćwiczenie cardio', 60, false, '', 'time')"
+        class="ui-btn control__btn"
+      >
+        <i class="fa-solid fa-stopwatch"></i> Ćwiczenie cardio
       </button>
     </div>
   </div>

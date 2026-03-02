@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const exerciseSetSchema = new mongoose.Schema({
   repsCount: { type: Number, required: true },
+  timeCount: { type: Number, required: true },
   weight: { type: Number },
   done: { type: Boolean, required: true, default: false },
 });
@@ -18,6 +19,7 @@ const exerciseSchema = new mongoose.Schema({
       "Ćwiczenie musi mieć przynajmniej jeden set",
     ],
   },
+  type: { type: String, enum: ["break", "reps", "time"], required: true },
 });
 
 const workoutSchema = new mongoose.Schema({

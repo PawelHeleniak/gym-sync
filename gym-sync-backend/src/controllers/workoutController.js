@@ -100,10 +100,27 @@ export const updateWorkout = async (req, res) => {
 };
 
 const calculateEstimatedTime = (exercises = []) => {
-  return exercises.reduce((sum, e) => {
-    const setsCount = Array.isArray(e.sets) ? e.sets.length : 0;
-    const breakTime = Number(e.breakTime) || 0;
-    return sum + breakTime * setsCount;
+  return exercises.reduce((sum, ex) => {
+    const sets = Array.isArray(ex.sets) ? ex.sets : [];
+    const breakTime = Number(ex.breakTime) || 0;
+
+    if (ex.type === "break") {
+      return sum + breakTime;
+    }
+
+    let exerciseTime = 0;
+
+    if (ex.type === "time") {
+      exerciseTime = sets.reduce(
+        (s, set) => s + (Number(set.timeCount) || 0),
+        0,
+      );
+    }
+
+    const breaksBetweenSets =
+      sets.length > 1 ? breakTime * (sets.length - 1) : 0;
+
+    return sum + exerciseTime + breaksBetweenSets;
   }, 0);
 };
 

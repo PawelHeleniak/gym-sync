@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const exerciseSetSchema = new mongoose.Schema({
   repsCount: Number,
+  timeCount: Number,
   weight: Number,
   done: Boolean,
 });

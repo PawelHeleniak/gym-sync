@@ -52,10 +52,26 @@ export class TrainingPlanBuilder {
     if (!this.planForm?.value?.exercises) return 0;
 
     return this.planForm.value.exercises.reduce((sum: number, ex: any) => {
-      const setsCount = ex.sets?.length || 0;
+      const sets = ex.sets || [];
       const breakTime = Number(ex.breakTime || 0);
 
-      return sum + breakTime * setsCount;
+      if (ex.type === 'break') {
+        return sum + breakTime;
+      }
+
+      let exerciseTime = 0;
+
+      if (ex.type === 'time') {
+        exerciseTime = sets.reduce(
+          (s: number, set: any) => s + Number(set.timeCount || 0),
+          0,
+        );
+      }
+
+      const breaksBetweenSets =
+        sets.length > 1 ? breakTime * (sets.length - 1) : 0;
+
+      return sum + exerciseTime + breaksBetweenSets;
     }, 0);
   }
 
@@ -77,6 +93,7 @@ export class TrainingPlanBuilder {
         exercise.breakTime,
         exercise.isBreak ?? false,
         exercise.comment ?? '',
+        exercise.type ?? '',
       );
 
       const sets = this.getSets(idx);
@@ -85,16 +102,31 @@ export class TrainingPlanBuilder {
       if (!Array.isArray(exercise.sets)) return;
 
       exercise.sets.forEach((set) => {
-        this.addExerciseSet(idx, set.repsCount ?? 0, set.weight ?? 0);
+        this.addExerciseSet(
+          idx,
+          set.repsCount ?? 0,
+          set.weight ?? 0,
+          set.timeCount ?? 0,
+        );
       });
     });
   }
-
+  addExerciseSetButton(j: number) {
+    const workout = this.exercisesArray.at(j) as FormGroup;
+    const repsArray = workout.get('sets') as FormArray;
+    this.addExerciseSet(
+      j,
+      repsArray.at(-1).value.repsCount,
+      repsArray.at(-1).value.weight,
+      repsArray.at(-1).value.timeCount,
+    );
+  }
   addExercise(
     name: string,
     breakTime: number,
     isBreak: boolean,
     comment: string,
+    type: string,
   ) {
     const workoutGroup = new FormGroup({
       name: new FormControl(name, Validators.required),
@@ -102,42 +134,42 @@ export class TrainingPlanBuilder {
       isBreak: new FormControl(isBreak),
       sets: new FormArray([]),
       comment: new FormControl(comment, Validators.required),
+      type: new FormControl(type, Validators.required),
     });
 
     this.exercisesArray.push(workoutGroup);
 
-    if (!isBreak) {
+    if (isBreak || type === 'break') {
       const newIndex = this.exercisesArray.length - 1;
-      this.addExerciseSet(newIndex, 1, 0);
-    } else {
+      this.addExerciseSet(newIndex, 1, 0, 0);
+    } else if (type === 'reps') {
       const newIndex = this.exercisesArray.length - 1;
-      this.addExerciseSet(newIndex, 1, 0);
+      this.addExerciseSet(newIndex, 1, 0, 0);
+    } else if (type === 'time') {
+      const newIndex = this.exercisesArray.length - 1;
+      this.addExerciseSet(newIndex, 1, 0, 100);
     }
   }
-  removeExercise(i: number) {
-    this.exercisesArray.removeAt(i);
-  }
-  addExerciseSetButton(j: number) {
-    const workout = this.exercisesArray.at(j) as FormGroup;
-    const repsArray = workout.get('sets') as FormArray;
-
-    this.addExerciseSet(
-      j,
-      repsArray.at(-1).value.repsCount,
-      repsArray.at(-1).value.weight,
-    );
-  }
-  addExerciseSet(j: number, repsCount: number, weight: number) {
+  addExerciseSet(
+    j: number,
+    repsCount: number,
+    weight: number,
+    timeCount: number,
+  ) {
     const workout = this.exercisesArray.at(j) as FormGroup;
     const repsArray = workout.get('sets') as FormArray;
 
     const repGroup = new FormGroup({
       repsCount: new FormControl(repsCount, Validators.required),
+      timeCount: new FormControl(timeCount, Validators.required),
       weight: new FormControl(weight),
       done: new FormControl(false),
     });
 
     repsArray.push(repGroup);
+  }
+  removeExercise(i: number) {
+    this.exercisesArray.removeAt(i);
   }
   removeExerciseSet(exerciseIndex: number, setIndex: number) {
     const sets = this.getSets(exerciseIndex);
