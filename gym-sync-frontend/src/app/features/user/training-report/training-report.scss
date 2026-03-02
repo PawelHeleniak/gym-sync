@@ -149,6 +149,10 @@
         left: -2.5rem;
       }
     }
+    i {
+      margin-right: 0.5rem;
+      font-size: var(--font-size-m);
+    }
   }
   &__comment {
     color: var(--color-text-secondary);

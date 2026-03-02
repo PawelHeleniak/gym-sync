@@ -13,6 +13,7 @@ const exerciseSchema = new mongoose.Schema({
   isBreak: Boolean,
   comment: String,
   sets: [exerciseSetSchema],
+  type: { type: String, enum: ["break", "reps", "time"] },
 });
 
 const workoutHistorySchema = new mongoose.Schema({

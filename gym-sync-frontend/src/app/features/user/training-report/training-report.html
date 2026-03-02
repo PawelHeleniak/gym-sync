@@ -39,7 +39,13 @@
             @if(!exercise.isBreak){
             <div class="exercises__info">
               <div class="exercises__desc">
-                <span class="exercises__name">{{exercise.name}}</span>
+                <span class="exercises__name">
+                  @switch (exercise.type) { @case ('time') {
+                  <i class="fa-solid fa-stopwatch"></i>
+                  } @default {
+                  <i class="fa-solid fa-dumbbell"></i>
+                  } }{{exercise.name}}
+                </span>
                 <span
                   >(Przerwa między seriami:
                   <strong>{{exercise.breakTime}}</strong> s)</span
@@ -54,6 +60,14 @@
             </div>
             <div class="sets">
               @for (set of exercise.sets; track $index; let j = $index) {
+              @if(exercise.type === 'time'){
+              <div class="sets__box">
+                {{j + 1}}.
+                <strong
+                  >@if(set.weight){ {{set.weight}} kg - } {{set.timeCount}} s.
+                </strong>
+              </div>
+              } @else{
               <div class="sets__box">
                 {{j + 1}}.
                 <strong
@@ -61,11 +75,12 @@
                   powtórzeń</strong
                 >
               </div>
-              }
+              } }
             </div>
             }@else {
             <span class="exercises__name"
-              >{{exercise.name}} - Czas trwania: {{exercise.breakTime}} s</span
+              ><i class="fa-solid fa-pause"></i>{{exercise.name}} - Czas
+              trwania: {{exercise.breakTime}} s</span
             >
             }
           </div>

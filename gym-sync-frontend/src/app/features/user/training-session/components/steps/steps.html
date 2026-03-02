@@ -17,7 +17,11 @@
         Ciężar: <span>{{currentRep.weight}} kg.</span>
       </div>
       <div class="workout__weight">
-        Powtórzenia: <span>{{currentRep.repsCount}}</span>
+        @switch (selectedTraining.exercises[currentExerciseIndex].type) { @case
+        ('time') { Czas trwania:
+        <span>{{currentRep.timeCount}} s.</span>
+        } @default { Powtórzenia: <span>{{currentRep.repsCount}}</span>
+        } }
       </div>
     </div>
     <div class="workout__reps">
@@ -35,6 +39,9 @@
     <div class="workout__info v-hidden">
       <div class="workout__weight">Ciężar: <span>- kg.</span></div>
       <div class="workout__weight">Powtórzenia: <span>-</span></div>
+    </div>
+    <div class="workout__reps">
+      <div class="workout__rep workout__rep--current">1</div>
     </div>
     }
     <div class="ui-field">

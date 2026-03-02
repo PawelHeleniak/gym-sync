@@ -86,11 +86,10 @@ export class Steps implements OnInit {
   }
   next() {
     this.currentExercise.sets[this.currentRepIndex].done = true;
+    this.handleDoneWorkout();
     if (this.currentExercise.sets.length - 1 > this.currentRepIndex) {
       this.currentRepIndex++;
-      this.handleDoneWorkout();
     } else {
-      this.handleDoneWorkout();
       this.currentExerciseIndex++;
       this.currentRepIndex = 0;
     }
@@ -178,14 +177,16 @@ export class Steps implements OnInit {
       finalCount = allDoneCounts.at(-1);
     }
     const getTime = document.querySelector('.timer__time--start')?.textContent;
-
+    console.log(this.currentRepIndex);
     newItems.push({
       name: currentExercise.name,
       repsCount: finalCount,
+      timeCount: currentExercise.sets[this.currentRepIndex].timeCount,
       weight: currentExercise.sets[this.currentRepIndex].weight,
       time: getTime,
       isBreak: currentExercise.isBreak ? currentExercise.isBreak : false,
       breakTime: currentExercise.breakTime ? currentExercise.breakTime : 0,
+      type: currentExercise.type,
     });
 
     this.connectionDoneWorkout.set([
