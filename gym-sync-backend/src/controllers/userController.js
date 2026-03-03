@@ -20,24 +20,26 @@ export const register = async (req, res) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email))
       return res.status(400).json({
         message: "Niepoprawny adres email",
       });
-    }
 
-    if (existingUser) {
+    if (login.includes("@"))
+      return res.status(400).json({
+        message: "Login nie może zawierać znaku @",
+      });
+
+    if (existingUser)
       return res.status(400).json({
         message: "Login lub email jest już zajęty",
       });
-    }
 
-    if (!passwordRegex.test(password)) {
+    if (!passwordRegex.test(password))
       return res.status(400).json({
         message:
           "Hasło musi mieć min. 8 znaków, 1 dużą literę, 1 cyfrę i 1 znak specjalny",
       });
-    }
 
     const hashedPassword = await hashPassword(password);
 
@@ -53,7 +55,7 @@ export const register = async (req, res) => {
 
     await user.save();
 
-    await sendVerifiedAccount(email, code);
+    await sendVerifiedAccount(email, code, "register");
 
     return res.status(201).json({
       message:
@@ -73,7 +75,9 @@ export const login = async (req, res) => {
   try {
     const { login, password } = req.body;
 
-    const user = await User.findOne({ login });
+    const user = await User.findOne({
+      $or: [{ login: login }, { email: login }],
+    });
 
     if (!user)
       return res.status(401).json({ message: "Nieprawidłowe dane logowania" });
@@ -85,7 +89,7 @@ export const login = async (req, res) => {
 
     if (!user.isVerified)
       return res.status(403).json({
-        message: "Zweryfikuj email, kod został wysłany na adres email",
+        message: "Zweryfikuj konto",
         isVerified: false,
       });
 
@@ -179,7 +183,10 @@ export const resendVerification = async (req, res) => {
         message: "Login jest wymagany",
       });
 
-    const user = await User.findOne({ login });
+    const isEmail = login.includes("@");
+    const user = await User.findOne(
+      isEmail ? { email: login } : { login: login },
+    );
 
     if (!user)
       return res.status(404).json({
@@ -198,7 +205,7 @@ export const resendVerification = async (req, res) => {
 
     await user.save();
 
-    await sendVerifiedAccount(user.email, code);
+    await sendVerifiedAccount(user.email, code, "resend");
 
     return res.status(200).json({
       message: "Nowy link weryfikacyjny został wysłany na adres email",

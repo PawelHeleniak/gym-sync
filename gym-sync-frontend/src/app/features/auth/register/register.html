@@ -25,7 +25,11 @@
 
     @if (registerForm.get('login')?.invalid &&
     registerForm.get('login')?.touched) {
-    <small class="ui-field__error"> Login jest wymagany </small>
+    <small class="ui-field__error">
+      @if (registerForm.get('login')?.errors?.['required']) { Login jest
+      wymagany }@if (registerForm.get('login')?.errors?.['pattern']) { Login nie
+      może zawierać znaku @ }
+    </small>
     }
   </div>
   <div class="form__row">

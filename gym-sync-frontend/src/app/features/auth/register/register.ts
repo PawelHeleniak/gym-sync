@@ -39,7 +39,10 @@ export class Register {
           Validators.required,
           Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/),
         ]),
-        login: new FormControl('', Validators.required),
+        login: new FormControl('', [
+          Validators.required,
+          Validators.pattern(/^[^@]+$/),
+        ]),
         password: new FormControl('', [
           Validators.required,
           Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/),

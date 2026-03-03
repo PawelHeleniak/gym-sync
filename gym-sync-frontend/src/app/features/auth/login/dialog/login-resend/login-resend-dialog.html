@@ -1,0 +1,16 @@
+<div class="ui-dialog">
+  <div class="ui-dialog__header">
+    <h2 class="ui-dialog__title">{{ data.title }}</h2>
+    <p class="ui-dialog__subtitle">{{ data.subTitle }}</p>
+  </div>
+  <button
+    class="ui-btn ui-btn--primary"
+    [class.ui-btn--disabled]="disabled"
+    (click)="resendVerificationEmail()"
+  >
+    Wyślij link
+  </button>
+  @if(error){
+  <p class="ui-dialog__error">{{ errorInfo }}</p>
+  }
+</div>

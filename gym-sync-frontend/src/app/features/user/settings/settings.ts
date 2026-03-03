@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -10,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { UserService } from '../../../shared/services/user.service';
 import { EmailConfirmDialog } from './dialog/email-confirm-dialog/email-confirm-dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-settings',
@@ -37,16 +40,28 @@ export class Settings {
         Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/),
       ]),
     });
-    this.passwordForm = new FormGroup({
-      password: new FormControl('', [Validators.required]),
-      newPassword: new FormControl('', [
-        Validators.required,
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/),
-      ]),
-    });
+    this.passwordForm = new FormGroup(
+      {
+        password: new FormControl('', [Validators.required]),
+        newPassword: new FormControl('', [
+          Validators.required,
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/),
+        ]),
+      },
+      { validators: this.passwordMatchValidator },
+    );
     this.getUser();
   }
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password')?.value;
+    const newPassword = control.get('newPassword')?.value;
 
+    if (!password || !newPassword) {
+      return null;
+    }
+
+    return password !== newPassword ? null : { passwordsMismatch: true };
+  }
   getUser() {
     this.userService.getUser().subscribe({
       next: (response) => {
@@ -69,18 +84,29 @@ export class Settings {
     });
   }
   updatePassword() {
-    console.log(this.passwordForm);
+    if (this.passwordForm.invalid) {
+      this.passwordForm.markAllAsTouched();
+      return;
+    }
+
     this.userService
       .updatePassword(
         this.passwordForm.value.password,
         this.passwordForm.value.newPassword,
       )
       .subscribe({
-        next: (response) => {
-          console.log(response);
+        next: (response: { message: string }) => {
+          this.openSnackBar(
+            response.message ? response.message : 'Hasło zostało zmienione.',
+            'success',
+          );
+          this.passwordForm.reset();
         },
-        error: (err) => {
-          console.log('err:', err);
+        error: (err: HttpErrorResponse) => {
+          this.openSnackBar(
+            err.error?.message ?? 'Wystąpił błąd podczas aktualizacji hasła.',
+            'warning',
+          );
         },
       });
   }

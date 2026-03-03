@@ -12,17 +12,20 @@ const transporter = nodemailer.createTransport({
 });
 
 // Funkcje
-export const sendVerifiedAccount = async (to, code) => {
+export const sendVerifiedAccount = async (to, code, type) => {
   await transporter.sendMail({
     from: `"RepEvo" <${process.env.SMTP_USER}>`,
     to,
-    subject: "Link do weryfikacji konta",
+    subject:
+      type === "register"
+        ? "Link do weryfikacji konta"
+        : "Nowy link do weryfikacji konta",
     html: `
     <table width="100%" cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #333;">
       <tr>
         <td align="left">
           <p style="font-size: 24px; font-weight: bold;">
-            Twój kod to:
+            Kliknij poniższy link, aby zweryfikować swój adres email:
           </p>
           <a href="https://repevo.pl/autoryzacja/weryfikacja-konta?token=${code}" style="margin: 0 0 15px 0;">
             Zweryfikuj adres email

@@ -68,6 +68,8 @@
           }
         </div>
       </div>
+      @if(passwordForm.get('password')?.valid &&
+      passwordForm.get('password')?.dirty) {
       <div class="settings__box">
         <div class="ui-field">
           <input
@@ -84,12 +86,18 @@
             Hasło musi mieć min. 8 znaków, 1 dużą literę, 1 cyfrę i 1 znak
             specjalny
           </small>
+          }@if (passwordForm.errors?.['passwordsMismatch'] &&
+          passwordForm.get('newPassword')?.touched) {
+          <small class="ui-field__error">
+            Nowe hasło nie może być takie samo jak stare
+          </small>
           }
         </div>
         <button class="ui-btn ui-btn--primary" (click)="updatePassword()">
           Aktualizuj
         </button>
       </div>
+      }
     </form>
   </div>
 </div>

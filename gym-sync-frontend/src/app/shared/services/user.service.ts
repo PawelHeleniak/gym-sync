@@ -12,7 +12,10 @@ export class UserService {
   getUser(): Observable<UserData> {
     return this.http.get<UserData>(`${this.baseUrl}/auth/getUser`);
   }
-  updatePassword(password: string, newPassword: string): Observable<void> {
+  updatePassword(
+    password: string,
+    newPassword: string,
+  ): Observable<{ message: string }> {
     const body = {
       password,
       newPassword,

@@ -30,7 +30,7 @@ export class AuthService {
     if (storage) this.userId = storage;
   }
 
-  resendVerificationEmail(login?: string): Observable<any> {
+  resendVerificationEmail(login: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/auth/resendVerificationEmail`, {
       login,
     });
