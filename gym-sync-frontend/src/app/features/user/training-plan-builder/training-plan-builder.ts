@@ -49,29 +49,24 @@ export class TrainingPlanBuilder {
   }
 
   get liveEstimatedTime(): number {
-    if (!this.planForm?.value?.exercises) return 0;
+    const exercises = this.planForm.get('exercises')?.value;
+    if (!exercises) return 0;
 
-    return this.planForm.value.exercises.reduce((sum: number, ex: any) => {
+    return exercises.reduce((total: number, ex: any) => {
       const sets = ex.sets || [];
       const breakTime = Number(ex.breakTime || 0);
 
-      if (ex.type === 'break') {
-        return sum + breakTime;
+      if (ex.isBreak || ex.type === 'break') {
+        return total + breakTime;
       }
 
-      let exerciseTime = 0;
+      const setsTime = sets.reduce((sum: number, set: any) => {
+        return sum + Number(set.timeCount || 0);
+      }, 0);
 
-      if (ex.type === 'time') {
-        exerciseTime = sets.reduce(
-          (s: number, set: any) => s + Number(set.timeCount || 0),
-          0,
-        );
-      }
+      const breaksTime = breakTime * sets.length;
 
-      const breaksBetweenSets =
-        sets.length > 1 ? breakTime * (sets.length - 1) : 0;
-
-      return sum + exerciseTime + breaksBetweenSets;
+      return total + setsTime + breaksTime;
     }, 0);
   }
 
