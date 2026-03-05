@@ -128,7 +128,7 @@ export class TrainingPlanBuilder {
       breakTime: new FormControl(breakTime, Validators.required),
       isBreak: new FormControl(isBreak),
       sets: new FormArray([]),
-      comment: new FormControl(comment, Validators.required),
+      comment: new FormControl(comment),
       type: new FormControl(type, Validators.required),
     });
 
@@ -172,9 +172,17 @@ export class TrainingPlanBuilder {
   }
 
   addPlanForm(): void {
+    if (this.planForm.invalid) {
+      this.planForm.markAllAsTouched();
+      return;
+    }
+
     this.trainingService.addTraining(this.planForm.value).subscribe({
-      next: () => {
-        this.openSnackBar('Pomyślnie dodano trening.', 'success');
+      next: (response: { message: string }) => {
+        this.openSnackBar(
+          response.message ?? 'Pomyślnie dodano trening.',
+          'success',
+        );
         this.router.navigate(['/trening']);
       },
       error: (err: any) => {
@@ -192,15 +200,20 @@ export class TrainingPlanBuilder {
     this.trainingService
       .updateTraining(this.planForm.value, this.existingPlan?._id)
       .subscribe({
-        next: (response) => {
-          this.openSnackBar('Pomyślnie zaktualizowano trening.', 'success');
+        next: (response: { message: string }) => {
+          this.openSnackBar(
+            response.message ?? 'Pomyślnie zaktualizowano trening.',
+            'success',
+          );
+          this.router.navigate(['/trening']);
         },
         error: (err) => {
           this.openSnackBar(
-            'Nie udało zaktualizować się treningu, spróbuj ponownie.',
+            err.error.message
+              ? err.error.message
+              : 'Nie udało się zaktualizować treningu, spróbuj ponownie.',
             'warning',
           );
-          console.error(err);
         },
       });
   }
@@ -221,5 +234,10 @@ export class TrainingPlanBuilder {
 
   formatTime(seconds: number) {
     return formatTime(seconds);
+  }
+
+  handleSetEnter(exerciseIndex: number, event: any) {
+    event.preventDefault();
+    this.addExerciseSetButton(exerciseIndex);
   }
 }

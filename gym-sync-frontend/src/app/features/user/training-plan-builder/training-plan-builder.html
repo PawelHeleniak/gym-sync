@@ -123,6 +123,7 @@
                   id="timeCount-{{i}}-{{j}}"
                   class="ui-field__input"
                   [class.ui-field__input--error]="(set.get('timeCount')?.invalid || set.get('timeCount')?.value === 0) && set.get('timeCount')?.touched"
+                  (keydown.enter)="handleSetEnter(i, $event)"
                 />
               </div>
               } @else{
@@ -137,6 +138,7 @@
                   id="repsCount-{{i}}-{{j}}"
                   class="ui-field__input"
                   [class.ui-field__input--error]="(set.get('repsCount')?.invalid || set.get('repsCount')?.value === 0) && set.get('repsCount')?.touched"
+                  (keydown.enter)="handleSetEnter(i, $event)"
                 />
               </div>
               }
@@ -149,6 +151,7 @@
                   formControlName="weight"
                   id="weight-{{i}}-{{j}}"
                   class="ui-field__input"
+                  (keydown.enter)="handleSetEnter(i, $event)"
                 />
               </div>
               <div class="sets__remove">
@@ -176,7 +179,11 @@
         }
       </ng-container>
       <div class="exercise__remove">
-        <button class="ui-btn ui-btn--danger" (click)="removeExercise(i)">
+        <button
+          type="button"
+          class="ui-btn ui-btn--danger"
+          (click)="removeExercise(i)"
+        >
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>

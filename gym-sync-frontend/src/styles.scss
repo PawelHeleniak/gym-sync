@@ -154,6 +154,7 @@ body {
     var(--color-bg-primary);
   font-size: var(--font-size-base);
   min-height: 100vh;
+  min-height: 100dvh;
   &::before {
     content: "";
     width: 100%;

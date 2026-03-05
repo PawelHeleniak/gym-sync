@@ -20,8 +20,8 @@ export class TrainingService {
   getTraining(id: string): Observable<TrainingList> {
     return this.http.get<TrainingList>(`${this.baseUrl}/workout/${id}`);
   }
-  addTraining(training: TrainingList): Observable<TrainingList> {
-    return this.http.post<TrainingList>(
+  addTraining(training: TrainingList): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
       `${this.baseUrl}/workout/add`,
       training,
     );

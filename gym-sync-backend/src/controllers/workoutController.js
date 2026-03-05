@@ -19,9 +19,9 @@ export const addWorkout = async (req, res) => {
     newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
     newBody.userId = userId;
     const newWorkout = new Workout(newBody);
-    const savedWorkout = await newWorkout.save();
+    await newWorkout.save();
 
-    res.status(201).json(savedWorkout);
+    res.status(201).json({ message: "Trening zaktualizowany" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -81,12 +81,23 @@ export const updateWorkout = async (req, res) => {
 
     newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
 
+    const existingWorkout = await Workout.findOne({
+      name: newBody.name,
+      userId,
+      _id: { $ne: id }, //ciekawostka to wyklucza aktualnie edytowany
+    });
+
+    if (existingWorkout) {
+      return res.status(400).json({
+        message: "Trening o tej nazwie już istnieje",
+      });
+    }
+
     const updatedWorkout = await Workout.findOneAndUpdate(
       { _id: id, userId },
       newBody,
       { new: true, runValidators: true },
     );
-
     if (!updatedWorkout)
       return res.status(404).json({ error: "Trening nie znaleziony" });
 

@@ -8,4 +8,8 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected title = 'gym-sync-frontend';
+  ngOnInit(): void {
+    const dev = window.location.href.includes('localhost');
+    if (dev) document.title = 'RepEvo - DEV';
+  }
 }

@@ -12,6 +12,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { LoginResendDialog } from './dialog/login-resend/login-resend-dialog';
 import { AuthService } from '../../../core/services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+
+interface ApiError {
+  message?: string;
+  isVerified?: boolean;
+}
 
 @Component({
   selector: 'app-login',
@@ -51,14 +57,17 @@ export class Login {
         this.router.navigate(['/panel']);
         this.disabled = false;
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
+        const apiError = err.error as ApiError;
+
         this.openSnackBar(
           err.error.message
             ? err.error.message
             : 'Nie udało się zalogować, odśwież stronę i spróbuj ponownie.',
           'warning',
         );
-        if (!err.error.isVerified) this.resendVerificationDialog();
+
+        if (apiError?.isVerified === false) this.resendVerificationDialog();
 
         this.disabled = false;
       },
