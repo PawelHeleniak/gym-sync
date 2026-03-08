@@ -37,6 +37,7 @@ export class Steps implements OnInit {
   currentRepIndex: number = 0;
 
   timeLeft: number = 0;
+  intervalState: boolean = false;
   endTraining: boolean = false;
   endTrainingTime: string = '';
   private timerInterval?: ReturnType<typeof setInterval>;
@@ -79,6 +80,14 @@ export class Steps implements OnInit {
     this.timerInterval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
+        if (
+          this.timeLeft === 0 &&
+          this.currentExercise.sets[this.currentRepIndex].timeCount !== 0 &&
+          !this.intervalState
+        ) {
+          this.intervalState = true;
+          this.timer(this.currentExercise.sets[this.currentRepIndex].timeCount);
+        }
       } else {
         clearInterval(this.timerInterval);
       }
@@ -93,7 +102,7 @@ export class Steps implements OnInit {
       this.currentExerciseIndex++;
       this.currentRepIndex = 0;
     }
-
+    this.intervalState = false;
     this.timer(this.currentExercise.breakTime || 0);
   }
   hanldeEndTraining() {
@@ -145,6 +154,7 @@ export class Steps implements OnInit {
   }
   back() {
     this.removeLastDoneWorkout();
+    this.intervalState = false;
 
     if (this.currentRepIndex !== 0) this.currentRepIndex--;
     else {
@@ -201,7 +211,6 @@ export class Steps implements OnInit {
     this.connectionDoneWorkout.set(list);
     this.doneWorkout.emit(list);
   }
-
   openSnackBar(message: string, mode: 'success' | 'warning') {
     this.snackBar.open(message, '', {
       duration: this.durationInSeconds,

@@ -9,7 +9,8 @@
       class="workout__time"
       [class]="{'workout__time--stop': timeLeft === 0, 'workout__time--last': timeLeft <= 15}"
     >
-      Koniec przerwy za: <span>{{timeLeft}} sek.</span>
+      {{intervalState? 'Czas trwania:' : 'Koniec przerwy za:'}}
+      <span>{{timeLeft}} sek.</span>
     </div>
     @if(!selectedTraining.exercises[currentExerciseIndex].isBreak){
     <div class="workout__info">
