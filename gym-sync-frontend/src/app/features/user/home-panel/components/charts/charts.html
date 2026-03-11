@@ -1,0 +1,26 @@
+<div class="chart box">
+  <h3 class="chart__title">Statystyki</h3>
+  <div class="chart__buttons">
+    @for(exercise of exercises; track exercise){
+    <button
+      class="ui-btn ui-btn--success"
+      class="ui-btn"
+      [class.ui-btn--success]="chartState === exercise"
+      (click)="changeChart(exercise)"
+    >
+      {{exercise}}
+    </button>
+    }
+  </div>
+  <apx-chart
+    [series]="chartOptions.series!"
+    [chart]="chartOptions.chart!"
+    [xaxis]="chartOptions.xaxis!"
+    [yaxis]="chartOptions.yaxis!"
+    [colors]="chartOptions.colors!"
+    [stroke]="chartOptions.stroke!"
+    [markers]="chartOptions.markers!"
+    [grid]="chartOptions.grid!"
+  >
+  </apx-chart>
+</div>

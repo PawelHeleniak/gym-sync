@@ -1,0 +1,25 @@
+.box {
+  min-height: 35rem;
+  height: 100%;
+  display: none !important;
+}
+apx-chart {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+.chart {
+  &__title {
+    margin-bottom: 1rem;
+  }
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    .ui-btn {
+      padding: 0.8rem 1.2rem;
+      font-size: var(--font-size-base);
+    }
+  }
+}
