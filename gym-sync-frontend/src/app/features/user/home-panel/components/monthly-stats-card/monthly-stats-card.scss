@@ -1,4 +1,4 @@
-@use "../../../../../../styles.scss" as style;
+@use "mixins" as m;
 
 .stats {
   &__title {
@@ -8,7 +8,7 @@
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
-    @include style.mobile {
+    @include m.mobile {
       grid-template-columns: repeat(2, 1fr);
     }
   }

@@ -1,4 +1,4 @@
-@use "../../../styles.scss" as style;
+@use "mixins" as m;
 
 .layout {
   display: flex;
@@ -13,7 +13,7 @@
     transform: translateX(-50%);
     z-index: 3;
     height: max-content;
-    @include style.tablet {
+    @include m.tablet {
       position: sticky;
       top: 0;
       bottom: initial;
@@ -26,7 +26,7 @@
     width: 100%;
     padding: 1.2rem;
     margin-bottom: 8.5rem;
-    @include style.tablet {
+    @include m.tablet {
       padding: 2.4rem 2.4rem 2.4rem 1.2rem;
       margin-bottom: 0;
     }

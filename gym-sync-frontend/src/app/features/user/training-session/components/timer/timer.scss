@@ -1,8 +1,8 @@
-@use "../../../../../../styles.scss" as style;
+@use "mixins" as m;
 
 .layout__header {
   display: none;
-  @include style.laptop {
+  @include m.laptop {
     display: block;
   }
 }

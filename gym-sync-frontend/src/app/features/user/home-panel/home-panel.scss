@@ -1,10 +1,10 @@
-@use "../../../../styles.scss" as style;
+@use "mixins" as m;
 
 .panel {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 2rem;
-  @include style.laptop {
+  @include m.laptop {
     grid-template-columns: repeat(2, 1fr);
   }
   &__box {
@@ -12,7 +12,7 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      @include style.laptop {
+      @include m.laptop {
         gap: 2rem;
       }
     }

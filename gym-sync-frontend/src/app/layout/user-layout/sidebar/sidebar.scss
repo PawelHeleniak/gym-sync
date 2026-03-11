@@ -1,4 +1,4 @@
-@use "../../../../styles.scss" as style;
+@use "mixins" as m;
 
 .sidebar {
   display: flex;
@@ -7,7 +7,7 @@
   align-items: center;
   position: relative;
   gap: 1rem;
-  @include style.tablet {
+  @include m.tablet {
     flex-direction: column;
   }
   &__top,
@@ -21,7 +21,7 @@
     -webkit-backdrop-filter: blur(0.8rem);
     border-radius: 50px;
     gap: 0.5rem;
-    @include style.tablet {
+    @include m.tablet {
       flex-direction: column;
     }
   }

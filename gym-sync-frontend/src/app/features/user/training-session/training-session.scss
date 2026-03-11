@@ -1,16 +1,16 @@
-@use "../../../../styles.scss" as style;
+@use "mixins" as m;
 
 .list {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
-  @include style.tablet {
+  @include m.tablet {
     grid-template-columns: repeat(2, 1fr);
   }
-  @include style.laptop {
+  @include m.laptop {
     grid-template-columns: repeat(3, 1fr);
   }
-  @include style.desktop {
+  @include m.desktop {
     grid-template-columns: repeat(4, 1fr);
   }
   &__item {
@@ -110,7 +110,7 @@
   flex-direction: column;
   .list__header {
     margin: 2rem auto 1rem auto;
-    @include style.tablet {
+    @include m.tablet {
       margin: 2rem 0 1rem 0;
     }
   }
@@ -118,7 +118,7 @@
 .layout__header + .grid-wrapper {
   .list__header {
     margin: 0 auto 1rem auto;
-    @include style.tablet {
+    @include m.tablet {
       margin: 0 0 1rem 0;
     }
   }
@@ -128,7 +128,7 @@
   flex-direction: column;
   gap: 2rem;
 
-  @include style.laptop {
+  @include m.laptop {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }

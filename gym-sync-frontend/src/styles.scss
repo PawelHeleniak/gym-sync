@@ -1,122 +1,11 @@
+@use "variables";
+@use "mixins" as m;
 @use "./styles/material-theme.scss";
 @use "./styles/apex-theme.scss";
 
 * {
   box-sizing: border-box;
   margin: 0;
-}
-// Variables
-:root {
-  --primary: hsl(271, 80%, 38%);
-  --secondary: hsl(268, 88%, 25%);
-  --accent: hsl(293, 100%, 35%);
-  --accent-opacity: hsl(293, 100%, 35%, 0.6);
-  --color-bg-primary: #020104;
-  --color-bg-secondary: hsla(275, 38%, 12%, 0.7);
-  --color-bg-surface: hsla(265, 30%, 16%, 0.7);
-  // --color-bg-surface: hsla(267, 28%, 14%, 0.7);
-  --color-text-primary: hsl(243, 76%, 95%);
-  --color-text-secondary: hsl(240, 14%, 75%);
-
-  --color-btn: hsla(270, 35%, 18%, 0.85);
-  --color-btn-danger: hsla(350, 45%, 20%, 0.85);
-  --color-btn-success: hsla(145, 40%, 20%, 0.85);
-  --color-btn-primary: hsla(271, 80%, 38%, 0.85);
-  --color-btn-secondary: hsla(268, 88%, 25%, 0.85);
-
-  --color-input: hsla(265, 30%, 16%, 0.7);
-  --color-input-border: hsla(262, 100%, 68%, 0.12);
-  --color-input-text: var(--color-text-primary);
-  --color-input-placeholder: rgba(220, 210, 255, 0.45);
-  --color-input-text-disabled: var(--color-input-placeholder);
-  --color-input-border-focus: hsl(271, 80%, 55%);
-  --color-input-focus-glow: rgba(170, 120, 255, 0.25);
-
-  --warning: hsl(0, 100%, 40%);
-  --warning-opacity: hsl(0, 100%, 40%, 0.1);
-  --warning-hover: hsl(0, 100%, 50%);
-  --success: hsl(125, 100%, 30%);
-  --success-hover: hsl(125, 100%, 40%);
-
-  --border-color: hsl(275, 30%, 18%);
-  --border-radius-primary: 1.2rem;
-  --border-radius-secondary: 1.6rem;
-
-  --max-width: 1600px;
-
-  // Font size
-  --font-scale: 1.25;
-
-  --font-size-xs: 1.2rem;
-  --font-size-s: 1.4rem;
-  --font-size-base: 1.6rem; //base
-  --font-size-m: 1.8rem; //subheading
-  --font-size-l: 2rem; //h4
-  --font-size-xl: 2.4rem; //h3
-  --font-size-2xl: 2.8rem; //h2
-  --font-size-3xl: 3.2rem; //h1
-
-  // Font style
-  --font-family-base: "Lato", sans-serif;
-}
-
-$mobile: 480px;
-$tablet: 768px;
-$laptop: 1024px;
-$desktop: 1280px;
-$xlDesktop: 1536px;
-
-// miksiny
-@mixin mobile {
-  @media (min-width: $mobile) {
-    @content;
-  }
-}
-
-@mixin tablet {
-  @media (min-width: $tablet) {
-    @content;
-  }
-}
-
-@mixin laptop {
-  @media (min-width: $laptop) {
-    @content;
-  }
-}
-
-@mixin desktop {
-  @media (min-width: $desktop) {
-    @content;
-  }
-}
-
-@mixin xlDesktop {
-  @media (min-width: $xlDesktop) {
-    @content;
-  }
-}
-
-@function max-breakpoint($value) {
-  @return $value - 1px;
-}
-
-@mixin max-mobile {
-  @media (max-width: max-breakpoint($mobile)) {
-    @content;
-  }
-}
-
-@mixin max-tablet {
-  @media (max-width: max-breakpoint($tablet)) {
-    @content;
-  }
-}
-
-@mixin max-laptop {
-  @media (max-width: max-breakpoint($laptop)) {
-    @content;
-  }
 }
 
 html {
@@ -193,7 +82,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  @include tablet {
+  @include m.tablet {
     flex-direction: row;
   }
 }
@@ -201,7 +90,7 @@ button {
 .layout {
   &__header {
     margin-bottom: 1.5rem;
-    @include tablet {
+    @include m.tablet {
       margin-bottom: 2rem;
     }
   }
@@ -209,29 +98,29 @@ button {
 
 .mt-1 {
   margin-top: 1rem;
-  @include tablet {
+  @include m.tablet {
     margin-top: 1rem;
   }
 }
 .mt-2 {
   margin-top: 1rem;
-  @include tablet {
+  @include m.tablet {
     margin-top: 2rem;
   }
 }
 .d-none {
   display: none !important;
-  @include max-mobile {
+  @include m.max-mobile {
     &--mobile {
       display: none !important;
     }
   }
-  @include max-tablet {
+  @include m.max-tablet {
     &--tablet {
       display: none !important;
     }
   }
-  @include max-laptop {
+  @include m.max-laptop {
     &--laptop {
       display: none !important;
     }
@@ -248,7 +137,7 @@ button {
   border: 1px solid var(--border-color);
   padding: 1rem;
 }
-@include tablet {
+@include m.tablet {
   .box {
     padding: 2rem;
   }
