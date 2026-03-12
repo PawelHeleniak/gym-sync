@@ -1,6 +1,14 @@
 @use "mixins" as m;
 
 .stats {
+  border-left: 3px solid hsl(200deg 80% 38%);
+  &--first {
+    margin-bottom: 1rem;
+    border-left: 3px solid var(--primary);
+    @include m.mobile {
+      margin-bottom: 2rem;
+    }
+  }
   &__title {
     margin-bottom: 1rem;
   }

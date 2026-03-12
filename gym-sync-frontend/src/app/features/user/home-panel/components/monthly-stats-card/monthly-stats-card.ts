@@ -14,24 +14,34 @@ import { WorkoutHistory } from '../../../../../shared/models/trainingHistory.mod
   providers: [TrainingHistoryService],
 })
 export class MonthlyStatsCardComponent implements OnInit {
+  history: WorkoutHistory[] = [];
+
+  // Miesięczne
   workoutsMonth: number = 0;
   totalTimeMonth: number = 0;
+  workoutsDayMonth: number = 0;
   totalEstimatedTimeMonth: number = 0;
+  // Ogólne
+  workoutsGeneral: number = 0;
+  totalTimeGeneral: number = 0;
   streak: number = 0;
-
-  history: WorkoutHistory[] = [];
+  avergeTimeGeneral: number = 0;
 
   constructor(private historyService: TrainingHistoryService) {}
 
   ngOnInit() {
     this.historyService.getAllHistory().subscribe((data: any[]) => {
       if (!data) return;
-
+      console.log(data);
       this.history = data;
 
+      // Miesięczne
       this.workoutsMonth = this.getWorkoutCountMonth(data);
       this.totalTimeMonth = this.getTotalTimeMonth(data);
+      this.workoutsDayMonth = this.getWorkoutCountDayMonth(data);
       this.totalEstimatedTimeMonth = this.getTotalEstimatedTimeMonth(data);
+      // Ogólne
+      this.workoutsGeneral = this.getWorkoutCountGeneral();
       this.streak = this.getWorkoutWeekStreak(data);
     });
   }
@@ -49,6 +59,14 @@ export class MonthlyStatsCardComponent implements OnInit {
 
   getWorkoutCountMonth(history: any[]) {
     return this.getCurrentMonthWorkouts(history).length;
+  }
+
+  getWorkoutCountDayMonth(history: any[]) {
+    const days = new Set(
+      history.map((h) => new Date(h.date).toLocaleDateString('pl-PL')),
+    );
+
+    return days.size;
   }
 
   getTotalTimeMonth(history: any[]) {
@@ -75,8 +93,6 @@ export class MonthlyStatsCardComponent implements OnInit {
       const weekKey = this.getWeekKey(date);
       weeksSet.add(weekKey);
     });
-
-    const weeks = Array.from(weeksSet).sort().reverse();
 
     let streak = 0;
     let currentDate = new Date();
@@ -124,5 +140,10 @@ export class MonthlyStatsCardComponent implements OnInit {
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
 
     return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  }
+
+  // Ogólne
+  getWorkoutCountGeneral() {
+    return this.history.length;
   }
 }

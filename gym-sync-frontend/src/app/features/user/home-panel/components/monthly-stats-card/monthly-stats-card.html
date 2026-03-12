@@ -1,32 +1,63 @@
 <h2 class="layout__header">Twoja aktywność</h2>
-<div class="stats box">
+<div class="stats stats--first box">
   <h3 class="stats__title">Podsumowanie miesiąca</h3>
   <div class="stats__grid">
     <div class="stats__item box">
       <div class="stats__item--count">
         <i class="fa-solid fa-dumbbell"></i> {{ workoutsMonth }}
       </div>
-      <div class="stats__item--name">Ilość treningów</div>
+      <div class="stats__item--name">Liczba treningów</div>
     </div>
     <div class="stats__item box">
       <div class="stats__item--count">
         <i class="fa-solid fa-stopwatch"></i>
         {{ formatTime(totalTimeMonth) }} h
       </div>
-      <div class="stats__item--name">Łączny czas</div>
+      <div class="stats__item--name">Łączny czas treningów</div>
     </div>
     <div class="stats__item box">
       <div class="stats__item--count">
-        <i class="fa-solid fa-chart-line"></i> {{ streak }}
+        <i class="fa-solid fa-calendar-check"></i> {{ workoutsDayMonth }}
       </div>
-      <div class="stats__item--name">Seria tygodni treningowych</div>
+      <div class="stats__item--name">Dni treningowe</div>
     </div>
     <div class="stats__item box">
       <div class="stats__item--count">
         <i class="fa-solid fa-hourglass-half"></i>
         {{ formatTime(totalEstimatedTimeMonth) }} h
       </div>
-      <div class="stats__item--name">Szacowany czas</div>
+      <div class="stats__item--name">Szacowany czas treningów</div>
+    </div>
+  </div>
+</div>
+<div class="stats box">
+  <h3 class="stats__title">Podsumowanie Ogólne - TEST</h3>
+  <div class="stats__grid">
+    <div class="stats__item box">
+      <div class="stats__item--count">
+        <i class="fa-solid fa-dumbbell"></i> {{ workoutsGeneral }}
+      </div>
+      <div class="stats__item--name">Liczba treningów</div>
+    </div>
+    <div class="stats__item box">
+      <div class="stats__item--count">
+        <i class="fa-solid fa-stopwatch"></i>
+        {{ totalTimeGeneral }} h
+      </div>
+      <div class="stats__item--name">Łączny czas treningów</div>
+    </div>
+    <div class="stats__item box">
+      <div class="stats__item--count">
+        <i class="fa-solid fa-chart-line"></i> {{ streak }}
+      </div>
+      <div class="stats__item--name">Aktualna seria tygodni</div>
+    </div>
+    <div class="stats__item box">
+      <div class="stats__item--count">
+        <i class="fa-solid fa-stopwatch-20"></i>
+        {{ avergeTimeGeneral }} h
+      </div>
+      <div class="stats__item--name">Średni czas treningu</div>
     </div>
   </div>
 </div>
