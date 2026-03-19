@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private userId: string = '';
+  private token: string = '';
 
   constructor(private http: HttpClient) {
     const storage = localStorage.getItem('user');

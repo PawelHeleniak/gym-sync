@@ -4,11 +4,12 @@ import {
   getHistoryForPlan,
   getAllHistory,
 } from "../controllers/workoutHistoryController.js";
+import { authenticateToken } from "../utils/jwt.js";
 
 const router = express.Router();
 
-router.post("/add", addFinishedWorkout);
-router.get("/:id", getHistoryForPlan);
-router.get("/", getAllHistory);
+router.post("/add", authenticateToken, addFinishedWorkout);
+router.get("/:id", authenticateToken, getHistoryForPlan);
+router.get("/", authenticateToken, getAllHistory);
 
 export default router;

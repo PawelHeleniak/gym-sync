@@ -132,7 +132,7 @@ const calculateEstimatedTime = (exercises = []) => {
 export const getWorkoutDays = async (req, res) => {
   try {
     const { userId } = req.query;
-
+    console.log(req.user);
     if (!userId) return res.status(404).json({ error: "Brak userId" });
 
     const days = await Workout.distinct("day", { userId });

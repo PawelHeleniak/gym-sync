@@ -9,6 +9,9 @@ import {
   generateNumericCode,
 } from "../utils/token.js";
 import { hashPassword, verifyPassword } from "../utils/password.js";
+
+import jwt from "jsonwebtoken";
+
 export const register = async (req, res) => {
   try {
     const { email, login, password } = req.body;
@@ -96,12 +99,19 @@ export const login = async (req, res) => {
     user.lastLoginAt = new Date();
     await user.save();
 
+    const payload = {
+      userId: user._id,
+      email: user.email,
+      role: "user",
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
     return res.status(200).json({
       message: "Login success",
-      user: {
-        id: user._id,
-        email: user.email,
-      },
+      token,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
