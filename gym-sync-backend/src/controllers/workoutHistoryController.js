@@ -1,8 +1,10 @@
 import WorkoutHistory from "../models/WorkoutHistory.js";
 
+const getUserId = (req) => req.user?.userId || req.query.userId;
+
 export const addFinishedWorkout = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const userId = getUserId(req);
     if (!userId) return res.status(400).json({ error: "Brak userId" });
 
     const finished = new WorkoutHistory({
@@ -19,9 +21,10 @@ export const addFinishedWorkout = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 export const getHistoryForPlan = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const userId = getUserId(req);
     const history = await WorkoutHistory.find({
       planId: req.params.id,
       userId,
@@ -31,9 +34,10 @@ export const getHistoryForPlan = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 export const getAllHistory = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const userId = getUserId(req);
     const history = await WorkoutHistory.find({ userId }).sort({ date: -1 });
     res.json(history);
   } catch (err) {

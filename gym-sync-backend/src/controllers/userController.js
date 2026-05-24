@@ -12,6 +12,8 @@ import { hashPassword, verifyPassword } from "../utils/password.js";
 
 import jwt from "jsonwebtoken";
 
+const getUserId = (req) => req.user?.userId || req.query.userId;
+
 export const register = async (req, res) => {
   try {
     const { email, login, password } = req.body;
@@ -121,7 +123,13 @@ export const login = async (req, res) => {
 export const updatePassword = async (req, res) => {
   try {
     const { password, newPassword } = req.body;
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({
+        message: "Brak autoryzacji",
+      });
+    }
 
     if (!password || !newPassword) {
       return res.status(400).json({
@@ -166,9 +174,17 @@ export const updatePassword = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
 export const getUser = async (req, res) => {
   try {
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({
+        message: "Brak autoryzacji",
+      });
+    }
+
     const user = await User.findById(userId).select(
       "login email emailChangeCodeExpires",
     );
@@ -184,6 +200,7 @@ export const getUser = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
 export const resendVerification = async (req, res) => {
   try {
     const { login } = req.body;
@@ -226,11 +243,16 @@ export const resendVerification = async (req, res) => {
     });
   }
 };
+
 export const requestEmailChange = async (req, res) => {
   try {
     const { email } = req.body;
     const { newEmail } = req.body;
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Brak autoryzacji" });
+    }
 
     if (!email) return res.status(400).json({ message: "Email wymagany" });
 
@@ -264,10 +286,15 @@ export const requestEmailChange = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
 export const confirmEmailChange = async (req, res) => {
   try {
     const { code } = req.body;
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Brak autoryzacji" });
+    }
 
     if (!code) return res.status(400).json({ message: "Kod wymagany" });
 
@@ -302,6 +329,7 @@ export const confirmEmailChange = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
 export const confirmAccount = async (req, res) => {
   try {
     const { token } = req.body;

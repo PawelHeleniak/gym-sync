@@ -11,11 +11,11 @@ import { authenticateToken } from "../utils/jwt.js";
 
 const router = express.Router();
 
-router.post("/add", addWorkout, authenticateToken);
-router.put("/update/:id", updateWorkout, authenticateToken);
-router.get("/getWorkoutDays", getWorkoutDays, authenticateToken);
-router.get("/:id", getWorkout, authenticateToken);
-router.get("/", getWorkouts, authenticateToken);
-router.delete("/delete/:id", deleteWorkout, authenticateToken);
+router.post("/add", authenticateToken, addWorkout);
+router.put("/update/:id", authenticateToken, updateWorkout);
+router.get("/getWorkoutDays", authenticateToken, getWorkoutDays);
+router.get("/:id", authenticateToken, getWorkout);
+router.get("/", authenticateToken, getWorkouts);
+router.delete("/delete/:id", authenticateToken, deleteWorkout);
 
 export default router;

@@ -1,9 +1,15 @@
 import Workout from "../models/Workout.js";
 
+const getUserId = (req) => req.user?.userId || req.query.userId;
+
 export const addWorkout = async (req, res) => {
   try {
     const newBody = req.body;
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ error: "Brak autoryzacji" });
+    }
 
     const existingWorkout = await Workout.findOne({
       name: newBody.name,
@@ -26,13 +32,20 @@ export const addWorkout = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 export const getWorkout = async (req, res) => {
   try {
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ error: "Brak autoryzacji" });
+    }
+
     const workout = await Workout.findOne({
       _id: req.params.id,
       userId,
     });
+
     if (!workout)
       return res.status(404).json({ error: "Trening nie znaleziony" });
 
@@ -42,9 +55,15 @@ export const getWorkout = async (req, res) => {
     res.status(500).json({ error: "Nie udało się pobrać treningu" });
   }
 };
+
 export const getWorkouts = async (req, res) => {
   try {
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ error: "Brak autoryzacji" });
+    }
+
     const workout = await Workout.find({ userId });
 
     if (!workout)
@@ -56,9 +75,15 @@ export const getWorkouts = async (req, res) => {
     res.status(500).json({ error: "Nie udało się pobrać listy treningów" });
   }
 };
+
 export const deleteWorkout = async (req, res) => {
   try {
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ error: "Brak autoryzacji" });
+    }
+
     const workout = await Workout.findOneAndDelete({
       _id: req.params.id,
       userId,
@@ -73,18 +98,23 @@ export const deleteWorkout = async (req, res) => {
     res.status(500).json({ error: "Nie udało się usunąć treningu" });
   }
 };
+
 export const updateWorkout = async (req, res) => {
   try {
     const { id } = req.params;
     const newBody = req.body;
-    const { userId } = req.query;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ error: "Brak autoryzacji" });
+    }
 
     newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
 
     const existingWorkout = await Workout.findOne({
       name: newBody.name,
       userId,
-      _id: { $ne: id }, //ciekawostka to wyklucza aktualnie edytowany
+      _id: { $ne: id }, // ciekawostka to wyklucza aktualnie edytowany
     });
 
     if (existingWorkout) {
@@ -98,6 +128,7 @@ export const updateWorkout = async (req, res) => {
       newBody,
       { new: true, runValidators: true },
     );
+
     if (!updatedWorkout)
       return res.status(404).json({ error: "Trening nie znaleziony" });
 
@@ -131,9 +162,10 @@ const calculateEstimatedTime = (exercises = []) => {
 
 export const getWorkoutDays = async (req, res) => {
   try {
-    const { userId } = req.query;
+    const userId = getUserId(req);
     console.log(req.user);
-    if (!userId) return res.status(404).json({ error: "Brak userId" });
+
+    if (!userId) return res.status(401).json({ error: "Brak autoryzacji" });
 
     const days = await Workout.distinct("day", { userId });
 
