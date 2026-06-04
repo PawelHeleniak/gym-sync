@@ -11,6 +11,7 @@ import { Settings } from './features/user/settings/settings';
 import { AuthLayout } from './layout/auth-layout/auth-layout';
 import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
 import { VerifyAccount } from './features/auth/verify-account/verify-account';
+import { Stopwatch } from './features/user/stopwatch/stopwatch';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,7 @@ export const routes: Routes = [
       { path: 'kreator-planu', component: TrainingPlanBuilder },
       { path: 'trening', component: TrainingSession },
       { path: 'raport', component: TrainingReport },
+      { path: 'stoper', component: Stopwatch },
       { path: 'ustawienia', component: Settings },
     ],
   },

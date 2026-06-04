@@ -44,6 +44,10 @@ export class CalendarCard implements OnInit {
       text: 'Zaplanowany trening',
       color: 'var(--color-btn-secondary)',
     },
+    {
+      text: 'Dodatkowa aktywność',
+      color: 'hsl(200, 80%, 38%)',
+    },
   ];
   constructor(
     private historyService: TrainingHistoryService,

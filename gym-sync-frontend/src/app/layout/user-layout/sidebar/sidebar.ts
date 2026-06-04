@@ -43,6 +43,12 @@ export class Sidebar {
       icon: 'fa-regular fa-calendar-days',
     },
     {
+      link: '/stoper',
+      active: false,
+      ariaLabel: 'Stoper',
+      icon: 'fa-solid fa-stopwatch',
+    },
+    {
       link: '/ustawienia',
       active: false,
       ariaLabel: 'Ustawienia',
