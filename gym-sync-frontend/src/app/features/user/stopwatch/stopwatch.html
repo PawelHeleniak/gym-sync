@@ -1,1 +1,48 @@
-<p>stopwatch works!</p>
+<div class="layout__column">
+  <h2 class="layout__header">Stoper</h2>
+  <div class="layout__box stopwatch">
+    <div class="stopwatch__display" [class.--hours]="hours">
+      {{formattedTime}}
+    </div>
+    <!-- <div class="stopwatch__laps">00:00.00</div> -->
+    <div class="stopwatch__controls">
+      @if(state === 'init') {
+      <button
+        class="ui-btn stopwatch__button stopwatch__button--disabled"
+        disabled
+      >
+        Runda
+      </button>
+
+      <button
+        class="ui-btn stopwatch__button stopwatch__button--start"
+        (click)="handleStart()"
+      >
+        Start
+      </button>
+      } @if(state === 'running') {
+      <button class="ui-btn stopwatch__button" (click)="handleLap()">
+        Runda
+      </button>
+
+      <button
+        class="ui-btn stopwatch__button stopwatch__button--pause"
+        (click)="handlePause()"
+      >
+        Pauza
+      </button>
+      } @if(state === 'paused') {
+      <button class="ui-btn stopwatch__button" (click)="handleReset()">
+        Reset
+      </button>
+
+      <button
+        class="ui-btn stopwatch__button stopwatch__button--start"
+        (click)="handleResume()"
+      >
+        Wznów
+      </button>
+      }
+    </div>
+  </div>
+</div>

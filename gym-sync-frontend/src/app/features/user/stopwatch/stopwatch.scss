@@ -1,0 +1,49 @@
+.stopwatch {
+  display: flex;
+  flex-direction: column;
+  gap: 9.6rem;
+  align-items: center;
+  padding-block: 2.4rem;
+  &__display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-size-3xl);
+    background-color: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--border-color);
+    padding: 2.4rem;
+    border-radius: 100rem;
+    aspect-ratio: 1;
+    position: relative;
+    width: 18rem;
+    max-width: 18rem;
+    transition: font-size 0.3s ease;
+    &.--hours {
+      font-size: var(--font-size-2xl);
+    }
+  }
+  // Przyciski
+  &__controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 3.2rem;
+  }
+  &__button {
+    aspect-ratio: 1;
+    width: 9rem;
+    padding: 1.2rem;
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 100rem;
+    &--resume,
+    &--start {
+      background-color: var(--color-btn-secondary);
+      border-color: var(--color-btn-primary);
+    }
+    &--pause {
+      background-color: var(--color-btn-danger);
+      border-color: hsl(350deg 48.6% 27.74%);
+    }
+  }
+}
