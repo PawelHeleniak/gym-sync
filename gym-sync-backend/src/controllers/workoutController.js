@@ -151,6 +151,10 @@ const calculateEstimatedTime = (exercises = []) => {
     }
 
     const setsTime = sets.reduce((sum, set) => {
+      if (ex.type === "reps") {
+        return sum + (Number(set.repsCount) || 0) * 3;
+      }
+
       return sum + (Number(set.timeCount) || 0);
     }, 0);
 

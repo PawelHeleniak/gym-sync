@@ -99,19 +99,19 @@ export class TrainingSession implements OnInit {
 
         this.selectedTraining = response;
         this.state = state;
-        this.calculateTime();
+        // this.calculateTime();
       },
       error: console.error,
     });
   }
 
-  calculateTime() {
-    this.selectedTraining.estimatedTime =
-      this.selectedTraining.exercises.reduce(
-        (sum, ex) => sum + ex.breakTime * ex.sets.length,
-        0,
-      );
-  }
+  // calculateTime() {
+  //   this.selectedTraining.estimatedTime =
+  //     this.selectedTraining.exercises.reduce(
+  //       (sum, ex) => sum + ex.breakTime * ex.sets.length,
+  //       0,
+  //     );
+  // }
 
   removeTraining(id: string) {
     this.trainingService.removeTraining(id).subscribe({

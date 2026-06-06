@@ -93,3 +93,17 @@
     }
   }
 }
+
+// ===== Style MatTooltip =====
+.cdk-overlay-pane {
+  .ui-tooltip {
+    background-color: var(--color-btn);
+    border-radius: var(--border-radius-primary);
+    border: 1px solid var(--color-input-border);
+    color: var(--color-text-primary);
+    padding-bottom: 0.4rem;
+    .mat-mdc-tooltip-surface {
+      max-width: 30rem;
+    }
+  }
+}

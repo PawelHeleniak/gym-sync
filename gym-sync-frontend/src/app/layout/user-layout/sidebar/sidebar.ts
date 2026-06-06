@@ -28,19 +28,19 @@ export class Sidebar {
       link: '/kreator-planu',
       active: false,
       ariaLabel: 'Kreator planu',
-      icon: 'fa-solid fa-plus',
+      icon: 'fa-regular fa-calendar-plus',
     },
     {
       link: '/trening',
       active: false,
       ariaLabel: 'Trening',
-      icon: 'fa-solid fa-person-running',
+      icon: 'fa-solid fa-dumbbell',
     },
     {
       link: '/raport',
       active: false,
       ariaLabel: 'Raport',
-      icon: 'fa-regular fa-calendar-days',
+      icon: 'fa-regular fa-calendar-check',
     },
     {
       link: '/stoper',

@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 
 import { TrainingService } from '../../../shared/services/training-session.service';
@@ -16,7 +17,7 @@ import { formatTime } from '../../../shared/utils/time';
 
 @Component({
   selector: 'app-training-plan-builder',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatTooltipModule],
   templateUrl: './training-plan-builder.html',
   styleUrl: './training-plan-builder.scss',
 })
@@ -61,6 +62,10 @@ export class TrainingPlanBuilder {
       }
 
       const setsTime = sets.reduce((sum: number, set: any) => {
+        if (ex.type === 'reps') {
+          return sum + Number(set.repsCount || 0) * 3;
+        }
+
         return sum + Number(set.timeCount || 0);
       }, 0);
 
