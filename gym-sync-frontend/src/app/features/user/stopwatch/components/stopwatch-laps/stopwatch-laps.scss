@@ -1,0 +1,13 @@
+table {
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 0.6rem 1.2rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  border-bottom: 1px solid var(--border-color);
+}

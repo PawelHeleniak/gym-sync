@@ -1,14 +1,23 @@
 import { Component } from '@angular/core';
+import { StopwatchLaps } from './components/stopwatch-laps/stopwatch-laps';
 
 @Component({
   selector: 'app-stopwatch',
-  imports: [],
+  imports: [StopwatchLaps],
   templateUrl: './stopwatch.html',
   styleUrl: './stopwatch.scss',
 })
 export class Stopwatch {
   // Możliwe stany: 'init', 'running', 'paused'
   state: 'init' | 'running' | 'paused' = 'init';
+
+  laps: StopwatchLap[] = [
+    { lap: 1, overallTime: '00:01.01', lapTime: '00:00.00' },
+    { lap: 2, overallTime: '00:02.02', lapTime: '00:01.01' },
+    { lap: 3, overallTime: '00:03.03', lapTime: '00:01.01' },
+    { lap: 4, overallTime: '00:04.04', lapTime: '00:01.01' },
+    { lap: 5, overallTime: '00:05.05', lapTime: '00:01.01' },
+  ];
 
   elapsedMs: number = 3595000;
   hours: boolean = false;
@@ -70,3 +79,9 @@ export class Stopwatch {
       .padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
   }
 }
+
+type StopwatchLap = {
+  lap: number;
+  overallTime: string;
+  lapTime: string;
+};

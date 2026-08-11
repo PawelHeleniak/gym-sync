@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Runda</th>
+      <th>Czas ogółem</th>
+      <th>Czas rundy</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (lap of laps(); track lap.lap; let i = $index){
+    <tr>
+      <td>{{ lap.lap }}</td>
+      <td>{{ lap.overallTime }}</td>
+      <td>{{ lap.lapTime }}</td>
+    </tr>
+    }
+  </tbody>
+</table>

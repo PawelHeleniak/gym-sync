@@ -8,6 +8,9 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
+import dns from "node:dns/promises";
+dns.setServers(["1.1.1.1", "1.0.0.1"]);
+
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);

@@ -5,6 +5,8 @@
       {{formattedTime}}
     </div>
     <!-- <div class="stopwatch__laps">00:00.00</div> -->
+    <!-- {{<app-stopwatch-laps [laps]="laps" />}} -->
+    <app-stopwatch-laps [laps]="laps" />
     <div class="stopwatch__controls">
       @if(state === 'init') {
       <button
