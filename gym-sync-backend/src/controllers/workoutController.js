@@ -27,7 +27,51 @@ export const addWorkout = async (req, res) => {
     const newWorkout = new Workout(newBody);
     await newWorkout.save();
 
-    res.status(201).json({ message: "Trening zaktualizowany" });
+    res.status(201).json({ message: "Trening dodany" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const duplicateWorkout = async (req, res) => {
+  try {
+    const newBody = req.body;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ error: "Brak autoryzacji" });
+    }
+
+    let copyName = `${newBody.name} - kopia`;
+    let copyNumber = 1;
+
+    while (await Workout.exists({ name: copyName, userId })) {
+      copyName = `${newBody.name} - kopia (${copyNumber})`;
+      copyNumber++;
+    }
+
+    newBody.name = copyName;
+
+    const existingWorkout = await Workout.findOne({
+      name: copyName,
+      userId,
+    });
+
+    if (existingWorkout) {
+      return res
+        .status(400)
+        .json({ message: "Trening o tej nazwie już istnieje" });
+    }
+
+    delete newBody._id;
+
+    newBody.estimatedTime = calculateEstimatedTime(newBody.exercises);
+    newBody.userId = userId;
+    console.error(newBody);
+    const newWorkout = new Workout(newBody);
+    await newWorkout.save();
+
+    res.status(201).json({ message: "Trening zduplikowany" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

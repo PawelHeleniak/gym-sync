@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
 import { Timer } from './components/timer/timer';
 import { Steps } from './components/steps/steps';
 import { TrainingService } from '../../../shared/services/training-session.service';
@@ -48,6 +55,8 @@ export class TrainingSession implements OnInit {
   currentExerciseIndex = 0;
   currentRepIndex = 0;
 
+  activeDropdownId: string | null = null;
+
   viewMode: 'all' | 'days' = 'all';
 
   listHeader: Record<number, string> = {
@@ -66,7 +75,6 @@ export class TrainingSession implements OnInit {
   isLastStep = false;
 
   @ViewChild('timer') timerComponent!: Timer;
-
   private snackBar = inject(MatSnackBar);
 
   constructor(private trainingService: TrainingService) {}
@@ -128,6 +136,19 @@ export class TrainingSession implements OnInit {
       },
     });
   }
+  duplicateTraining(training: TrainingList) {
+    console.log('Duplicating training:', training);
+    this.trainingService.duplicateTraining(training).subscribe({
+      next: () => {
+        this.getAllTraining();
+        this.openSnackBar('Trening zduplikowany pomyślnie', 'success');
+      },
+      error: (err) => {
+        this.openSnackBar('Nie udało się zduplikować treningu.', 'warning');
+        console.error(err);
+      },
+    });
+  }
 
   editTraining(training: TrainingList) {
     this.changeStateWorkout(training, 'trainingEdit');
@@ -152,7 +173,14 @@ export class TrainingSession implements OnInit {
   stopTimer() {
     this.timerComponent.stop();
   }
-
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.list__buttons')) this.activeDropdownId = null;
+  }
+  toggleDropdown(id: string) {
+    this.activeDropdownId = id;
+  }
   toggleBadge(training: TrainingList, id: string) {
     training.badge = !training.badge;
 

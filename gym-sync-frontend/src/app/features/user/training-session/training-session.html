@@ -20,15 +20,27 @@
 
           <div class="list__buttons">
             <button
-              class="ui-btn ui-btn--danger"
-              (click)="removeTraining(training._id ? training._id : '')"
+              class="ui-btn"
+              (click)="toggleDropdown(training._id ? training._id : '')"
             >
-              <i class="fa-solid fa-x"></i>
+              <i class="fa-solid fa-bars"></i>
             </button>
-
-            <button class="ui-btn" (click)="editTraining(training)">
-              <i class="fa-solid fa-pen-to-square"></i>
-            </button>
+            <div
+              class="list__dropdown"
+              [class.list__dropdown--active]="activeDropdownId === training._id"
+            >
+              <button (click)="editTraining(training)">
+                <i class="fa-solid fa-pen-to-square"></i> Edytuj
+              </button>
+              <button (click)="duplicateTraining(training)">
+                <i class="fa-solid fa-clone"></i> Dublikuj
+              </button>
+              <button
+                (click)="removeTraining(training._id ? training._id : '')"
+              >
+                <i class="fa-solid fa-x"></i> Usuń
+              </button>
+            </div>
 
             <button
               class="ui-btn ui-btn--arrow"

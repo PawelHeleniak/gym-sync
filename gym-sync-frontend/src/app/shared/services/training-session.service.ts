@@ -26,6 +26,12 @@ export class TrainingService {
       training,
     );
   }
+  duplicateTraining(training: TrainingList): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.baseUrl}/workout/duplicate`,
+      training,
+    );
+  }
   updateTraining(
     training: TrainingList,
     additionalId?: string,
