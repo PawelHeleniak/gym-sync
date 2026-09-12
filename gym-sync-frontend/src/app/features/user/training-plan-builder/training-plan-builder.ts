@@ -9,6 +9,13 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  CdkDragHandle,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 import { TrainingService } from '../../../shared/services/training-session.service';
 import { TrainingList } from '../../../shared/models/training.model';
@@ -17,7 +24,13 @@ import { formatTime } from '../../../shared/utils/time';
 
 @Component({
   selector: 'app-training-plan-builder',
-  imports: [ReactiveFormsModule, MatTooltipModule],
+  imports: [
+    ReactiveFormsModule,
+    MatTooltipModule,
+    CdkDrag,
+    CdkDropList,
+    CdkDragHandle,
+  ],
   templateUrl: './training-plan-builder.html',
   styleUrl: './training-plan-builder.scss',
 })
@@ -73,6 +86,14 @@ export class TrainingPlanBuilder {
 
       return total + setsTime + breaksTime;
     }, 0);
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(
+      this.exercisesArray.controls,
+      event.previousIndex,
+      event.currentIndex,
+    );
   }
 
   getExercise(i: number): FormGroup {

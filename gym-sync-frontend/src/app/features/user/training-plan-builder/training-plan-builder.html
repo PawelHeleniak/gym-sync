@@ -55,11 +55,17 @@
       </div>
     </div>
   </div>
-  <div class="exercise" formArrayName="exercises">
+  <div
+    class="exercise"
+    formArrayName="exercises"
+    cdkDropList
+    (cdkDropListDropped)="drop($event)"
+  >
     @for (exercise of exercisesArray.controls; track exercise; let i = $index) {
     <div
       class="exercise__wrapper box"
       [class.exercise__wrapper--break]="exercise.get('isBreak')?.value"
+      cdkDrag
     >
       <ng-container [formGroupName]="i">
         <div class="exercise__top">
@@ -180,6 +186,14 @@
               class="ui-btn ui-btn--secondary"
             >
               <i class="fa-solid fa-plus"></i>
+            </button>
+            <button
+              type="button"
+              class="ui-btn ui-btn--secondary"
+              style="cursor: grab; margin-left: 10px"
+              cdkDragHandle
+            >
+              <i class="fa-solid fa-grip-vertical"></i>
             </button>
           </div>
         </div>
