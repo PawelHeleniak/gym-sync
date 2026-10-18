@@ -114,5 +114,6 @@
 @if (state === 'trainingEdit' && selectedTraining) {
 <app-training-plan-builder
   [existingPlan]="selectedTraining"
+  (returnPlan)="handleReturnPlan($event)"
 ></app-training-plan-builder>
 }

@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, output } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -36,7 +36,10 @@ import { formatTime } from '../../../shared/utils/time';
 })
 export class TrainingPlanBuilder {
   @Input() existingPlan: TrainingList | undefined;
-
+  returnPlan = output<string>();
+  handleStage(stage: string) {
+    this.returnPlan.emit(stage);
+  }
   planForm!: FormGroup;
   private _snackBar = inject(MatSnackBar);
   durationInSeconds: number = 3000;
@@ -94,6 +97,8 @@ export class TrainingPlanBuilder {
       event.previousIndex,
       event.currentIndex,
     );
+
+    this.exercisesArray.updateValueAndValidity();
   }
 
   getExercise(i: number): FormGroup {

@@ -1,6 +1,14 @@
 <h2 class="layout__header">
   {{!existingPlan? "Dodaj nowy trening": "Edytuj plan"}}
 </h2>
+@if(existingPlan){
+<button
+  (click)="handleStage('trainingList')"
+  class="ui-btn ui-btn--arrow-left ui-btn--secondary mb-1"
+>
+  <i class="fa-solid fa-arrow-left"></i> Powrót
+</button>
+}
 <form [formGroup]="planForm" class="form">
   <div class="form__header">
     <div

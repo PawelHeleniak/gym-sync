@@ -108,6 +108,19 @@ button {
     margin-top: 2rem;
   }
 }
+.mb-1 {
+  margin-bottom: 1rem;
+  @include m.tablet {
+    margin-bottom: 1rem;
+  }
+}
+.mb-2 {
+  margin-bottom: 1rem;
+  @include m.tablet {
+    margin-bottom: 2rem;
+  }
+}
+
 .d-none {
   display: none !important;
   @include m.max-mobile {
@@ -178,6 +191,17 @@ button {
     &:hover {
       i {
         transform: translateX(0.4rem);
+      }
+    }
+  }
+  &--arrow-left {
+    i {
+      transition: 0.2s ease-in transform;
+    }
+
+    &:hover {
+      i {
+        transform: translateX(-0.4rem);
       }
     }
   }

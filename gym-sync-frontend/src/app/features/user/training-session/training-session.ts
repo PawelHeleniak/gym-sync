@@ -153,7 +153,11 @@ export class TrainingSession implements OnInit {
   editTraining(training: TrainingList) {
     this.changeStateWorkout(training, 'trainingEdit');
   }
-
+  handleReturnPlan(stage: string) {
+    if (stage === 'trainingList') {
+      this.state = stage;
+    }
+  }
   handleDoneExercises(data: TimeItem[]) {
     this.doneExercises.set(data);
   }
