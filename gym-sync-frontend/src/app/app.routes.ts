@@ -18,6 +18,7 @@ export const routes: Routes = [
     path: '',
     component: UserLayout,
     canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       { path: '', redirectTo: 'panel', pathMatch: 'full' },
       { path: 'panel', component: HomePanel },

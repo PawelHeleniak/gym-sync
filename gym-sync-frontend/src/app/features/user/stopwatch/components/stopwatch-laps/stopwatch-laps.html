@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (lap of laps(); track lap.lap; let i = $index){
+    @for (lap of reversedLaps(); track lap.lap; let i = $index){
     <tr [class.stopwatch-laps__row--best]="lap.lap === bestLap()?.lap">
       <td>{{ lap.lap }}</td>
       <td>{{ lap.overallTime }}</td>

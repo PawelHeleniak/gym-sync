@@ -146,7 +146,8 @@ export const deleteWorkout = async (req, res) => {
 export const updateWorkout = async (req, res) => {
   try {
     const { id } = req.params;
-    const newBody = req.body;
+    const { name, day, badge, exercises } = req.body;
+    const newBody = { name, day, badge, exercises };
     const userId = getUserId(req);
 
     if (!userId) {
@@ -169,7 +170,7 @@ export const updateWorkout = async (req, res) => {
 
     const updatedWorkout = await Workout.findOneAndUpdate(
       { _id: id, userId },
-      newBody,
+      { $set: newBody },
       { new: true, runValidators: true },
     );
 

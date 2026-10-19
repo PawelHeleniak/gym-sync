@@ -8,6 +8,7 @@ import { Component, computed, input } from '@angular/core';
 })
 export class StopwatchLaps {
   laps = input.required<StopwatchLap[]>();
+  reversedLaps = computed(() => [...this.laps()].reverse());
 
   bestLap = computed(() =>
     this.laps().reduce<StopwatchLap | null>((best, lap) => {
