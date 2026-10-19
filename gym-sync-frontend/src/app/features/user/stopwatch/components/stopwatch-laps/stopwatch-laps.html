@@ -1,4 +1,5 @@
 <table>
+  @if(laps().length !== 0){
   <thead>
     <tr>
       <th>Runda</th>
@@ -8,11 +9,12 @@
   </thead>
   <tbody>
     @for (lap of laps(); track lap.lap; let i = $index){
-    <tr>
+    <tr [class.stopwatch-laps__row--best]="lap.lap === bestLap()?.lap">
       <td>{{ lap.lap }}</td>
       <td>{{ lap.overallTime }}</td>
       <td>{{ lap.lapTime }}</td>
     </tr>
     }
   </tbody>
+  }
 </table>

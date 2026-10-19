@@ -13,6 +13,7 @@ export class Sidebar {
   private router = inject(Router);
 
   handleLogOut() {
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.router.navigate(['/autoryzacja']);
   }

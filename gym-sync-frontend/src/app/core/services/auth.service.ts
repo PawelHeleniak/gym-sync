@@ -5,13 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private userId: string = '';
-  private token: string = '';
-
-  constructor(private http: HttpClient) {
-    const storage = localStorage.getItem('user');
-    if (storage) this.userId = storage;
-  }
+  constructor(private http: HttpClient) {}
   private baseUrl = environment.apiUrl;
 
   register(body: any): Observable<any> {
@@ -21,14 +15,17 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}/auth/login`, body);
   }
 
-  getUserId() {
-    this.getLocalStorage();
-    return this.userId;
-  }
+  getUserId(): string {
+    const token = localStorage.getItem('token');
+    if (!token) return '';
 
-  getLocalStorage() {
-    const storage = localStorage.getItem('user');
-    if (storage) this.userId = storage;
+    try {
+      const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      const user: { userId?: unknown } = JSON.parse(atob(payload));
+      return typeof user.userId === 'string' ? user.userId : '';
+    } catch {
+      return '';
+    }
   }
 
   resendVerificationEmail(login: string): Observable<any> {

@@ -1,11 +1,19 @@
+@use "mixins" as m;
+
 .stopwatch {
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
   align-items: center;
-  padding-block: 2.4rem;
+  gap: 2.4rem;
+  padding-block: 1rem;
+  @include m.tablet {
+    gap: 3.2rem;
+    padding-block: 2.4rem;
+  }
   &__display {
     display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
     justify-content: center;
     align-items: center;
     font-size: var(--font-size-3xl);
@@ -16,11 +24,30 @@
     border-radius: 100rem;
     aspect-ratio: 1;
     position: relative;
-    width: 18rem;
-    max-width: 18rem;
+    width: 17rem;
+    max-width: 17rem;
     transition: font-size 0.3s ease;
+
+    @include m.tablet {
+      width: 18rem;
+      max-width: 18rem;
+    }
     &.--hours {
       font-size: var(--font-size-2xl);
+    }
+  }
+  &__lap-time {
+    font-size: var(--font-size-m);
+    color: var(--color-text-secondary);
+  }
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.4rem;
+    height: calc(100vh - 38rem);
+    @include m.tablet {
+      height: 45rem;
     }
   }
   // Przyciski
@@ -46,4 +73,9 @@
       border-color: hsl(350deg 48.6% 27.74%);
     }
   }
+}
+app-stopwatch-laps {
+  height: 100%;
+  display: block;
+  overflow-y: auto;
 }
