@@ -42,12 +42,16 @@
     <div class="stats__item box">
       <div class="stats__item--count">
         <i class="fa-solid fa-stopwatch"></i>
-        {{ totalTimeGeneral }} h
+        {{ formatTime(totalTimeGeneral) }} h
       </div>
       <div class="stats__item--name">Łączny czas treningów</div>
     </div>
     <div class="stats__item box">
-      <div class="stats__item--count">
+      <div
+        class="stats__item--count"
+        [class.stats__item--pending]="isStreakPending"
+        [attr.title]="isStreakPending ? 'W tym tygodniu nie masz jeszcze treningu' : null"
+      >
         <i class="fa-solid fa-chart-line"></i> {{ streak }}
       </div>
       <div class="stats__item--name">Aktualna seria tygodni</div>
@@ -55,7 +59,7 @@
     <div class="stats__item box">
       <div class="stats__item--count">
         <i class="fa-solid fa-stopwatch-20"></i>
-        {{ avergeTimeGeneral }} h
+        {{ formatTime(avergeTimeGeneral) }} h
       </div>
       <div class="stats__item--name">Średni czas treningu</div>
     </div>

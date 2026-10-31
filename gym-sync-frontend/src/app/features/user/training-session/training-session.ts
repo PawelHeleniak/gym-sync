@@ -137,7 +137,7 @@ export class TrainingSession implements OnInit {
     });
   }
   duplicateTraining(training: TrainingList) {
-    console.log('Duplicating training:', training);
+    // console.log('Duplicating training:', training);
     this.trainingService.duplicateTraining(training).subscribe({
       next: () => {
         this.getAllTraining();

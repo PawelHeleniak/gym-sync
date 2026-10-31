@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
 import { formatTime } from '../../../../../shared/utils/time';
@@ -13,7 +19,8 @@ import { WorkoutHistory } from '../../../../../shared/models/trainingHistory.mod
   styleUrl: './monthly-stats-card.scss',
   providers: [TrainingHistoryService],
 })
-export class MonthlyStatsCardComponent implements OnInit {
+export class MonthlyStatsCardComponent implements OnInit, OnChanges {
+  @Input() selectedMonth: Date = new Date();
   history: WorkoutHistory[] = [];
 
   // Miesięczne
@@ -25,6 +32,7 @@ export class MonthlyStatsCardComponent implements OnInit {
   workoutsGeneral: number = 0;
   totalTimeGeneral: number = 0;
   streak: number = 0;
+  isStreakPending: boolean = false;
   avergeTimeGeneral: number = 0;
 
   constructor(private historyService: TrainingHistoryService) {}
@@ -32,27 +40,43 @@ export class MonthlyStatsCardComponent implements OnInit {
   ngOnInit() {
     this.historyService.getAllHistory().subscribe((data: any[]) => {
       if (!data) return;
-      console.log(data);
+      // console.log(data);
       this.history = data;
 
       // Miesięczne
-      this.workoutsMonth = this.getWorkoutCountMonth(data);
-      this.totalTimeMonth = this.getTotalTimeMonth(data);
-      this.workoutsDayMonth = this.getWorkoutCountDayMonth(data);
-      this.totalEstimatedTimeMonth = this.getTotalEstimatedTimeMonth(data);
+      this.updateMonthlyStats();
       // Ogólne
       this.workoutsGeneral = this.getWorkoutCountGeneral();
+      this.totalTimeGeneral = this.getTotalTimeGeneral();
+      this.avergeTimeGeneral =
+        this.workoutsGeneral > 0
+          ? Math.round(this.totalTimeGeneral / this.workoutsGeneral)
+          : 0;
       this.streak = this.getWorkoutWeekStreak(data);
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedMonth']) this.updateMonthlyStats();
+  }
+
+  private updateMonthlyStats(): void {
+    this.workoutsMonth = this.getWorkoutCountMonth(this.history);
+    this.totalTimeMonth = this.getTotalTimeMonth(this.history);
+    this.workoutsDayMonth = this.getWorkoutCountDayMonth(this.history);
+    this.totalEstimatedTimeMonth = this.getTotalEstimatedTimeMonth(
+      this.history,
+    );
+  }
+
   getCurrentMonthWorkouts(history: any[]) {
-    const now = new Date();
+    const month = this.selectedMonth;
 
     return history.filter((item) => {
       const d = new Date(item.date);
       return (
-        d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()
+        d.getMonth() === month.getMonth() &&
+        d.getFullYear() === month.getFullYear()
       );
     });
   }
@@ -63,7 +87,9 @@ export class MonthlyStatsCardComponent implements OnInit {
 
   getWorkoutCountDayMonth(history: any[]) {
     const days = new Set(
-      history.map((h) => new Date(h.date).toLocaleDateString('pl-PL')),
+      this.getCurrentMonthWorkouts(history).map((h) =>
+        new Date(h.date).toLocaleDateString('pl-PL'),
+      ),
     );
 
     return days.size;
@@ -84,6 +110,7 @@ export class MonthlyStatsCardComponent implements OnInit {
   }
 
   getWorkoutWeekStreak(history: WorkoutHistory[]) {
+    this.isStreakPending = false;
     if (!history.length) return 0;
 
     const weeksSet = new Set<string>();
@@ -95,7 +122,12 @@ export class MonthlyStatsCardComponent implements OnInit {
     });
 
     let streak = 0;
-    let currentDate = new Date();
+    const currentDate = new Date();
+
+    if (!weeksSet.has(this.getWeekKey(currentDate))) {
+      currentDate.setDate(currentDate.getDate() - 7);
+      this.isStreakPending = weeksSet.has(this.getWeekKey(currentDate));
+    }
 
     while (true) {
       const key = this.getWeekKey(currentDate);
@@ -145,5 +177,12 @@ export class MonthlyStatsCardComponent implements OnInit {
   // Ogólne
   getWorkoutCountGeneral() {
     return this.history.length;
+  }
+
+  getTotalTimeGeneral() {
+    return this.history.reduce(
+      (sum, item) => sum + Number(item.totalTime || 0),
+      0,
+    );
   }
 }

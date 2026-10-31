@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
 import { TrainingService } from '../../../../../shared/services/training-session.service';
@@ -27,7 +27,8 @@ type Legend = {
 export class CalendarCard implements OnInit {
   history: WorkoutHistory[] = [];
   training: number[] = [];
-  currentDate = new Date();
+  @Input() currentDate = new Date();
+  @Output() monthChange = new EventEmitter<Date>();
   days: CalendarDay[] = [];
 
   weekDays = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd'];
@@ -78,6 +79,7 @@ export class CalendarCard implements OnInit {
       1,
     );
     this.generateCalendar();
+    this.monthChange.emit(this.currentDate);
   }
 
   nextMonth() {
@@ -87,6 +89,7 @@ export class CalendarCard implements OnInit {
       1,
     );
     this.generateCalendar();
+    this.monthChange.emit(this.currentDate);
   }
 
   generateCalendar() {

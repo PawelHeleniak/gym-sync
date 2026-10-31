@@ -6,7 +6,7 @@ import { catchError, throwError } from 'rxjs';
 export const userInterceptor: HttpInterceptorFn = (req, next) => {
   const token = window.localStorage.getItem('token');
   const router = inject(Router);
-  console.log(token);
+  // console.log(token);
   if (!token) return next(req);
   const modifiedReq = req.clone({
     setHeaders: {

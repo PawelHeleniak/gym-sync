@@ -33,7 +33,7 @@ export class TrainingReport {
         this.trainings.forEach((training) => {
           this.getHistoryTrainingCount(training._id ?? '');
         });
-        console.log(response);
+        // console.log(response);
       },
       error: (error) => {
         console.log(error);
@@ -62,7 +62,7 @@ export class TrainingReport {
     this.trainingHistoryService.getHistoryTrainings(id).subscribe({
       next: (response: any) => {
         this.allHistoryTraining = response;
-        console.log(response);
+        // console.log(response);
       },
       error: (error: any) => {
         console.log(error);

@@ -1,9 +1,11 @@
 <div class="panel">
   <div class="panel__box panel__box--column">
-    <app-monthly-stats-card></app-monthly-stats-card>
-    <app-charts></app-charts>
+    <app-monthly-stats-card [selectedMonth]="selectedMonth"></app-monthly-stats-card>
   </div>
   <div class="panel__box">
-    <app-calendar-card></app-calendar-card>
+    <app-calendar-card
+      [currentDate]="selectedMonth"
+      (monthChange)="selectedMonth = $event"
+    ></app-calendar-card>
   </div>
 </div>
