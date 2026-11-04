@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { LucideDynamicIcon } from '@lucide/angular';
 
 import { SidebarItems } from './sidebar.model';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, LucideDynamicIcon],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
@@ -23,37 +24,37 @@ export class Sidebar {
       link: '/panel',
       active: false,
       ariaLabel: 'Panel główny',
-      icon: 'fa-regular fa-house',
+      icon: 'house',
     },
     {
       link: '/kreator-planu',
       active: false,
       ariaLabel: 'Kreator planu',
-      icon: 'fa-regular fa-calendar-plus',
+      icon: 'calendar-plus',
     },
     {
       link: '/trening',
       active: false,
       ariaLabel: 'Trening',
-      icon: 'fa-solid fa-dumbbell',
+      icon: 'dumbbell',
     },
     {
       link: '/raport',
       active: false,
       ariaLabel: 'Raport',
-      icon: 'fa-regular fa-calendar-check',
+      icon: 'rotate-ccw-clock',
     },
     {
       link: '/stoper',
       active: false,
       ariaLabel: 'Stoper',
-      icon: 'fa-solid fa-stopwatch',
+      icon: 'timer',
     },
-    {
-      link: '/ustawienia',
-      active: false,
-      ariaLabel: 'Ustawienia',
-      icon: 'fa-solid fa-gear',
-    },
+    // {
+    //   link: '/ustawienia',
+    //   active: false,
+    //   ariaLabel: 'Ustawienia',
+    //   icon: 'settings',
+    // },
   ];
 }

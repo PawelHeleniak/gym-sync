@@ -5,29 +5,36 @@
   flex-direction: row;
   min-height: 100vh;
   margin: 0 auto;
-  max-width: var(--max-width);
+  // max-width: var(--max-width);
   &__sidebar {
     position: fixed;
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
-    height: max-content;
+
     @include m.tablet {
       position: sticky;
       top: 0;
       bottom: initial;
       left: initial;
       transform: initial;
-      padding: 2.4rem 1.2rem 2.4rem 2.4rem;
+      padding: 2.4rem;
+      height: 100vh;
+    }
+    app-sidebar {
+      display: block;
+      height: 100%;
     }
   }
   &__content {
     width: 100%;
     padding: 1.2rem;
     margin-bottom: 8.5rem;
+    max-width: var(--max-width);
+    margin-inline: auto;
     @include m.tablet {
-      padding: 2.4rem 2.4rem 2.4rem 1.2rem;
+      padding: 2.4rem 2.4rem 2.4rem 0;
       margin-bottom: 0;
     }
   }

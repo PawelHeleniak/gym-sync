@@ -1,19 +1,30 @@
 <div class="sidebar">
-  <div class="sidebar__top box">
-    @for (item of sidebarItems; track $index) {
-    <a
-      routerLink="{{item.link}}"
-      routerLinkActive="sidebar__link--active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="sidebar__link"
-      [attr.aria-label]="item.ariaLabel"
-      ><i class="{{item.icon}}"></i
-    ></a>
-    }
-  </div>
-  <div class="sidebar__bottom box">
-    <button (click)="handleLogOut()" class="sidebar__link">
-      <i class="fa-solid fa-arrow-right-from-bracket"></i>
-    </button>
+  <div class="sidebar__container">
+    <div class="sidebar__top box">
+      @for (item of sidebarItems; track $index) {
+      <a
+        routerLink="{{item.link}}"
+        routerLinkActive="sidebar__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="sidebar__link"
+        [attr.aria-label]="item.ariaLabel"
+      >
+        <svg lucideIcon="{{item.icon}}"></svg
+      ></a>
+      }
+    </div>
+    <div class="sidebar__bottom box">
+      <a
+        routerLink="/ustawienia"
+        routerLinkActive="sidebar__link--active"
+        class="sidebar__link"
+        aria-label="Ustawienia"
+      >
+        <svg lucideIcon="settings"></svg>
+      </a>
+      <button (click)="handleLogOut()" class="sidebar__link">
+        <svg lucideIcon="log-out"></svg>
+      </button>
+    </div>
   </div>
 </div>
