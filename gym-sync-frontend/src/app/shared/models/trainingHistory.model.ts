@@ -18,3 +18,7 @@ export interface WorkoutHistory {
   totalTime: number;
   exercises: WorkoutExerciseHistory[];
 }
+export interface MonthlyWorkoutCounts {
+  year: number;
+  monthlyWorkoutCounts: number[];
+}

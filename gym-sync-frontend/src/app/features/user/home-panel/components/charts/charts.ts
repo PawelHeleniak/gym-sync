@@ -1,22 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ApexOptions } from 'ng-apexcharts';
-
+import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
 @Component({
   selector: 'app-charts',
   imports: [NgApexchartsModule],
   templateUrl: './charts.html',
   styleUrl: './charts.scss',
 })
-export class Charts {
+export class Charts implements OnInit {
   public chartOptions!: ApexOptions;
-  selectedYear = 2026;
+  selectedYear = new Date().getFullYear();
   monthlyData = {
-    planned: [12, 12, 13, 12, 13, 12, 13, 12, 13, 13, 12, 13],
-    completed: [9, 11, 12, 8, 13, 10, 12, 9, 11, 12, 2, 0],
+    completed: Array<number>(12).fill(0),
   };
 
-  constructor() {
+  constructor(private trainingHistoryService: TrainingHistoryService) {
     this.chartOptions = {
       series: [
         {
@@ -101,5 +100,21 @@ export class Charts {
         },
       },
     };
+  }
+  ngOnInit(): void {
+    this.getMonthlyWorkoutCounts(this.selectedYear);
+  }
+
+  getMonthlyWorkoutCounts(year: number) {
+    this.trainingHistoryService
+      .getMonthlyWorkoutCounts(year)
+      .subscribe((data) => {
+        this.selectedYear = data.year;
+        this.monthlyData.completed = data.monthlyWorkoutCounts;
+        this.chartOptions = {
+          ...this.chartOptions,
+          series: [{ name: 'Wykonane', data: this.monthlyData.completed }],
+        };
+      });
   }
 }

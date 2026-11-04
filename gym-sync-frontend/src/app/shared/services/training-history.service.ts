@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environment/environment';
 import { Observable } from 'rxjs';
-import { WorkoutHistory } from '../../shared/models/trainingHistory.model';
+import {
+  WorkoutHistory,
+  MonthlyWorkoutCounts,
+} from '../../shared/models/trainingHistory.model';
 import { TrainingList } from '../../shared/models/training.model';
 
 @Injectable({ providedIn: 'root' })
@@ -18,5 +21,13 @@ export class TrainingHistoryService {
   }
   getAllHistory() {
     return this.http.get<WorkoutHistory[]>(`${this.baseUrl}/history`);
+  }
+  getMonthlyWorkoutCounts(year: number): Observable<MonthlyWorkoutCounts> {
+    return this.http.get<MonthlyWorkoutCounts>(
+      `${this.baseUrl}/history/monthly-counts`,
+      {
+        params: { year: year.toString() },
+      },
+    );
   }
 }
