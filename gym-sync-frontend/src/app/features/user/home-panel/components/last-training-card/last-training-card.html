@@ -1,0 +1,34 @@
+<div class="last-training-card box">
+  <div class="last-training-card__header">
+    <h2 class="last-training-card__title">Ostatni trening</h2>
+    <p class="last-training-card__subtitle">Podsumowanie ostatniej sesji</p>
+  </div>
+
+  <div class="last-training-card__content">
+    <div class="last-training-card__details">
+      <div class="last-training-card__date">
+        <time datetime="2026-11-02">
+          <span class="last-training-card__day">02</span>
+          <span class="last-training-card__month">LIS</span>
+        </time>
+      </div>
+
+      <div class="last-training-card__info">
+        <h3 class="last-training-card__name">FBW Plan A</h3>
+
+        <span class="last-training-card__description">
+          Poniedziałek | 8 ćwiczeń
+        </span>
+      </div>
+    </div>
+
+    <div class="last-training-card__stats">
+      @for(stat of stats; track stat.label) {
+      <div class="last-training-card__stat">
+        <span class="last-training-card__stat-value">{{stat.value}}</span>
+        <span class="last-training-card__stat-label">{{stat.label}}</span>
+      </div>
+      }
+    </div>
+  </div>
+</div>

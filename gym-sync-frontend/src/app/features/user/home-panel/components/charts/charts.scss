@@ -1,25 +1,27 @@
-.box {
-  min-height: 35rem;
-  height: 100%;
-  display: none !important;
-}
 apx-chart {
   display: block;
   height: 100%;
   width: 100%;
 }
 .chart {
-  &__title {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
     margin-bottom: 1rem;
   }
-  &__buttons {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    .ui-btn {
-      padding: 0.8rem 1.2rem;
-      font-size: var(--font-size-base);
-    }
+  &__title {
+    font-size: var(--font-size-m);
+    font-weight: 600;
   }
+  &__subtitle {
+    font-size: var(--font-size-s);
+    color: var(--color-text-secondary);
+  }
+}
+.charts {
+  height: 100%;
 }

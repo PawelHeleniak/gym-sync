@@ -1,67 +1,77 @@
-<h2 class="layout__header">Twoja aktywność</h2>
-<div class="stats stats--first box">
-  <h3 class="stats__title">Podsumowanie miesiąca</h3>
+@if(type() === 'month'){
+<div class="stats stats--first">
   <div class="stats__grid">
     <div class="stats__item box">
-      <div class="stats__item--count">
-        <i class="fa-solid fa-dumbbell"></i> {{ workoutsMonth }}
+      <div class="stats__item--name">
+        <span>Łączny czas</span><svg lucideIcon="clock-4"></svg>
       </div>
-      <div class="stats__item--name">Liczba treningów</div>
+      <div class="stats__item--count">{{ formatTime(totalTimeMonth) }} h</div>
+      <div class="stats__item--subname">Sesje w danym miesiącu</div>
     </div>
     <div class="stats__item box">
-      <div class="stats__item--count">
-        <i class="fa-solid fa-stopwatch"></i>
-        {{ formatTime(totalTimeMonth) }} h
+      <div class="stats__item--name">
+        <span>Liczba treningów</span><svg lucideIcon="dumbbell"></svg>
       </div>
-      <div class="stats__item--name">Łączny czas treningów</div>
+      <div class="stats__item--count">{{ workoutsMonth }}</div>
+      <div class="stats__item--subname">Ukończone w tym miesiącu</div>
     </div>
     <div class="stats__item box">
-      <div class="stats__item--count">
-        <i class="fa-solid fa-calendar-check"></i> {{ workoutsDayMonth }}
+      <div class="stats__item--name">
+        <span>Szacowany czas</span><svg lucideIcon="hourglass"></svg>
       </div>
-      <div class="stats__item--name">Dni treningowe</div>
-    </div>
-    <div class="stats__item box">
       <div class="stats__item--count">
-        <i class="fa-solid fa-hourglass-half"></i>
         {{ formatTime(totalEstimatedTimeMonth) }} h
       </div>
-      <div class="stats__item--name">Szacowany czas treningów</div>
+      <div class="stats__item--subname">Planowany czas treningów</div>
+    </div>
+    <div class="stats__item box">
+      <div class="stats__item--name">
+        <span>Dni treningowe</span><svg lucideIcon="calendar-check"></svg>
+      </div>
+      <div class="stats__item--count">{{ workoutsDayMonth }}</div>
+      <div class="stats__item--subname">Dni z aktywnością</div>
     </div>
   </div>
 </div>
-<div class="stats box">
-  <h3 class="stats__title">Podsumowanie ogólne</h3>
+}@else if (type() === 'general') {
+<div class="stats">
   <div class="stats__grid">
-    <div class="stats__item box">
-      <div class="stats__item--count">
-        <i class="fa-solid fa-dumbbell"></i> {{ workoutsGeneral }}
+    <div class="stats__item stats__item--hot box">
+      <div class="stats__item--name">
+        <span>Łączny czas</span><svg lucideIcon="clock-4"></svg>
       </div>
-      <div class="stats__item--name">Liczba treningów</div>
+      <div class="stats__item--count">{{ formatTime(totalTimeGeneral) }} h</div>
+      <div class="stats__item--subname">Wszystkie sesje</div>
     </div>
     <div class="stats__item box">
-      <div class="stats__item--count">
-        <i class="fa-solid fa-stopwatch"></i>
-        {{ formatTime(totalTimeGeneral) }} h
+      <div class="stats__item--name">
+        <span>Liczba treningów</span><svg lucideIcon="dumbbell"></svg>
       </div>
-      <div class="stats__item--name">Łączny czas treningów</div>
+      <div class="stats__item--count">{{ workoutsGeneral }}</div>
+      <div class="stats__item--subname">Od początku</div>
     </div>
     <div class="stats__item box">
+      <div class="stats__item--name">
+        <span>Średni czas</span><svg lucideIcon="timer"></svg>
+      </div>
+      <div class="stats__item--count">
+        {{ formatTime(avergeTimeGeneral) }} h
+      </div>
+      <div class="stats__item--subname">Ukończonych sesji</div>
+    </div>
+    <div class="stats__item box">
+      <div class="stats__item--name">
+        <span>Aktualna seria</span><svg lucideIcon="trending-up"></svg>
+      </div>
       <div
         class="stats__item--count"
         [class.stats__item--pending]="isStreakPending"
         [attr.title]="isStreakPending ? 'W tym tygodniu nie masz jeszcze treningu' : null"
       >
-        <i class="fa-solid fa-chart-line"></i> {{ streak }}
+        {{ streak }} tyg.
       </div>
-      <div class="stats__item--name">Aktualna seria tygodni</div>
-    </div>
-    <div class="stats__item box">
-      <div class="stats__item--count">
-        <i class="fa-solid fa-stopwatch-20"></i>
-        {{ formatTime(avergeTimeGeneral) }} h
-      </div>
-      <div class="stats__item--name">Średni czas treningu</div>
+      <div class="stats__item--subname">Z rzędu</div>
     </div>
   </div>
 </div>
+}

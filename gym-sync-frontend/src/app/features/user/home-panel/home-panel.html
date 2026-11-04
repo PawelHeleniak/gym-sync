@@ -1,11 +1,31 @@
+<h2 class="layout__header">Twoja aktywność</h2>
 <div class="panel">
-  <div class="panel__box panel__box--column">
-    <app-monthly-stats-card [selectedMonth]="selectedMonth"></app-monthly-stats-card>
+  <div class="panel__row panel__row--top">
+    <div class="panel__box panel__box--full">
+      <app-monthly-stats-card
+        [selectedMonth]="selectedMonth"
+        [type]="'general'"
+      ></app-monthly-stats-card>
+    </div>
+    <div class="panel__box">
+      <app-last-training-card></app-last-training-card>
+    </div>
+    <div class="panel__box">
+      <app-charts></app-charts>
+    </div>
   </div>
-  <div class="panel__box">
-    <app-calendar-card
-      [currentDate]="selectedMonth"
-      (monthChange)="selectedMonth = $event"
-    ></app-calendar-card>
+  <div class="panel__row panel__row--bottom">
+    <div class="panel__box">
+      <app-calendar-card
+        [currentDate]="selectedMonth"
+        (monthChange)="selectedMonth = $event"
+      ></app-calendar-card>
+    </div>
+    <div class="panel__box panel__box--column">
+      <app-monthly-stats-card
+        [selectedMonth]="selectedMonth"
+        [type]="'month'"
+      ></app-monthly-stats-card>
+    </div>
   </div>
 </div>

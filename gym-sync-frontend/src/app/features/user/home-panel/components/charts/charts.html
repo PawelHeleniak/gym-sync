@@ -1,26 +1,23 @@
 <div class="chart box">
-  <h3 class="chart__title">Statystyki</h3>
-  <div class="chart__buttons">
-    @for(exercise of exercises; track exercise){
-    <button
-      class="ui-btn ui-btn--success"
-      class="ui-btn"
-      [class.ui-btn--success]="chartState === exercise"
-      (click)="changeChart(exercise)"
+  <div class="chart__header">
+    <span class="chart__title">Regularność treningów</span>
+    <small class="chart__subtitle"
+      >Rozkład aktywności w {{ selectedYear }} roku</small
     >
-      {{exercise}}
-    </button>
-    }
   </div>
-  <apx-chart
-    [series]="chartOptions.series!"
-    [chart]="chartOptions.chart!"
-    [xaxis]="chartOptions.xaxis!"
-    [yaxis]="chartOptions.yaxis!"
-    [colors]="chartOptions.colors!"
-    [stroke]="chartOptions.stroke!"
-    [markers]="chartOptions.markers!"
-    [grid]="chartOptions.grid!"
-  >
-  </apx-chart>
+  <div class="charts">
+    <apx-chart
+      [series]="chartOptions.series!"
+      [chart]="chartOptions.chart!"
+      [plotOptions]="chartOptions.plotOptions!"
+      [xaxis]="chartOptions.xaxis!"
+      [yaxis]="chartOptions.yaxis!"
+      [colors]="chartOptions.colors!"
+      [dataLabels]="chartOptions.dataLabels!"
+      [stroke]="chartOptions.stroke!"
+      [grid]="chartOptions.grid!"
+      [legend]="chartOptions.legend!"
+      [tooltip]="chartOptions.tooltip!"
+    />
+  </div>
 </div>

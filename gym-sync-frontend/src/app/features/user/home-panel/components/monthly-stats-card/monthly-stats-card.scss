@@ -1,12 +1,22 @@
 @use "mixins" as m;
 
 .stats {
-  border-left: 3px solid hsl(200deg 80% 38%);
+  // border-left: 3px solid hsl(200deg 80% 38%);
   &--first {
     margin-bottom: 1rem;
-    border-left: 3px solid var(--primary);
+    // border-left: 3px solid var(--primary);
     @include m.mobile {
       margin-bottom: 2rem;
+    }
+  }
+  :not(&--first) {
+    .stats__grid {
+      @include m.laptop {
+        column-gap: 2rem;
+      }
+      @include m.desktop {
+        gap: 1rem;
+      }
     }
   }
   &__title {
@@ -24,8 +34,8 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background-color: var(--color-bg-surface);
-    border: none;
+    // background-color: var(--color-bg-surface);
+    // border: none;
     position: relative;
     overflow: hidden;
     &::before {
@@ -44,14 +54,27 @@
       filter: blur(40px);
       pointer-events: none;
     }
-    &--count {
-      font-size: var(--font-size-xl);
-      i {
-        font-size: var(--font-size-l);
-      }
+    &--hot {
+      background-color: var(--secondary);
     }
     &--name {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
       font-size: var(--font-size-base);
+      line-height: 1;
+      svg {
+        width: 2.2rem;
+        height: 2.2rem;
+      }
+    }
+    &--count {
+      font-size: var(--font-size-2xl);
+      margin-top: 1rem;
+    }
+    &--subname {
+      font-size: var(--font-size-s);
       color: var(--color-text-secondary);
     }
     &--pending {

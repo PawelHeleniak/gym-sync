@@ -10,46 +10,51 @@ import { ApexOptions } from 'ng-apexcharts';
 })
 export class Charts {
   public chartOptions!: ApexOptions;
-  chartState: string = 'Bench press';
-  exercises = ['Bench press', 'Squat', 'Farmer walk'];
-  chartDataMap: Record<string, { x: string; y: number }[]> = {
-    'Bench press': [
-      { x: '2026-01-10', y: 92 },
-      { x: '2026-01-17', y: 95 },
-      { x: '2026-01-24', y: 97 },
-      { x: '2026-02-01', y: 100 },
-    ],
-    Squat: [
-      { x: '2026-01-10', y: 120 },
-      { x: '2026-01-17', y: 125 },
-      { x: '2026-01-24', y: 130 },
-      { x: '2026-02-01', y: 135 },
-    ],
-    'Farmer walk': [
-      { x: '2026-01-10', y: 1200 },
-      { x: '2026-01-17', y: 1400 },
-      { x: '2026-01-24', y: 1500 },
-      { x: '2026-02-01', y: 1650 },
-    ],
+  selectedYear = 2026;
+  monthlyData = {
+    planned: [12, 12, 13, 12, 13, 12, 13, 12, 13, 13, 12, 13],
+    completed: [9, 11, 12, 8, 13, 10, 12, 9, 11, 12, 2, 0],
   };
+
   constructor() {
     this.chartOptions = {
       series: [
         {
-          name: this.chartState,
-          data: this.chartDataMap[this.chartState],
+          name: 'Wykonane',
+          data: this.monthlyData.completed,
         },
       ],
       chart: {
-        type: 'line',
+        type: 'bar',
         height: '100%',
         width: '100%',
+        parentHeightOffset: 0,
         toolbar: {
           show: false,
         },
       },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '60%',
+          borderRadius: 4,
+        },
+      },
       xaxis: {
-        type: 'datetime',
+        categories: [
+          'Sty',
+          'Lut',
+          'Mar',
+          'Kwi',
+          'Maj',
+          'Cze',
+          'Lip',
+          'Sie',
+          'Wrz',
+          'Paź',
+          'Lis',
+          'Gru',
+        ],
         labels: {
           style: {
             colors: '#94a3b8',
@@ -57,41 +62,44 @@ export class Charts {
           },
         },
       },
-      yaxis: [
-        {
-          labels: {
-            style: {
-              colors: '#94a3b8',
-              fontSize: '12px',
-            },
+      yaxis: {
+        min: 0,
+        forceNiceScale: true,
+        labels: {
+          show: false,
+          style: {
+            colors: '#94a3b8',
           },
+          formatter: (value) => Math.round(value).toString(),
         },
-      ],
-      colors: ['hsl(271, 80%, 38%)'],
-      stroke: {
-        width: 3,
       },
-      markers: {
-        size: 5,
-        colors: ['hsl(180, 70%, 45%)'],
-        strokeWidth: 0,
-        strokeColors: '#ffffff',
+      colors: ['hsl(271, 80%, 38%)'],
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        width: 0,
       },
       grid: {
-        borderColor: '#475569',
-      },
-    };
-  }
-  changeChart(name: string): void {
-    this.chartState = name;
-    this.chartOptions = {
-      ...this.chartOptions,
-      series: [
-        {
-          name: name,
-          data: this.chartDataMap[name],
+        borderColor: '#334155',
+        padding: {
+          top: -10,
+          right: 0,
+          bottom: 0,
+          left: -10,
         },
-      ],
+      },
+      legend: {
+        position: 'bottom',
+        labels: {
+          colors: '#94a3b8',
+        },
+      },
+      tooltip: {
+        y: {
+          formatter: (value) => `${value} treningów`,
+        },
+      },
     };
   }
 }

@@ -18,6 +18,7 @@ type Legend = {
   text: string;
   color: string;
 };
+
 @Component({
   selector: 'app-calendar-card',
   imports: [CommonModule],

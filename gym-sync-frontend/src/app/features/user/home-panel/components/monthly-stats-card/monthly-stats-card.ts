@@ -1,5 +1,6 @@
 import {
   Component,
+  input,
   Input,
   OnChanges,
   OnInit,
@@ -8,13 +9,16 @@ import {
 import { CommonModule } from '@angular/common';
 import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
 import { formatTime } from '../../../../../shared/utils/time';
+import { LucideDynamicIcon } from '@lucide/angular';
 
 import { WorkoutHistory } from '../../../../../shared/models/trainingHistory.model';
+
+type StatsType = 'month' | 'general';
 
 @Component({
   selector: 'app-monthly-stats-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideDynamicIcon],
   templateUrl: './monthly-stats-card.html',
   styleUrl: './monthly-stats-card.scss',
   providers: [TrainingHistoryService],
@@ -36,6 +40,7 @@ export class MonthlyStatsCardComponent implements OnInit, OnChanges {
   avergeTimeGeneral: number = 0;
 
   constructor(private historyService: TrainingHistoryService) {}
+  type = input.required<StatsType>();
 
   ngOnInit() {
     this.historyService.getAllHistory().subscribe((data: any[]) => {

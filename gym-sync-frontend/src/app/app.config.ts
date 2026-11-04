@@ -14,6 +14,12 @@ import {
   LucideRotateCcwClock,
   LucideTimer,
   LucideLogOut,
+  LucideClock4,
+  LucideTrendingUp,
+  LucideListCheck,
+  LucideWeight,
+  LucideHourglass,
+  LucideCalendarCheck,
 } from '@lucide/angular';
 import { routes } from './app.routes';
 
@@ -33,6 +39,12 @@ export const appConfig: ApplicationConfig = {
       LucideRotateCcwClock,
       LucideTimer,
       LucideLogOut,
+      LucideClock4,
+      LucideTrendingUp,
+      LucideListCheck,
+      LucideWeight,
+      LucideHourglass,
+      LucideCalendarCheck,
     ),
   ],
 };
