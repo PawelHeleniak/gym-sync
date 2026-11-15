@@ -14,6 +14,7 @@ import { TrainingHistoryService } from '../../../../../shared/services/training-
 import { TrainingList } from '../../../../../shared/models/training.model';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { formatTime } from '../../../../../shared/utils/time';
 
 @Component({
   selector: 'app-steps',
@@ -37,6 +38,7 @@ export class Steps implements OnInit {
   currentRepIndex: number = 0;
 
   timeLeft: number = 0;
+  timeLeftFromatted: string = '00:00';
   intervalState: boolean = false;
   endTraining: boolean = false;
   endTrainingTime: string = '';
@@ -76,10 +78,14 @@ export class Steps implements OnInit {
 
   timer(time: number) {
     this.timeLeft = time;
+    this.timeLeftFromatted = formatTime(this.timeLeft, true);
+
     clearInterval(this.timerInterval);
     this.timerInterval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
+        this.timeLeftFromatted = formatTime(this.timeLeft, true);
+
         if (
           this.timeLeft === 0 &&
           this.currentExercise.sets[this.currentRepIndex].timeCount !== 0 &&

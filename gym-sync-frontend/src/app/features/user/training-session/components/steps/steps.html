@@ -3,29 +3,62 @@
   <div class="workout__box box">
     @if(!endTraining){
     <div class="workout__name">
-      {{selectedTraining.exercises[currentExerciseIndex].name}}
+      <span class="workout__eyebow">Aktualne ćwiczenie</span>
+      <h3>{{selectedTraining.exercises[currentExerciseIndex].name}}</h3>
     </div>
-    <div
-      class="workout__time"
-      [class]="{'workout__time--stop': timeLeft === 0, 'workout__time--last': timeLeft <= 15}"
-    >
-      {{intervalState? 'Czas trwania:' : 'Koniec przerwy za:'}}
-      <span>{{timeLeft}} sek.</span>
+    <div class="workout__details">
+      @if(!selectedTraining.exercises[currentExerciseIndex].isBreak){
+      <div class="workout__info">
+        <span class="workout__eyebow">Parametry serii</span>
+        <div class="workout__parameters">
+          <div class="workout__parameter">
+            <p><span>{{currentRep.weight}} </span> kg</p>
+            <p class="workout__parameter--label">Ciężar</p>
+          </div>
+          <div class="workout__parameter">
+            @switch (selectedTraining.exercises[currentExerciseIndex].type) {
+            @case ('time') {
+            <p><span>{{currentRep.timeCount}} </span> sek.</p>
+            <p class="workout__parameter--label">Czas trwania</p>
+            } @default {
+            <p><span>{{currentRep.repsCount}} </span> powt.</p>
+            <p class="workout__parameter--label">Cel powtórzeń</p>
+            } }
+          </div>
+        </div>
+      </div>
+      }@else{
+      <div class="workout__info v-hidden">
+        <span class="workout__eyebow">Parametry serii</span>
+        <div class="workout__parameters">
+          <div class="workout__parameter">Ciężar: <span>- kg.</span></div>
+          <div class="workout__parameter">Powtórzenia: <span>-</span></div>
+        </div>
+      </div>
+      }
+      <div
+        class="workout__time"
+        [class]="{'workout__time--stop': timeLeft === 0, 'workout__time--last': timeLeft <= 15}"
+      >
+        <p class="workout__time--label">
+          {{intervalState? 'Czas serii' : 'Do końca przerwy'}}
+        </p>
+        <p class="workout__time--time">
+          <span>{{timeLeftFromatted}} </span> min.
+        </p>
+        <div class="workout__time--line">
+          @for (exerciseIndex of [currentRepIndex]; track exerciseIndex) {
+          <div
+            class="workout__time--line-progress"
+            [style.--progress-duration]="(intervalState ? currentRep.timeCount : currentExercise.breakTime) + 's'"
+          ></div>
+          }
+        </div>
+      </div>
     </div>
     @if(!selectedTraining.exercises[currentExerciseIndex].isBreak){
-    <div class="workout__info">
-      <div class="workout__weight">
-        Ciężar: <span>{{currentRep.weight}} kg.</span>
-      </div>
-      <div class="workout__weight">
-        @switch (selectedTraining.exercises[currentExerciseIndex].type) { @case
-        ('time') { Czas trwania:
-        <span>{{currentRep.timeCount}} s.</span>
-        } @default { Powtórzenia: <span>{{currentRep.repsCount}}</span>
-        } }
-      </div>
-    </div>
     <div class="workout__reps">
+      <span class="workout__rep--label">Postęp serii</span>
       @for (set of selectedTraining.exercises[currentExerciseIndex].sets; track
       set; let i = $index) {
       <div
@@ -37,10 +70,6 @@
       }
     </div>
     }@else{
-    <div class="workout__info v-hidden">
-      <div class="workout__weight">Ciężar: <span>- kg.</span></div>
-      <div class="workout__weight">Powtórzenia: <span>-</span></div>
-    </div>
     <div class="workout__reps">
       <div class="workout__rep workout__rep--current">1</div>
     </div>
