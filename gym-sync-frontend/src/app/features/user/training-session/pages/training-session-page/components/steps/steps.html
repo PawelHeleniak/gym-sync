@@ -1,3 +1,8 @@
+@if (loading) {
+<p>Wczytywanie treningu…</p>
+} @else if (selectedTraining.exercises.length === 0) {
+<p>Nie można rozpocząć tego treningu.</p>
+} @else {
 <h2 class="layout__header">{{selectedTraining.name}}</h2>
 <div class="workout">
   <div class="workout__box box">
@@ -123,6 +128,7 @@
   </button>
   }
 </div>
+}
 <!-- <app-training-details
   class="d-none--laptop"
   [selectedTraining]="selectedTraining"

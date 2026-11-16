@@ -6,8 +6,6 @@ import {
   ViewChild,
   HostListener,
 } from '@angular/core';
-import { Timer } from './components/timer/timer';
-import { Steps } from './components/steps/steps';
 import { TrainingService } from '../../../shared/services/training-session.service';
 import { TrainingList } from '../../../shared/models/training.model';
 import { TimeItem } from './models/training-session.model';
@@ -17,18 +15,13 @@ import { formatTime } from '../../../shared/utils/time';
 import { KeyValuePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-type TrainingState =
-  | 'trainingList'
-  | 'trainingDetails'
-  | 'trainingActive'
-  | 'trainingSummary'
-  | 'trainingEdit';
+type TrainingState = 'trainingList' | 'trainingEdit';
 
 type TrainingsByDay = Record<number, TrainingList[]>;
 
 @Component({
   selector: 'app-training-session',
-  imports: [Timer, Steps, TrainingPlanBuilder, KeyValuePipe, RouterLink],
+  imports: [TrainingPlanBuilder, KeyValuePipe, RouterLink],
   templateUrl: './training-session.html',
   styleUrls: ['./training-session.scss'],
 })
@@ -43,9 +36,6 @@ export class TrainingSession implements OnInit {
     estimatedTime: 0,
     exercises: [],
   };
-
-  currentExerciseIndex = 0;
-  currentRepIndex = 0;
 
   activeDropdownId: string | null = null;
 
@@ -62,11 +52,9 @@ export class TrainingSession implements OnInit {
     7: 'Niedziela',
   };
 
-  doneExercises = signal<TimeItem[]>([]);
   durationInSeconds = 3000;
-  isLastStep = false;
 
-  @ViewChild('timer') timerComponent!: Timer;
+  // @ViewChild('timer') timerComponent!: Timer;
   private snackBar = inject(MatSnackBar);
 
   constructor(private trainingService: TrainingService) {}
@@ -120,7 +108,6 @@ export class TrainingSession implements OnInit {
     });
   }
   duplicateTraining(training: TrainingList) {
-    // console.log('Duplicating training:', training);
     this.trainingService.duplicateTraining(training).subscribe({
       next: () => {
         this.getAllTraining();
@@ -136,30 +123,13 @@ export class TrainingSession implements OnInit {
   editTraining(training: TrainingList) {
     this.changeStateWorkout(training, 'trainingEdit');
   }
+
   handleReturnPlan(stage: string) {
     if (stage === 'trainingList') {
       this.state = stage;
     }
   }
-  handleDoneExercises(data: TimeItem[]) {
-    this.doneExercises.set(data);
-  }
 
-  goToWorkout() {
-    this.isLastStep = false;
-    this.state = 'trainingActive';
-  }
-
-  backToList() {
-    this.state = 'trainingList';
-    this.doneExercises.set([]);
-  }
-  handleLastStep() {
-    this.isLastStep = true;
-  }
-  stopTimer() {
-    this.timerComponent.stop();
-  }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;

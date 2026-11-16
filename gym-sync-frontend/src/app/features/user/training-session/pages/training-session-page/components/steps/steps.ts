@@ -1,19 +1,24 @@
 import {
   Component,
+  DestroyRef,
   EventEmitter,
   inject,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { TrainingService } from '../../../../../shared/services/training-session.service';
-import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
-import { TrainingList } from '../../../../../shared/models/training.model';
+import { TrainingService } from '../../../../../../../shared/services/training-session.service';
+import { TrainingHistoryService } from '../../../../../../../shared/services/training-history.service';
+import { TrainingList } from '../../../../../../../shared/models/training.model';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { formatTime } from '../../../../../shared/utils/time';
+import { formatTime } from '../../../../../../../shared/utils/time';
+import { TimeItem } from '../../../../models/training-session.model';
 
 @Component({
   selector: 'app-steps',
@@ -21,17 +26,20 @@ import { formatTime } from '../../../../../shared/utils/time';
   templateUrl: './steps.html',
   styleUrl: './steps.scss',
 })
-export class Steps implements OnInit {
-  @Input() selectedTraining: TrainingList = {
+export class Steps implements OnInit, OnDestroy {
+  selectedTraining: TrainingList = {
     name: '',
     estimatedTime: 0,
     exercises: [],
   };
-  @Output() doneWorkout = new EventEmitter<any[]>();
+  loading = true;
+  @Input() elapsedSeconds = 0;
+  @Output() workoutReady = new EventEmitter<number>();
+  @Output() doneWorkout = new EventEmitter<TimeItem[]>();
   @Output() goBack = new EventEmitter<void>();
   @Output() stop = new EventEmitter<void>();
   @Output() lastStep = new EventEmitter<void>();
-  connectionDoneWorkout = signal<any[]>([]);
+  connectionDoneWorkout = signal<TimeItem[]>([]);
 
   currentExerciseIndex: number = 0;
   currentRepIndex: number = 0;
@@ -47,14 +55,49 @@ export class Steps implements OnInit {
   durationInSeconds = 3000;
 
   private snackBar = inject(MatSnackBar);
+  private route = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private trainingService: TrainingService,
     private trainingHistoryService: TrainingHistoryService,
   ) {}
   ngOnInit() {
-    const firstExercise = this.selectedTraining.exercises[0];
-    if (firstExercise) this.timer(firstExercise.breakTime || 0);
+    this.getWorkout();
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.timerInterval);
+  }
+
+  getWorkout(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.loading = false;
+      return;
+    }
+
+    this.trainingService
+      .getTraining(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (training) => {
+          const exercises = training?.exercises;
+          if (
+            exercises?.length &&
+            exercises.every((exercise) => exercise.sets?.length)
+          ) {
+            this.selectedTraining = training;
+            this.timer(exercises[0].breakTime || 0);
+            this.workoutReady.emit(training.estimatedTime ?? 0);
+          }
+          this.loading = false;
+        },
+        error: (err) => {
+          this.loading = false;
+          console.error(err);
+        },
+      });
   }
 
   get currentExercise() {
@@ -112,16 +155,15 @@ export class Steps implements OnInit {
   }
   hanldeEndTraining() {
     this.endTraining = true;
+    clearInterval(this.timerInterval);
     this.stop.emit();
-
-    const getTime = document.querySelector('.timer__time--start')?.textContent;
-    this.endTrainingTime = getTime ? getTime : '';
+    this.endTrainingTime = formatTime(this.elapsedSeconds);
 
     this.emitLastStep();
     this.handleDoneWorkout();
-    this.updateTraining();
+    this.updateTraining(this.elapsedSeconds);
   }
-  updateTraining() {
+  updateTraining(totalTime: number) {
     this.selectedTraining.exercises.forEach((ex) => {
       ex.sets.forEach((set) => {
         set.done = false;
@@ -130,21 +172,17 @@ export class Steps implements OnInit {
     this.selectedTraining.estimatedTime = 0;
     this.trainingService.updateTraining(this.selectedTraining).subscribe({
       next: (response) => {
-        this.saveHistory(response.workout);
+        this.saveHistory(response.workout, totalTime);
       },
       error: (err) => {
         console.error(err);
       },
     });
   }
-  toSeconds(time: string): number {
-    const [h, m, s] = time.split(':').map(Number);
-    return h * 3600 + m * 60 + s;
-  }
-  saveHistory(plan: TrainingList) {
+  saveHistory(plan: TrainingList, totalTime: number) {
     const finished = {
       planId: plan._id,
-      totalTime: this.toSeconds(this.endTrainingTime),
+      totalTime,
       estimatedTime: plan.estimatedTime,
       exercises: plan.exercises,
     };
@@ -180,33 +218,21 @@ export class Steps implements OnInit {
     this.lastStep.emit();
   }
   handleDoneWorkout() {
-    const newItems: any[] = [];
-
-    const currentExercise =
-      this.selectedTraining.exercises[this.currentExerciseIndex];
-    const doneSets = currentExercise.sets.filter((el) => el.done);
-    const allDoneCounts = doneSets.map((el) => el.repsCount);
-    let finalCount = null;
-
-    if (allDoneCounts.length > 0) {
-      finalCount = allDoneCounts.at(-1);
-    }
-    const getTime = document.querySelector('.timer__time--start')?.textContent;
-    newItems.push({
+    const currentExercise = this.currentExercise;
+    const set = this.currentRep;
+    const item: TimeItem = {
       name: currentExercise.name,
-      repsCount: finalCount,
-      timeCount: currentExercise.sets[this.currentRepIndex].timeCount,
-      weight: currentExercise.sets[this.currentRepIndex].weight,
-      time: getTime,
+      repsCount: set.repsCount,
+      timeCount: set.timeCount,
+      weight: set.weight,
+      time: formatTime(this.elapsedSeconds),
       isBreak: currentExercise.isBreak ? currentExercise.isBreak : false,
       breakTime: currentExercise.breakTime ? currentExercise.breakTime : 0,
-      type: currentExercise.type,
-    });
+      type:
+        currentExercise.type ?? (currentExercise.isBreak ? 'break' : 'reps'),
+    };
 
-    this.connectionDoneWorkout.set([
-      ...this.connectionDoneWorkout(),
-      ...newItems,
-    ]);
+    this.connectionDoneWorkout.set([...this.connectionDoneWorkout(), item]);
     this.doneWorkout.emit([...this.connectionDoneWorkout()]);
   }
 

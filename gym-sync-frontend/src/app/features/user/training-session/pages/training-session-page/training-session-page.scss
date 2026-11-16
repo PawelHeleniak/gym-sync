@@ -1,0 +1,12 @@
+@use "mixins" as m;
+
+.training-active {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @include m.laptop {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+  }
+}

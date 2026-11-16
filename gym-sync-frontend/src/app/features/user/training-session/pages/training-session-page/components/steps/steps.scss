@@ -82,6 +82,8 @@
     margin-top: 0.5rem;
     @include m.mobile {
       width: 25rem;
+    }
+    @include m.tablet {
       margin-top: 0;
     }
     &--label {

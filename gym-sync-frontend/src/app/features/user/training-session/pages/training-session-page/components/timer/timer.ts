@@ -1,6 +1,6 @@
-import { Component, computed, Input, input, OnInit } from '@angular/core';
-import { formatTime } from '../../../../../shared/utils/time';
-import { TimeItem } from '../../models/training-session.model';
+import { Component, computed, Input, input, OnInit, output } from '@angular/core';
+import { formatTime } from '../../../../../../../shared/utils/time';
+import { TimeItem } from '../../../../models/training-session.model';
 
 @Component({
   selector: 'app-timer',
@@ -12,6 +12,7 @@ export class Timer implements OnInit {
   @Input() estimatedTime: number = 0;
   @Input() isLastStep: boolean = false;
   list = input<TimeItem[]>([]);
+  secondsChange = output<number>();
 
   seconds: number = 0;
   startTimeFromatted: string = '00:00:00';
@@ -24,6 +25,7 @@ export class Timer implements OnInit {
     this.intervalId = window.setInterval(() => {
       this.seconds++;
       this.startTimeFromatted = formatTime(this.seconds);
+      this.secondsChange.emit(this.seconds);
     }, 1000);
     this.endTimeFromatted = formatTime(this.estimatedTime);
   }

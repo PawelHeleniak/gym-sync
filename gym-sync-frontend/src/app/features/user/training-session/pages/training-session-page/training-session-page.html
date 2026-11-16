@@ -1,1 +1,23 @@
-<p>training-session-page works!</p>
+<div class="training-active">
+  <div class="training-active__steps">
+    <app-steps
+      [elapsedSeconds]="elapsedSeconds"
+      (workoutReady)="estimatedTime = $event"
+      (doneWorkout)="doneExercises = $event"
+      (goBack)="backToList()"
+      (stop)="timer?.stop()"
+      (lastStep)="isLastStep = true"
+    ></app-steps>
+  </div>
+
+  <div class="training-active__timer">
+    @if (estimatedTime !== null) {
+    <app-timer
+      [estimatedTime]="estimatedTime"
+      [isLastStep]="isLastStep"
+      [list]="doneExercises"
+      (secondsChange)="elapsedSeconds = $event"
+    ></app-timer>
+    }
+  </div>
+</div>
