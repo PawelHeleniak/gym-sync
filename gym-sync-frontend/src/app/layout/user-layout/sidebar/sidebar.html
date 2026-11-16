@@ -5,7 +5,7 @@
       <a
         routerLink="{{item.link}}"
         routerLinkActive="sidebar__link--active"
-        [routerLinkActiveOptions]="{ exact: true }"
+        [routerLinkActiveOptions]="{ exact: item.link !== '/trening' }"
         class="sidebar__link"
         [attr.aria-label]="item.ariaLabel"
       >

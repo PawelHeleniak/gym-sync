@@ -65,10 +65,15 @@
   </div>
   @if(!stepsView){
   <div class="control mt-1">
-    <button (click)="backToList()" class="ui-btn control__btn">Powrót</button>
-    <button (click)="goToWorkout()" class="ui-btn ui-btn--arrow control__btn">
+    <a routerLink="/trening" class="ui-btn control__btn">Powrót</a>
+    @if(routerId){
+    <a
+      [routerLink]="['/trening', routerId, 'sesja']"
+      class="ui-btn ui-btn--arrow control__btn"
+    >
       Start <i class="fa-solid fa-arrow-right"></i>
-    </button>
+    </a>
+    }
   </div>
   }
 </div>

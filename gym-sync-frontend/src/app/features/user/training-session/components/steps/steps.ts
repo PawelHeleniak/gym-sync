@@ -7,7 +7,6 @@ import {
   Output,
   signal,
 } from '@angular/core';
-import { TrainingDetails } from '../trainingDetails/trainingDetails';
 import { FormsModule } from '@angular/forms';
 import { TrainingService } from '../../../../../shared/services/training-session.service';
 import { TrainingHistoryService } from '../../../../../shared/services/training-history.service';
@@ -18,7 +17,7 @@ import { formatTime } from '../../../../../shared/utils/time';
 
 @Component({
   selector: 'app-steps',
-  imports: [TrainingDetails, FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './steps.html',
   styleUrl: './steps.scss',
 })

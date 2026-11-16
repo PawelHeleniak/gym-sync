@@ -9,7 +9,6 @@ import {
 import { Timer } from './components/timer/timer';
 import { Steps } from './components/steps/steps';
 import { TrainingService } from '../../../shared/services/training-session.service';
-import { TrainingDetails } from './components/trainingDetails/trainingDetails';
 import { TrainingList } from '../../../shared/models/training.model';
 import { TimeItem } from './models/training-session.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -29,14 +28,7 @@ type TrainingsByDay = Record<number, TrainingList[]>;
 
 @Component({
   selector: 'app-training-session',
-  imports: [
-    Timer,
-    Steps,
-    TrainingDetails,
-    TrainingPlanBuilder,
-    KeyValuePipe,
-    RouterLink,
-  ],
+  imports: [Timer, Steps, TrainingPlanBuilder, KeyValuePipe, RouterLink],
   templateUrl: './training-session.html',
   styleUrls: ['./training-session.scss'],
 })
@@ -107,19 +99,10 @@ export class TrainingSession implements OnInit {
 
         this.selectedTraining = response;
         this.state = state;
-        // this.calculateTime();
       },
       error: console.error,
     });
   }
-
-  // calculateTime() {
-  //   this.selectedTraining.estimatedTime =
-  //     this.selectedTraining.exercises.reduce(
-  //       (sum, ex) => sum + ex.breakTime * ex.sets.length,
-  //       0,
-  //     );
-  // }
 
   removeTraining(id: string) {
     this.trainingService.removeTraining(id).subscribe({

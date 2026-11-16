@@ -42,12 +42,12 @@
               </button>
             </div>
 
-            <button
+            <a
               class="ui-btn ui-btn--arrow"
-              (click)="changeStateWorkout(training, 'trainingDetails')"
+              [routerLink]="['/trening', training._id]"
             >
               Trening <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            </a>
           </div>
 
           <button
@@ -79,7 +79,8 @@
     </div>
     }
   </div>
-  } @else if (state === 'trainingDetails' && selectedTraining) {
+  }
+  <!-- @else if (state === 'trainingDetails' && selectedTraining) {
   <div class="layout__column">
     <app-training-details
       [selectedTraining]="selectedTraining"
@@ -108,7 +109,7 @@
       ></app-timer>
     </div>
   </div>
-  }
+  } -->
 </div>
 
 @if (state === 'trainingEdit' && selectedTraining) {

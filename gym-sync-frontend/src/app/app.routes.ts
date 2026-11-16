@@ -5,6 +5,8 @@ import { UserLayout } from './layout/user-layout/user-layout';
 import { HomePanel } from './features/user/home-panel/home-panel';
 import { TrainingPlanBuilder } from './features/user/training-plan-builder/training-plan-builder';
 import { TrainingSession } from './features/user/training-session/training-session';
+import { TrainingSessionPage } from './features/user/training-session/pages/training-session-page/training-session-page';
+import { TrainingDetailsPage } from './features/user/training-session/pages/training-details-page/training-details-page';
 import { TrainingReport } from './features/user/training-report/training-report';
 import { Settings } from './features/user/settings/settings';
 
@@ -24,6 +26,8 @@ export const routes: Routes = [
       { path: 'panel', component: HomePanel },
       { path: 'kreator-planu', component: TrainingPlanBuilder },
       { path: 'trening', component: TrainingSession },
+      { path: 'trening/:id', component: TrainingDetailsPage },
+      { path: 'trening/:id/sesja', component: TrainingSessionPage },
       { path: 'raport', component: TrainingReport },
       { path: 'stoper', component: Stopwatch },
       { path: 'ustawienia', component: Settings },
